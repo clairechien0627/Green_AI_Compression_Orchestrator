@@ -6,7 +6,7 @@ from pathlib import Path
 from schemas import StrategySuggestion
 
 # Load environment variables
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT_DIR / ".env")
 
 
@@ -309,12 +309,12 @@ Pareto Frontier (best trade-offs found):
 
 === STRATEGY ===
 - Early iterations: try each mode independently to understand isolated impact.
-- For quant_only: start with GPTQ 4-bit, then explore variations.
 - Later iterations: combine methods in hybrid mode.
 - NEVER repeat identical configs. Use Pareto frontier to find unexplored regions.
 
 Output ONLY the JSON for your chosen mode. No extra fields, no prose.
 """
+#- For quant_only: start with GPTQ 4-bit, then explore variations.
 
 
     @staticmethod
@@ -436,6 +436,8 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
             }
         }]
 
+        tool_call_num = 0
+        query_cache: dict = {}  # 同一 iteration 內避免重複 retrieve
         for turn in range(MAX_TURNS):
             force_answer = (turn == MAX_TURNS - 1)
 
@@ -460,31 +462,35 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
                 for tool_call in msg.tool_calls:
                     args = json.loads(tool_call.function.arguments)
                     query = args.get("query")
-                    
+
                     reason = args.get("reason", "")
                     if not query:
                         # 防呆機制：如果 LLM 漏給參數，強制它重新思考
                         retrieval_results = "System Error: Missing required parameter 'query'. Please specify a method like 'gptq' or 'asvd'."
                         logger.warning("Agent called tool without a query.")
                     else:
-                        logger.info(f"🔍 Agent requested retrieval for: {query} | Reason: {reason}")
-                        retrieval_results = self._execute_retrieve_trials(query, trial_history)
-                        debug_log = {
-                            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            "iteration": iteration,
-                            "turn": turn + 1,
-                            "query": query,
-                            "reason": reason,
-                            "results": retrieval_results
-                        }
-
-                        # Use the specific experiment directory instead of the root!
-                        if hasattr(self, 'exp_dir'):
-                            log_path = self.exp_dir / "tool_debug_log.jsonl"
-                            with open(log_path, "a", encoding="utf-8") as f:
-                                f.write(json.dumps(debug_log, ensure_ascii=False) + "\n")
+                        if query in query_cache:
+                            logger.info(f"⚡ Cache hit for '{query}', skipping duplicate retrieval")
+                            retrieval_results = query_cache[query]
                         else:
-                            logger.warning("No exp_dir set for LLMDecisionMaker; skipping tool log.")
+                            tool_call_num += 1
+                            logger.info(f"🔍 Agent requested retrieval for: {query} | Reason: {reason}")
+                            retrieval_results = self._execute_retrieve_trials(query, trial_history)
+                            query_cache[query] = retrieval_results
+                            debug_log = {
+                                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                "iteration": iteration,
+                                "turn": tool_call_num,
+                                "query": query,
+                                "reason": reason,
+                                "results": retrieval_results
+                            }
+                            if hasattr(self, 'exp_dir'):
+                                log_path = self.exp_dir / "tool_debug_log.jsonl"
+                                with open(log_path, "a", encoding="utf-8") as f:
+                                    f.write(json.dumps(debug_log, ensure_ascii=False) + "\n")
+                            else:
+                                logger.warning("No exp_dir set for LLMDecisionMaker; skipping tool log.")
 
                     # reason 注入回 tool result，讓下一輪 LLM 記得自己在驗證什麼假設
                     reason_prefix = f"[Your query goal: {reason}]\n" if reason else ""

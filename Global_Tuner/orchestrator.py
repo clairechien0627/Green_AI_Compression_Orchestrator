@@ -18,7 +18,7 @@ import statistics
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("ModularOrchestrator")
 
-_ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+_ROOT_DIR = Path(__file__).resolve().parent.parent
 # ============================================================================
 # PROCESS ISOLATION WRAPPER
 # ============================================================================
@@ -109,6 +109,38 @@ def run_isolated(func, *args, **kwargs):
 #         raise RuntimeError("Process died unexpectedly (likely killed by OS Out-Of-Memory).")
 # ============================================================================
 
+def run_isolated_oom_retry(func, *args, oom_wait_minutes: int = 10, **kwargs):
+    """
+    呼叫 run_isolated，若偵測到 OOM（進程被 OS 殺死或 CUDA OOM）則
+    等待 oom_wait_minutes 分鐘後無限重試，直到成功為止。
+    """
+    attempt = 0
+    while True:
+        try:
+            return run_isolated(func, *args, **kwargs)
+        except RuntimeError as e:
+            err_msg = str(e).lower()
+            is_oom = (
+                "process died unexpectedly" in err_msg or
+                "out of memory" in err_msg or
+                "outofmemoryerror" in err_msg or
+                "cuda out of memory" in err_msg
+            )
+            if not is_oom:
+                raise
+            attempt += 1
+            wait_sec = oom_wait_minutes * 60
+            logger.warning(
+                f"⚠️  OOM 偵測到（第 {attempt} 次），等待 {oom_wait_minutes} 分鐘後重試... "
+                f"(原因: {str(e)[:120]})"
+            )
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            time.sleep(wait_sec)
+            logger.info(f"OOM 等待結束，開始第 {attempt + 1} 次嘗試...")
+
+
 def _make_trial_name(i: int, suggestion) -> str:
     """生成 trial 目錄名稱，包含編號、方法與關鍵參數"""
     parts = [f"trial_{i:03d}"]
@@ -156,7 +188,7 @@ class OptimizationOrchestrator:
     def __init__(self, model_id: str, task: str, max_iterations: int = 10, max_time_hours: float = 0.0,
                  weights: dict = None, num_samples: int = None,
                  cleanup: bool = True, keep_best: bool = True, memory_type: str = "full", base_dir: Path = None, pen_t: float = 0.15, pen_a: float = 10.0,
-                 targets: dict = None, patience: int = 2):
+                 targets: dict = None, patience: int = 2, resume_dir: Path = None):
         self.model_id = model_id
         self.task = task
         # Handle the "disable" logic
@@ -185,16 +217,20 @@ class OptimizationOrchestrator:
         self.target_met = False
         self.best_target_score = -float('inf')
         self.baseline_metrics = None
+        self.resume_dir = Path(resume_dir) if resume_dir else None
 
-        # 實驗目錄：tuning_results/exp_{model}_{task}_{timestamp}/
+        # 實驗目錄：resume 時沿用舊目錄，否則建立新目錄
         model_name = Path(model_id).name
         task_str = task.replace(",", "_")
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        parent_dir = base_dir if base_dir else _ROOT_DIR / "tuning_results"
-        self.exp_dir = parent_dir / f"exp_{model_name}_{task_str}_{memory_type}_{ts}" # Optional: added memory_type to folder name for clarity
-        # self.exp_dir = _ROOT_DIR / "tuning_results" / f"exp_{model_name}_{task_str}_{ts}"
-        self.exp_dir.mkdir(parents=True, exist_ok=True)
-        logger.info(f"實驗目錄: {self.exp_dir}")
+        if self.resume_dir:
+            self.exp_dir = self.resume_dir
+            logger.info(f"Resume 模式，沿用實驗目錄: {self.exp_dir}")
+        else:
+            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+            parent_dir = base_dir if base_dir else _ROOT_DIR / "tuning_results"
+            self.exp_dir = parent_dir / f"exp_{model_name}_{task_str}_{memory_type}_{ts}" # Optional: added memory_type to folder name for clarity
+            self.exp_dir.mkdir(parents=True, exist_ok=True)
+            logger.info(f"實驗目錄: {self.exp_dir}")
         self.llm.exp_dir = self.exp_dir
 
         # baseline 快取目錄：tuning_results/baselines/{model_name}_{task}.json
@@ -346,7 +382,7 @@ class OptimizationOrchestrator:
             #     num_samples=self.num_samples,
             #     output_dir=str(self._baseline_cache_dir),
             # )
-            eval_results = run_isolated(
+            eval_results = run_isolated_oom_retry(
                 run_evaluation,
                 self.base_model_path,
                 ",".join(missing_tasks),
@@ -377,20 +413,60 @@ class OptimizationOrchestrator:
         logger.info(f"基線已快取至: {self._baseline_cache_path}")
         return cache_entry
 
+    def _load_resume_state(self) -> int:
+        """
+        從 resume_dir 載入已有實驗狀態。回傳已完成的 iteration 數，optimize() 從下一個 iteration 繼續。
+        """
+        results_path = self.exp_dir / "optimization_results.json"
+        config_path  = self.exp_dir / "experiment_config.json"
+
+        with open(results_path, encoding="utf-8") as f:
+            history = json.load(f)
+        with open(config_path, encoding="utf-8") as f:
+            exp_config = json.load(f)
+
+        self.trial_history = history
+
+        # 從 experiment_config.json 還原 baseline
+        if "baseline" in exp_config:
+            self.baseline_metrics = exp_config["baseline"]
+            logger.info(f"已從 experiment_config.json 還原 baseline: {self.baseline_metrics}")
+
+        # 還原 _seen_configs、best_result、best_score
+        for trial in history:
+            config = trial.get("config", {})
+            if config:
+                self._seen_configs.add(json.dumps(config, sort_keys=True, ensure_ascii=False))
+            if not trial.get("error"):
+                self._update_best(trial)
+
+        logger.info(
+            f"✅ Resume 完成：載入 {len(history)} 個 trials，best_score={self.best_score:.4f}"
+        )
+        return len(history)
+
     def optimize(self):
-        self.baseline_metrics = self._load_or_run_baseline()
-        logger.info(f"基線建立完成: {self.baseline_metrics}")
+        if self.resume_dir:
+            completed = self._load_resume_state()
+            start_i = completed + 1
+            trial_dirs = [
+                t["trial_dir"] for t in self.trial_history
+                if t.get("trial_dir") and Path(t["trial_dir"]).exists()
+            ]
+            logger.info(f"▶️  從 iteration {start_i}/{self.max_iterations} 繼續")
+        else:
+            self.baseline_metrics = self._load_or_run_baseline()
+            logger.info(f"基線建立完成: {self.baseline_metrics}")
+            self._save_experiment_config()
+            trial_dirs = []  # 追蹤所有生成的 trial 目錄
+            start_i = 1
+
         self.llm.baseline_metrics = self.baseline_metrics
 
-        # 儲存實驗設定
-        self._save_experiment_config()
-
-
-        trial_dirs = []  # 追蹤所有生成的 trial 目錄
         start_time = time.time()
         max_time_seconds = self.max_time_hours * 3600
 
-        i = 1 # Initialize counter for the while loop
+        i = start_i # Initialize counter for the while loop
         while i <= self.max_iterations:
             elapsed_seconds = time.time() - start_time
             if elapsed_seconds >= max_time_seconds:
@@ -459,14 +535,14 @@ class OptimizationOrchestrator:
             try:
                 if has_sparse:
                     sparse_out = trial_dir if (not has_asvd and not has_quant) else str(Path(trial_dir) / "sparse")
-                    current_model = run_isolated(run_sparse, current_model, suggestion, output_dir=sparse_out)
+                    current_model = run_isolated_oom_retry(run_sparse, current_model, suggestion, output_dir=sparse_out)
 
                 if has_asvd:
                     asvd_out = trial_dir if not has_quant else str(Path(trial_dir) / "asvd")
-                    current_model = run_isolated(run_asvd, current_model, suggestion, output_dir=asvd_out)
+                    current_model = run_isolated_oom_retry(run_asvd, current_model, suggestion, output_dir=asvd_out)
 
                 if has_quant:
-                    current_model = run_isolated(run_quantization, current_model, suggestion, output_dir=trial_dir)
+                    current_model = run_isolated_oom_retry(run_quantization, current_model, suggestion, output_dir=trial_dir)
             # try:
                 # if has_sparse:
                 #     # 若後面還有其他步驟，存到子目錄；否則直接存到 trial_dir
@@ -524,7 +600,7 @@ class OptimizationOrchestrator:
             #     num_samples=self.num_samples,
             #     output_dir=str(self.exp_dir),
             # )
-            metrics = run_isolated(
+            metrics = run_isolated_oom_retry(
                 run_evaluation,
                 current_model, self.task,
                 weights=self.weights,
@@ -747,7 +823,7 @@ class OptimizationOrchestrator:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Global Tuner v2 Orchestrator")
+    parser = argparse.ArgumentParser(description="Global Tuner Orchestrator")
     parser.add_argument("--model_id", type=str, default="meta-llama/Llama-3.2-1B-Instruct")
     parser.add_argument("--task", type=str, default="gsm8k")
     parser.add_argument("--max_iterations", type=int, default=10,
@@ -787,6 +863,8 @@ if __name__ == "__main__":
                         help="單次執行時使用的 memory 模式")
     parser.add_argument("--benchmark_runs", type=int, default=1,
                         help="大於 1 時，將自動對三種 memory 模式各執行 N 次並輸出 Markdown 比較表")
+    parser.add_argument("--resume_dir", type=str, default=None,
+                        help="接續已中斷的單次實驗，提供 exp_ 目錄路徑（e.g. tuning_results/exp_..._20260323_165306）")
 
     args = parser.parse_args()
     weights = {
@@ -905,6 +983,7 @@ if __name__ == "__main__":
             pen_t=args.pen_t,
             pen_a=args.pen_a,
             targets=targets,
-            patience=args.patience
+            patience=args.patience,
+            resume_dir=args.resume_dir,
         )
         orchestrator.optimize()

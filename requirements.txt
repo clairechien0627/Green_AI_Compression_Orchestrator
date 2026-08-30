@@ -1,5 +1,5 @@
 # ============================================================
-# Green_AI 根目錄依賴（Method/ + Evals/ + Global_Tuner_v2/）
+# Green_AI 根目錄依賴（Method/ + Evals/ + Global_Tuner/）
 # ============================================================
 #
 # 安裝順序（GPTQModel 需要先裝 torch + CUDA）：
@@ -30,7 +30,7 @@ codecarbon               # CO2 排放追蹤
 human-eval               # HumanEval 程式碼生成評測
 lm_eval                  # ASVD PPL 評估（ASVD4LLM 依賴）
 
-# ── Global_Tuner_v2 / LLM Agent ──────────────────────────────
+# ── Global_Tuner / LLM Agent ──────────────────────────────────
 openai                   # LLM 決策（GPT-4o）
 pydantic                 # schemas.py StrategySuggestion
 

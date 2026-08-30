@@ -339,12 +339,10 @@
 #     }
 
 """
-執行器模組（Systematic_Tuner 版本）
+執行器模組（Global_Tuner 版本）
 =====================================
-基於 Global_Tuner_memory/modular_agent/executors.py，調整如下：
-1. _ROOT_DIR 修正為 Systematic_Tuner/ 往上兩層（Green_AI/）
-2. cleanup 順序修正：evaluator.unload_model() 優先，移除冗餘的 del model
-3. 以 run_isolated 執行時，子進程結束即 100% 釋放 VRAM（cleanup 為保險備用）
+1. cleanup 順序修正：evaluator.unload_model() 優先，移除冗餘的 del model
+2. 以 run_isolated 執行時，子進程結束即 100% 釋放 VRAM（cleanup 為保險備用）
 """
 
 import logging
@@ -365,8 +363,8 @@ if not logger.handlers:
     logger.addHandler(handler)
 logger.propagate = False
 
-# Systematic_Tuner/executors.py → 往上三層到 Green_AI/
-_ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+# Global_Tuner/executors.py → 往上兩層到 Green_AI/
+_ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
 from Method.asvd import ASVDConfig, run_asvd as _run_asvd

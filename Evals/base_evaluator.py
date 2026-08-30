@@ -1,5 +1,5 @@
 """
-基礎評估器（Global_Tuner_v2 版本）
+基礎評估器（Global_Tuner 版本）
 =====================================
 
 相對於 tmp/evals/base_evaluator.py 的主要修改：
@@ -38,7 +38,7 @@ if not logger.handlers:
     logger.addHandler(handler)
 logger.propagate = False
 
-# 預設 dataset_config.yaml 位置（Global_Tuner_v2/Evals/config/）
+# 預設 dataset_config.yaml 位置（Global_Tuner/Evals/config/）
 _DEFAULT_DATASET_CONFIG = str(
     Path(__file__).parent / "config" / "dataset_config.yaml"
 )
@@ -71,7 +71,7 @@ class BaseEvalConfig:
 
 
 class BaseEvaluator(ABC):
-    """評估器基類（Global_Tuner_v2 版本）"""
+    """評估器基類（Global_Tuner 版本）"""
 
     def __init__(self, config: Union[Dict, BaseEvalConfig], dataset_name: Optional[str]):
         if isinstance(config, dict):

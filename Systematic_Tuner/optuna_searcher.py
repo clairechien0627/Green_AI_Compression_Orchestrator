@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import optuna
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-from Global_Tuner_v2.modular_agent.schemas import StrategySuggestion
+from Global_Tuner.schemas import StrategySuggestion
 from .search_space import (
     ASVD_SPACE, GPTQ_SPACE, AWQ_SPACE, QQQ_SPACE, BNB_SPACE,
     SPARSE_UNSTRUCTURED_SPACE, SPARSE_STRUCTURED_SPACE, ALL_MODES,
@@ -177,6 +177,112 @@ class OptunaSearcher:
         if self._pending_trial is not None:
             self.study.tell(self._pending_trial, optuna.trial.TrialState.FAIL)
             self._pending_trial = None
+
+    def add_past_trial(self, config: dict, score: float):
+        """
+        將已完成的 trial 重新注入 Optuna study，讓 TPE/NSGA-II 保有過去的先驗知識。
+        在 resume 時呼叫，每個 history 中的 trial 都要 replay 一次。
+        """
+        from optuna.distributions import CategoricalDistribution, FloatDistribution
+        from optuna.trial import create_trial
+
+        # config 是巢狀結構：{"mode": ..., "asvd": {...}, "quant": {...}, "sparse": {...}}
+        mode = config.get("mode", "")
+        asvd  = config.get("asvd")  or {}
+        quant = config.get("quant") or {}
+        sparse = config.get("sparse") or {}
+
+        # 反推 Optuna mode_key
+        if mode == "asvd_only":
+            mode_key = "asvd_only"
+        elif mode == "quant_only":
+            mode_key = quant.get("method", "")   # "gptq" / "awq" / "qqq" / "bnb"
+        elif mode == "sparse_only":
+            struct = sparse.get("structure", "")
+            mode_key = "sparse_unstructured" if (not struct or struct == "unstructured") else "sparse_structured"
+        elif mode == "hybrid":
+            mode_key = "hybrid_asvd_bnb"
+        else:
+            return
+
+        if mode_key not in self.modes:
+            return
+
+        params = {"mode": mode_key}
+        dists  = {"mode": CategoricalDistribution(self.modes)}
+
+        if mode_key == "asvd_only":
+            if None in (asvd.get("alpha"), asvd.get("ratio"), asvd.get("scaling")):
+                return
+            params["alpha"]              = asvd["alpha"]
+            dists["alpha"]               = CategoricalDistribution([0.3, 0.4, 0.5, 0.6, 0.7])
+            params["param_ratio_target"] = asvd["ratio"]
+            dists["param_ratio_target"]  = FloatDistribution(0.70, 0.99)
+            params["scaling_method"]     = asvd["scaling"]
+            dists["scaling_method"]      = CategoricalDistribution(["abs_mean", "abs_max", "fisher"])
+
+        elif mode_key == "gptq":
+            if None in (quant.get("bits"), quant.get("group_size"), quant.get("format"), quant.get("damp")):
+                return
+            params["gptq_bits"]       = quant["bits"]
+            dists["gptq_bits"]        = CategoricalDistribution([3, 4, 8])
+            params["gptq_group_size"] = quant["group_size"]
+            dists["gptq_group_size"]  = CategoricalDistribution([16, 32, 64, 128, 256])
+            params["gptq_format"]     = quant["format"]
+            dists["gptq_format"]      = CategoricalDistribution(["gptq", "gptq_v2"])
+            params["gptq_damp"]       = quant["damp"]
+            dists["gptq_damp"]        = FloatDistribution(0.001, 0.1, log=True)
+
+        elif mode_key == "awq":
+            if quant.get("group_size") is None:
+                return
+            params["awq_group_size"] = quant["group_size"]
+            dists["awq_group_size"]  = CategoricalDistribution([16, 32, 64, 128])
+
+        elif mode_key == "qqq":
+            if None in (quant.get("group_size"), quant.get("damp")):
+                return
+            params["qqq_group_size"] = quant["group_size"]
+            dists["qqq_group_size"]  = CategoricalDistribution([-1, 128])
+            params["qqq_damp"]       = quant["damp"]
+            dists["qqq_damp"]        = FloatDistribution(0.0005, 0.05, log=True)
+
+        elif mode_key == "bnb":
+            if quant.get("bits") is None:
+                return
+            params["bnb_bits"]         = quant["bits"]
+            dists["bnb_bits"]          = CategoricalDistribution([4, 8])
+            params["bnb_double_quant"] = quant.get("double_quant", False)
+            dists["bnb_double_quant"]  = CategoricalDistribution([False, True])
+
+        elif mode_key == "sparse_unstructured":
+            if sparse.get("ratio") is None:
+                return
+            params["sparse_ratio"] = sparse["ratio"]
+            dists["sparse_ratio"]  = FloatDistribution(0.3, 0.7)
+
+        elif mode_key == "sparse_structured":
+            if sparse.get("structure") is None:
+                return
+            params["sparse_structure"] = sparse["structure"]
+            dists["sparse_structure"]  = CategoricalDistribution(["2:4", "4:8"])
+
+        elif mode_key == "hybrid_asvd_bnb":
+            if None in (asvd.get("alpha"), asvd.get("ratio"), asvd.get("scaling"), quant.get("bits")):
+                return
+            params["h_asvd_alpha"]       = asvd["alpha"]
+            dists["h_asvd_alpha"]        = CategoricalDistribution([0.3, 0.4, 0.5, 0.6, 0.7])
+            params["h_asvd_ratio"]       = asvd["ratio"]
+            dists["h_asvd_ratio"]        = FloatDistribution(0.70, 0.99)
+            params["h_asvd_scaling"]     = asvd["scaling"]
+            dists["h_asvd_scaling"]      = CategoricalDistribution(["abs_mean", "abs_max", "fisher"])
+            params["h_bnb_bits"]         = quant["bits"]
+            dists["h_bnb_bits"]          = CategoricalDistribution([4, 8])
+            params["h_bnb_double_quant"] = quant.get("double_quant", False)
+            dists["h_bnb_double_quant"]  = CategoricalDistribution([False, True])
+
+        frozen = create_trial(params=params, distributions=dists, value=score)
+        self.study.add_trial(frozen)
 
     def best_params(self) -> Optional[dict]:
         """回傳到目前為止最佳的參數（若有）"""
