@@ -1,10 +1,8 @@
 """
-執行器模組（Systematic_Tuner 版本）
+執行器模組（Strategy 版本，Global_Tuner / Systematic_Tuner 共用）
 =====================================
-基於 Global_Tuner_memory/modular_agent/executors.py，調整如下：
-1. _ROOT_DIR 修正為 Systematic_Tuner/ 往上兩層（Green_AI/）
-2. cleanup 順序修正：evaluator.unload_model() 優先，移除冗餘的 del model
-3. 以 run_isolated 執行時，子進程結束即 100% 釋放 VRAM（cleanup 為保險備用）
+1. cleanup 順序修正：evaluator.unload_model() 優先，移除冗餘的 del model
+2. 以 run_isolated 執行時，子進程結束即 100% 釋放 VRAM（cleanup 為保險備用）
 """
 
 import logging
@@ -25,7 +23,7 @@ if not logger.handlers:
     logger.addHandler(handler)
 logger.propagate = False
 
-# Systematic_Tuner/executors.py → 往上兩層到 Green_AI/
+# Strategy/executors.py → 往上一層到 Green_AI/
 _ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
@@ -75,8 +73,10 @@ def run_sparse(model_path: str, suggestion, output_dir: Optional[str] = None) ->
 
 
 def run_quantization(model_path: str, suggestion, output_dir: Optional[str] = None) -> str:
-    """執行量化（gptq/awq/qqq/bnb）"""
-    method = suggestion.quant_method.lower()
+    """執行量化（gptq/awq/qqq/bnb/hybrid）"""
+    # Use mode to determine method, mapping hybrid to bnb
+    method = "bnb" if suggestion.mode == "hybrid_asvd_bnb" else suggestion.mode
+    method = method.lower()
 
     if method == "awq":
         fmt = "gemm"
@@ -97,7 +97,6 @@ def run_quantization(model_path: str, suggestion, output_dir: Optional[str] = No
         output_dir=output_dir,
     )
     return _run_quantization(model_path, config, output_dir=output_dir)
-
 
 # ============================================================================
 # 評估函數（直接呼叫 Evals/ 評估器）
@@ -173,7 +172,7 @@ def run_evaluation(model_path: str, tasks, weights: dict, baseline_metrics: dict
     Returns:
         {"accuracy": ..., "latency": ..., "vram": ..., "emissions": ..., "score": ..., "details": {...}}
 
-    Score 公式（log scale，對齊 Global_Tuner_memory）：
+    Score 公式（log scale）：
         score = 1.0 + Σ weight_i * log(norm_i + 1e-9)
         norm_acc  = quantized_acc  / baseline_acc   （越大越好）
         norm_lat  = baseline_lat   / quantized_lat  （越大越好 = 越快越好）

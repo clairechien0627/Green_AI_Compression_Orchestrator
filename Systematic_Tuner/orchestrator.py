@@ -20,79 +20,10 @@ import sys
 _ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
-from .executors import run_asvd, run_sparse, run_quantization, run_evaluation
-
-
-# ── Process Isolation（從 Global_Tuner_v2 移植）────────────────────────────
-def _worker(queue, func, *args, **kwargs):
-    import torch
-    try:
-        if torch.cuda.is_available():
-            torch.cuda.reset_peak_memory_stats()
-        result = func(*args, **kwargs)
-        peak_mb = (
-            torch.cuda.max_memory_allocated() / (1024 ** 2)
-            if torch.cuda.is_available() else 0.0
-        )
-        queue.put({"status": "success", "result": result, "peak_vram_mb": peak_mb})
-    except Exception as e:
-        queue.put({"status": "error", "error": str(e), "traceback": traceback.format_exc()})
-
-def run_isolated(func, *args, **kwargs):
-    """
-    在獨立的 spawn 子進程中執行函式。
-    子進程結束後 OS 保證 100% 釋放所有 VRAM，根本解決記憶體殘留問題。
-
-    Returns:
-        (result, peak_vram_mb): 函式回傳值 + 子進程內的 GPU peak（MB）
-    """
-    ctx = mp.get_context('spawn')
-    queue = ctx.Queue()
-    p = ctx.Process(target=_worker, args=(queue, func) + args, kwargs=kwargs)
-    p.start()
-    p.join()
-
-    if not queue.empty():
-        res = queue.get()
-        if res["status"] == "success":
-            return res["result"], res.get("peak_vram_mb", 0.0)
-        else:
-            raise RuntimeError(f"Isolated process failed:\n{res['error']}\n{res['traceback']}")
-    else:
-        raise RuntimeError("子進程異常終止（可能是 OOM 被 OS 砍掉）。")
-
-def run_isolated_oom_retry(func, *args, oom_wait_minutes: int = 10, **kwargs):
-    """
-    呼叫 run_isolated，若偵測到 OOM（進程被 OS 殺死或 CUDA OOM）則
-    等待 oom_wait_minutes 分鐘後無限重試，直到成功為止。
-    """
-    attempt = 0
-    while True:
-        try:
-            return run_isolated(func, *args, **kwargs)
-        except RuntimeError as e:
-            err_msg = str(e).lower()
-            is_oom = (
-                "process died unexpectedly" in err_msg or
-                "out of memory" in err_msg or
-                "outofmemoryerror" in err_msg or
-                "cuda out of memory" in err_msg
-            )
-            if not is_oom:
-                raise
-            attempt += 1
-            wait_sec = oom_wait_minutes * 60
-            logger.warning(
-                f"⚠️  OOM 偵測到（第 {attempt} 次），等待 {oom_wait_minutes} 分鐘後重試... "
-                f"(原因: {str(e)[:120]})"
-            )
-            gc.collect()
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-            time.sleep(wait_sec)
-            logger.info(f"OOM 等待結束，開始第 {attempt + 1} 次嘗試...")
-
-# ────────────────────────────────────────────────────────────────────────────
+from Strategy import (
+    run_asvd, run_sparse, run_quantization, run_evaluation,
+    run_isolated, run_isolated_oom_retry, make_trial_name,
+)
 from .optuna_searcher import OptunaSearcher
 from .search_space import ALL_MODES
 
@@ -101,43 +32,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("SystematicOrchestrator")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-def _make_trial_name(i: int, suggestion) -> str:
-    parts = [f"trial_{i:03d}"]
-    mode = suggestion.mode
-
-    if mode in ("sparse_only", "hybrid"):
-        struct = suggestion.sparsity_structure or "unstructured"
-        is_structured = struct != "unstructured"
-        has_ratio = suggestion.sparsity_ratio and suggestion.sparsity_ratio > 0
-        if is_structured or has_ratio:
-            if is_structured:
-                parts.append(f"sparse_{struct.replace(':', 'x')}")
-            else:
-                parts.append(f"sparse_{int(suggestion.sparsity_ratio * 100)}pct")
-
-    if mode in ("asvd_only", "hybrid") and suggestion.alpha is not None:
-        ratio_str = f"{int((suggestion.param_ratio_target or 0.9) * 100):03d}"
-        alpha_str = f"{int((suggestion.alpha or 0.5) * 100):02d}"
-        parts.append(f"asvd_r{ratio_str}_a{alpha_str}")
-
-    if mode in ("quant_only", "hybrid") and suggestion.quant_method != "none":
-        m = suggestion.quant_method
-        b = suggestion.quant_bits
-        g = suggestion.quant_group_size or 128
-        fmt = suggestion.quant_format or "gptq"
-        if m == "gptq":
-            parts.append(f"gptq_{b}bit_g{g}_{fmt}")
-        elif m == "awq":
-            parts.append(f"awq_{b}bit_g{g}")
-        elif m == "qqq":
-            parts.append(f"qqq_4bit_g{g}")
-        elif m == "bnb":
-            parts.append(f"bnb_{b}bit")
-
-    return "_".join(parts)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -360,7 +254,7 @@ class SystematicOrchestrator:
             logger.info(f"配置: {suggestion.mode} | {suggestion.to_log_dict()}")
 
             # Step 2: 建立 trial 目錄
-            trial_name = _make_trial_name(i, suggestion)
+            trial_name = make_trial_name(i, suggestion)
             trial_dir = str(self.exp_dir / trial_name)
             Path(trial_dir).mkdir(parents=True, exist_ok=True)
 

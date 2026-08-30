@@ -8,180 +8,25 @@ import yaml
 from datetime import datetime
 from pathlib import Path
 import argparse
-from llm_client import LLMDecisionMaker
-from executors import run_asvd, run_sparse, run_quantization, run_evaluation
-from utils import get_pareto_frontier
-from Evals.base_evaluator import BaseEvaluator
-import multiprocessing as mp
-import traceback
-import statistics
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger("ModularOrchestrator")
-
-_ROOT_DIR = Path(__file__).resolve().parent.parent
-# ============================================================================
-# PROCESS ISOLATION WRAPPER
-# ============================================================================
-def _worker(queue, func, *args, **kwargs):
-    """Worker function that executes the target function and captures the result."""
-    try:
-        result = func(*args, **kwargs)
-        queue.put({"status": "success", "result": result})
-    except Exception as e:
-        queue.put({"status": "error", "error": str(e), "traceback": traceback.format_exc()})
 import signal
 import sys
 import multiprocessing as mp
+import traceback
+import statistics
 
-# ... (keep the _worker function as it is) ...
+_ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT_DIR))
 
-def run_isolated(func, *args, **kwargs):
-    """
-    Runs a function in a completely isolated process using the 'spawn' context.
-    This guarantees that the OS will wipe 100% of the allocated VRAM when the function finishes.
-    """
-    ctx = mp.get_context('spawn')
-    queue = ctx.Queue()
-    p = ctx.Process(target=_worker, args=(queue, func) + args, kwargs=kwargs)
-    p.start()
+from llm_client import LLMDecisionMaker
+from Strategy import (
+    run_asvd, run_sparse, run_quantization, run_evaluation,
+    run_isolated, run_isolated_oom_retry, make_trial_name,
+)
+from utils import get_pareto_frontier
+from Evals.base_evaluator import BaseEvaluator
 
-    def cleanup_child(signum, frame):
-        logger.warning(f"⚠️ Main process received kill signal ({signum})! Terminating child (PID: {p.pid})...")
-        if p.is_alive():
-            p.terminate()
-            p.join(timeout=2)
-            if p.is_alive():
-                p.kill()  # Force kill if it refuses to terminate
-        sys.exit(1)
-
-    # Temporarily override standard kill signals to protect the child process
-    original_sigterm = signal.signal(signal.SIGTERM, cleanup_child)
-    original_sigint = signal.signal(signal.SIGINT, cleanup_child)
-
-    try:
-        p.join()
-    except Exception as e:
-        logger.warning(f"⚠️ Exception in main process! Terminating child (PID: {p.pid})...")
-        if p.is_alive():
-            p.terminate()
-            p.join(timeout=2)
-            if p.is_alive():
-                p.kill()
-        raise
-    finally:
-        # Restore normal signal behavior once the isolated function finishes
-        signal.signal(signal.SIGTERM, original_sigterm)
-        signal.signal(signal.SIGINT, original_sigint)
-
-    if not queue.empty():
-        res = queue.get()
-        if res["status"] == "success":
-            return res["result"]
-        else:
-            raise RuntimeError(f"Isolated process failed: {res['error']}\n{res['traceback']}")
-    else:
-        raise RuntimeError("Process died unexpectedly (likely killed by OS Out-Of-Memory).")
-# def run_isolated(func, *args, **kwargs):
-#     """
-#     Runs a function in a completely isolated process using the 'spawn' context.
-#     This guarantees that the OS will wipe 100% of the allocated VRAM when the function finishes.
-#     """
-#     ctx = mp.get_context('spawn')
-#     queue = ctx.Queue()
-#     p = ctx.Process(target=_worker, args=(queue, func) + args, kwargs=kwargs)
-#     p.start()
-#     try:
-#         p.join()
-#     except (KeyboardInterrupt, SystemExit):
-#         # If you cancel the main script, kill the isolated process immediately
-#         logger.warning(f"⚠️ Main process interrupted! Terminating isolated child process (PID: {p.pid})...")
-#         p.terminate()
-#         p.join()
-#         raise
-
-#     if not queue.empty():
-#         res = queue.get()
-#         if res["status"] == "success":
-#             return res["result"]
-#         else:
-#             raise RuntimeError(f"Isolated process failed: {res['error']}\n{res['traceback']}")
-#     else:
-#         raise RuntimeError("Process died unexpectedly (likely killed by OS Out-Of-Memory).")
-# ============================================================================
-
-def run_isolated_oom_retry(func, *args, oom_wait_minutes: int = 10, **kwargs):
-    """
-    呼叫 run_isolated，若偵測到 OOM（進程被 OS 殺死或 CUDA OOM）則
-    等待 oom_wait_minutes 分鐘後無限重試，直到成功為止。
-    """
-    attempt = 0
-    while True:
-        try:
-            return run_isolated(func, *args, **kwargs)
-        except RuntimeError as e:
-            err_msg = str(e).lower()
-            is_oom = (
-                "process died unexpectedly" in err_msg or
-                "out of memory" in err_msg or
-                "outofmemoryerror" in err_msg or
-                "cuda out of memory" in err_msg
-            )
-            if not is_oom:
-                raise
-            attempt += 1
-            wait_sec = oom_wait_minutes * 60
-            logger.warning(
-                f"⚠️  OOM 偵測到（第 {attempt} 次），等待 {oom_wait_minutes} 分鐘後重試... "
-                f"(原因: {str(e)[:120]})"
-            )
-            gc.collect()
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-            time.sleep(wait_sec)
-            logger.info(f"OOM 等待結束，開始第 {attempt + 1} 次嘗試...")
-
-
-def _make_trial_name(i: int, suggestion) -> str:
-    """生成 trial 目錄名稱，包含編號、方法與關鍵參數"""
-    parts = [f"trial_{i:03d}"]
-    mode = suggestion.mode
-    
-    # Append the base mode name first
-    parts.append(mode)
-
-    if mode == "sparse_unstructured":
-        ratio_pct = int((suggestion.sparsity_ratio or 0.5) * 100)
-        parts.append(f"{ratio_pct}pct")
-        
-    elif mode == "sparse_structured":
-        struct = suggestion.sparsity_structure or "2:4"
-        parts.append(struct.replace(':', 'x'))
-
-    if mode in ("asvd_only", "hybrid_asvd_bnb") and suggestion.alpha is not None:
-        ratio_str = f"{int((suggestion.param_ratio_target or 0.9) * 100):03d}"
-        alpha_str = f"{int((suggestion.alpha or 0.5) * 100):02d}"
-        parts.append(f"r{ratio_str}_a{alpha_str}")
-
-    # Handle Quantization specific parameters
-    if mode == "gptq":
-        b = suggestion.quant_bits or 4
-        g = suggestion.quant_group_size or 128
-        fmt = suggestion.quant_format or "gptq"
-        parts.append(f"{b}bit_g{g}_{fmt}")
-        
-    elif mode == "awq":
-        g = suggestion.quant_group_size or 128
-        parts.append(f"4bit_g{g}") # AWQ is fixed to 4-bit in your space
-        
-    elif mode == "qqq":
-        g = suggestion.quant_group_size or 128
-        parts.append(f"4bit_g{g}") # QQQ is fixed to 4-bit
-        
-    elif mode in ("bnb", "hybrid_asvd_bnb"):
-        b = getattr(suggestion, 'quant_bits', 4)
-        parts.append(f"{b}bit")
-
-    return "_".join(parts)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger("ModularOrchestrator")
 
 
 class OptimizationOrchestrator:
@@ -382,7 +227,7 @@ class OptimizationOrchestrator:
             #     num_samples=self.num_samples,
             #     output_dir=str(self._baseline_cache_dir),
             # )
-            eval_results = run_isolated_oom_retry(
+            eval_results, _ = run_isolated_oom_retry(
                 run_evaluation,
                 self.base_model_path,
                 ",".join(missing_tasks),
@@ -515,7 +360,7 @@ class OptimizationOrchestrator:
             logger.info(f"建議: {suggestion.mode} | 理由: {suggestion.reasoning}")
 
             # Step 2: 建立 trial 目錄
-            trial_name = _make_trial_name(i, suggestion)
+            trial_name = make_trial_name(i, suggestion)
             trial_dir = str(self.exp_dir / trial_name)
             Path(trial_dir).mkdir(parents=True, exist_ok=True)
             # 只要 trial 目錄被建立，就納入清理清單；避免壓縮失敗時遺留空目錄
@@ -535,14 +380,14 @@ class OptimizationOrchestrator:
             try:
                 if has_sparse:
                     sparse_out = trial_dir if (not has_asvd and not has_quant) else str(Path(trial_dir) / "sparse")
-                    current_model = run_isolated_oom_retry(run_sparse, current_model, suggestion, output_dir=sparse_out)
+                    current_model, _ = run_isolated_oom_retry(run_sparse, current_model, suggestion, output_dir=sparse_out)
 
                 if has_asvd:
                     asvd_out = trial_dir if not has_quant else str(Path(trial_dir) / "asvd")
-                    current_model = run_isolated_oom_retry(run_asvd, current_model, suggestion, output_dir=asvd_out)
+                    current_model, _ = run_isolated_oom_retry(run_asvd, current_model, suggestion, output_dir=asvd_out)
 
                 if has_quant:
-                    current_model = run_isolated_oom_retry(run_quantization, current_model, suggestion, output_dir=trial_dir)
+                    current_model, _ = run_isolated_oom_retry(run_quantization, current_model, suggestion, output_dir=trial_dir)
             # try:
                 # if has_sparse:
                 #     # 若後面還有其他步驟，存到子目錄；否則直接存到 trial_dir
@@ -600,7 +445,7 @@ class OptimizationOrchestrator:
             #     num_samples=self.num_samples,
             #     output_dir=str(self.exp_dir),
             # )
-            metrics = run_isolated_oom_retry(
+            metrics, _ = run_isolated_oom_retry(
                 run_evaluation,
                 current_model, self.task,
                 weights=self.weights,

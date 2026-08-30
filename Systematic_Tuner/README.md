@@ -1,6 +1,6 @@
 # Systematic Tuner
 
-以 **Optuna 演算法**（TPE / NSGA-II / Random）自動搜尋 LLM 壓縮配置，取代 Global_Tuner_v2 的 LLM 決策。每個 trial 在獨立子進程（`spawn`）執行，保證 VRAM 完整釋放。
+以 **Optuna 演算法**（TPE / NSGA-II / Random）自動搜尋 LLM 壓縮配置，取代 `Global_Tuner` 的 LLM 決策。與 `Global_Tuner` 共用 `Strategy/`（`StrategySuggestion` schema、executors、process isolation）。每個 trial 在獨立子進程（`spawn`）執行，保證 VRAM 完整釋放。
 
 結果統一存放於 `Green_AI/systematic_results/`。
 

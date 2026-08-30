@@ -1,13 +1,16 @@
 import os
 import json
+import sys
 from openai import OpenAI
 from dotenv import load_dotenv
 from pathlib import Path
-from schemas import StrategySuggestion
 
 # Load environment variables
 ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT_DIR))
 load_dotenv(ROOT_DIR / ".env")
+
+from Strategy import StrategySuggestion
 
 
 class LLMDecisionMaker:
@@ -508,7 +511,6 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
                 # ---  Mini-retry loop to preserve tool context ---
                 for attempt in range(2): 
                     try:
-                        from schemas import StrategySuggestion
                         suggestion = StrategySuggestion.model_validate_json(raw_content)
                         return suggestion, json.loads(raw_content)
                     except ValidationError as e:

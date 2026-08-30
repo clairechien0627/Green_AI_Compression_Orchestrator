@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import optuna
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-from Global_Tuner.schemas import StrategySuggestion
+from Strategy import StrategySuggestion
 from .search_space import (
     ASVD_SPACE, GPTQ_SPACE, AWQ_SPACE, QQQ_SPACE, BNB_SPACE,
     SPARSE_UNSTRUCTURED_SPACE, SPARSE_STRUCTURED_SPACE, ALL_MODES,
@@ -94,8 +94,6 @@ class OptunaSearcher:
 
         # ── GPTQ ─────────────────────────────────────────────────────────────
         elif mode_key == "gptq":
-            kwargs["mode"]           = "quant_only"
-            kwargs["quant_method"]   = "gptq"
             kwargs["quant_bits"]     = _suggest(trial, "gptq_bits",       GPTQ_SPACE["quant_bits"])
             kwargs["quant_group_size"] = _suggest(trial, "gptq_group_size", GPTQ_SPACE["quant_group_size"])
             kwargs["quant_format"]   = _suggest(trial, "gptq_format",     GPTQ_SPACE["quant_format"])
@@ -104,15 +102,11 @@ class OptunaSearcher:
 
         # ── AWQ ──────────────────────────────────────────────────────────────
         elif mode_key == "awq":
-            kwargs["mode"]             = "quant_only"
-            kwargs["quant_method"]     = "awq"
             kwargs["quant_bits"]       = 4
             kwargs["quant_group_size"] = _suggest(trial, "awq_group_size", AWQ_SPACE["quant_group_size"])
 
         # ── QQQ ──────────────────────────────────────────────────────────────
         elif mode_key == "qqq":
-            kwargs["mode"]             = "quant_only"
-            kwargs["quant_method"]     = "qqq"
             kwargs["quant_bits"]       = 4
             kwargs["quant_format"]     = "qqq"
             kwargs["quant_group_size"] = _suggest(trial, "qqq_group_size", QQQ_SPACE["quant_group_size"])
@@ -120,8 +114,6 @@ class OptunaSearcher:
 
         # ── BNB ──────────────────────────────────────────────────────────────
         elif mode_key == "bnb":
-            kwargs["mode"]         = "quant_only"
-            kwargs["quant_method"] = "bnb"
             bits = _suggest(trial, "bnb_bits", BNB_SPACE["quant_bits"])
             kwargs["quant_bits"]   = bits
             kwargs["use_double_quant"] = (
@@ -131,22 +123,18 @@ class OptunaSearcher:
 
         # ── Sparse Unstructured ───────────────────────────────────────────────
         elif mode_key == "sparse_unstructured":
-            kwargs["mode"]              = "sparse_only"
             kwargs["sparsity_structure"] = "unstructured"
             kwargs["sparsity_ratio"]    = _suggest(trial, "sparse_ratio", SPARSE_UNSTRUCTURED_SPACE["sparsity_ratio"])
 
         # ── Sparse Structured ─────────────────────────────────────────────────
         elif mode_key == "sparse_structured":
-            kwargs["mode"]               = "sparse_only"
             kwargs["sparsity_structure"] = _suggest(trial, "sparse_structure", SPARSE_STRUCTURED_SPACE["sparsity_structure"])
 
         # ── Hybrid: ASVD + BNB ───────────────────────────────────────────────
         elif mode_key == "hybrid_asvd_bnb":
-            kwargs["mode"]               = "hybrid"
             kwargs["alpha"]              = _suggest(trial, "h_asvd_alpha",   ASVD_SPACE["alpha"])
             kwargs["param_ratio_target"] = _suggest(trial, "h_asvd_ratio",   ASVD_SPACE["param_ratio_target"])
             kwargs["scaling_method"]     = _suggest(trial, "h_asvd_scaling", ASVD_SPACE["scaling_method"])
-            kwargs["quant_method"]       = "bnb"
             h_bnb_bits = _suggest(trial, "h_bnb_bits", BNB_SPACE["quant_bits"])
             kwargs["quant_bits"]         = h_bnb_bits
             kwargs["use_double_quant"]   = (
@@ -162,8 +150,7 @@ class OptunaSearcher:
         trial = self.study.ask()
         self._pending_trial = trial
         suggestion = self._trial_to_suggestion(trial)
-        logger.info(f"Optuna 建議 [{iteration}]: mode={suggestion.mode} / "
-                    f"quant={suggestion.quant_method}")
+        logger.info(f"Optuna 建議 [{iteration}]: mode={suggestion.mode}")
         return suggestion, suggestion.to_log_dict()
 
     def report_score(self, score: float):
@@ -192,19 +179,9 @@ class OptunaSearcher:
         quant = config.get("quant") or {}
         sparse = config.get("sparse") or {}
 
-        # 反推 Optuna mode_key
-        if mode == "asvd_only":
-            mode_key = "asvd_only"
-        elif mode == "quant_only":
-            mode_key = quant.get("method", "")   # "gptq" / "awq" / "qqq" / "bnb"
-        elif mode == "sparse_only":
-            struct = sparse.get("structure", "")
-            mode_key = "sparse_unstructured" if (not struct or struct == "unstructured") else "sparse_structured"
-        elif mode == "hybrid":
-            mode_key = "hybrid_asvd_bnb"
-        else:
-            return
-
+        # config["mode"]（來自 StrategySuggestion.to_log_dict()）本身就是 ALL_MODES 裡的值，
+        # 不需要再轉譯（hybrid_asvd_bnb 的量化方法固定是 bnb，quant.get("method") 恆等於 "bnb"）
+        mode_key = mode
         if mode_key not in self.modes:
             return
 
