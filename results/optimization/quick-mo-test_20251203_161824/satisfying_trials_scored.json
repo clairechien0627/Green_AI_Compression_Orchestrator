@@ -1,0 +1,87 @@
+{
+  "scoring_method": "weighted_surplus",
+  "scoring_details": {
+    "formula": "w_acc*(acc - acc_min) + w_gpu*(gpu_max - gpu) + w_lat*(lat_max - lat)",
+    "description": "基於超越目標幅度(surplus)的加權評分，滿足目標時分數 >= 0",
+    "weights": {
+      "accuracy": 2.0,
+      "gpu_peak": 1.0,
+      "latency": 1.0
+    }
+  },
+  "targets": {
+    "accuracy_min": -0.3,
+    "gpu_peak_max": -0.3,
+    "latency_max": 1.0
+  },
+  "total_satisfying_trials": 1,
+  "pareto_overlap": {
+    "count": 1,
+    "trial_ids": [
+      9
+    ]
+  },
+  "ranked_trials": [
+    {
+      "trial_id": 9,
+      "overall_score": 0.9925,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2,
+          "target": -0.3,
+          "surplus": 0.1,
+          "score": 0.2
+        },
+        "gpu_peak": {
+          "value": -0.5329,
+          "target": -0.3,
+          "surplus": 0.2329,
+          "score": 0.2329
+        },
+        "latency": {
+          "value": 0.4404,
+          "target": 1.0,
+          "surplus": 0.5596,
+          "score": 0.5596
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.20000000000000007,
+        "gpu_peak_change": -0.5328762000234134,
+        "latency_change": 0.4404231309616996
+      },
+      "rank": 1
+    }
+  ],
+  "statistics": {
+    "avg_overall_score": 0.9925,
+    "median_overall_score": 0.9925,
+    "score_range": {
+      "min": 0.9925,
+      "max": 0.9925
+    },
+    "pareto_in_satisfying": 1,
+    "best_dimension_performers": {
+      "accuracy": 9,
+      "gpu_peak": 9,
+      "latency": 9
+    }
+  }
+}

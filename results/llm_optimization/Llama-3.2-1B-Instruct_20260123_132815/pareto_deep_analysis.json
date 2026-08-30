@@ -1,0 +1,100 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 4,
+    "satisfying_targets": 3,
+    "close_to_targets": 2,
+    "violating_targets": 1
+  },
+  "tradeoff_analysis": {
+    "correlations": {
+      "accuracy_vs_gpu_peak": {
+        "pearson_r": 0.662,
+        "interpretation": "中等正相關"
+      },
+      "accuracy_vs_latency": {
+        "pearson_r": -0.99,
+        "interpretation": "強負相關：準確率越高，延遲可能越長"
+      },
+      "gpu_peak_vs_latency": {
+        "pearson_r": -0.657,
+        "interpretation": "中等負相關：GPU 節省和延遲變化之間的關係"
+      }
+    },
+    "key_insights": [
+      "準確率和 GPU 節省可以同時優化（0.66 相關性）",
+      "最佳壓縮配置節省 61.7% GPU，但準確率下降 36.0%",
+      "1/4 個 Pareto 解滿足所有目標"
+    ]
+  },
+  "recommendations": {
+    "for_production": {
+      "recommended_trial_id": 7,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.31999999999999984,
+        "gpu_peak_change": -0.5219299489374774,
+        "latency_change": 0.7215375536136261
+      },
+      "overall_score": 1.1404,
+      "reason": "滿足所有目標且綜合評分最高（1.1404 分）"
+    },
+    "for_memory_critical": {
+      "recommended_trial_id": 3,
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.36,
+        "gpu_peak_change": -0.6171741208351784,
+        "latency_change": 3.3709309819473017
+      },
+      "overall_score": -3.4738,
+      "reason": "GPU 節省最多（61.7%）",
+      "warning": "不滿足所有目標"
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 8,
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": 0.32000000000000006,
+        "gpu_peak_change": -0.1372793579612672,
+        "latency_change": 0.6225131549381329
+      },
+      "overall_score": 0.1548,
+      "reason": "準確率下降最少（-32.0%）"
+    }
+  }
+}

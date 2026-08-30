@@ -1,0 +1,92 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 4,
+    "satisfying_targets": 2,
+    "close_to_targets": 1,
+    "violating_targets": 1
+  },
+  "tradeoff_analysis": {
+    "correlations": {
+      "accuracy_vs_gpu_peak": {
+        "pearson_r": -0.227,
+        "interpretation": "弱負相關"
+      },
+      "accuracy_vs_latency": {
+        "pearson_r": 0.895,
+        "interpretation": "強正相關"
+      },
+      "gpu_peak_vs_latency": {
+        "pearson_r": -0.558,
+        "interpretation": "中等負相關：GPU 節省和延遲變化之間的關係"
+      }
+    },
+    "key_insights": [
+      "最佳壓縮配置節省 54.4% GPU，但準確率下降 -60.0%",
+      "2/4 個 Pareto 解滿足所有目標"
+    ]
+  },
+  "recommendations": {
+    "for_production": {
+      "recommended_trial_id": 1,
+      "config": {
+        "method": "awq",
+        "parameters": {
+          "w_bit": 4,
+          "q_group_size": 64,
+          "zero_point": false,
+          "version": "gemm",
+          "modules_to_not_convert": []
+        }
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.7643420308607071
+      },
+      "overall_score": 1.6796,
+      "reason": "滿足所有目標且綜合評分最高（1.6796 分）"
+    },
+    "for_memory_critical": {
+      "recommended_trial_id": 1,
+      "config": {
+        "method": "awq",
+        "parameters": {
+          "w_bit": 4,
+          "q_group_size": 64,
+          "zero_point": false,
+          "version": "gemm",
+          "modules_to_not_convert": []
+        }
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.7643420308607071
+      },
+      "overall_score": 0.9796,
+      "reason": "GPU 節省最多（54.4%）",
+      "warning": null
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 1,
+      "config": {
+        "method": "awq",
+        "parameters": {
+          "w_bit": 4,
+          "q_group_size": 64,
+          "zero_point": false,
+          "version": "gemm",
+          "modules_to_not_convert": []
+        }
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.7643420308607071
+      },
+      "overall_score": 0.9796,
+      "reason": "準確率下降最少（-60.0%）"
+    }
+  }
+}

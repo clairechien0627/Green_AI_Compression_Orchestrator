@@ -1,0 +1,798 @@
+{
+  "scoring_method": "weighted_surplus",
+  "scoring_details": {
+    "formula": "w_acc*(acc - acc_min) + w_gpu*(gpu_max - gpu) + w_lat*(lat_max - lat)",
+    "description": "基於超越目標幅度(surplus)的加權評分，滿足目標時分數 >= 0",
+    "weights": {
+      "accuracy": 2.0,
+      "gpu_peak": 1.0,
+      "latency": 1.0
+    }
+  },
+  "targets": {
+    "accuracy_min": -0.3,
+    "gpu_peak_max": -0.4,
+    "latency_max": 1.0
+  },
+  "total_satisfying_trials": 16,
+  "pareto_overlap": {
+    "count": 7,
+    "trial_ids": [
+      7,
+      8,
+      10,
+      13,
+      15,
+      17,
+      18
+    ]
+  },
+  "ranked_trials": [
+    {
+      "trial_id": 12,
+      "overall_score": 1.4968,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1186,
+          "target": -0.3,
+          "surplus": 0.1814,
+          "score": 0.3627
+        },
+        "gpu_peak": {
+          "value": -0.5345,
+          "target": -0.4,
+          "surplus": 0.1345,
+          "score": 0.1345
+        },
+        "latency": {
+          "value": 0.0004,
+          "target": 1.0,
+          "surplus": 0.9996,
+          "score": 0.9996
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.11864406779661026,
+        "gpu_peak_change": -0.5344526877386596,
+        "latency_change": 0.0003984474120345494
+      },
+      "rank": 1
+    },
+    {
+      "trial_id": 13,
+      "overall_score": 1.4968,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1186,
+          "target": -0.3,
+          "surplus": 0.1814,
+          "score": 0.3627
+        },
+        "gpu_peak": {
+          "value": -0.5345,
+          "target": -0.4,
+          "surplus": 0.1345,
+          "score": 0.1345
+        },
+        "latency": {
+          "value": 0.0003,
+          "target": 1.0,
+          "surplus": 0.9997,
+          "score": 0.9997
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.11864406779661026,
+        "gpu_peak_change": -0.5344526877386596,
+        "latency_change": 0.00034848728761539534
+      },
+      "rank": 2
+    },
+    {
+      "trial_id": 15,
+      "overall_score": 1.3639,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0,
+          "target": -0.3,
+          "surplus": 0.3,
+          "score": 0.6
+        },
+        "gpu_peak": {
+          "value": -0.5351,
+          "target": -0.4,
+          "surplus": 0.1351,
+          "score": 0.1351
+        },
+        "latency": {
+          "value": 0.3712,
+          "target": 1.0,
+          "surplus": 0.6288,
+          "score": 0.6288
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.05,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -1.8817339400426379e-16,
+        "gpu_peak_change": -0.5351260670768538,
+        "latency_change": 0.37121606026794657
+      },
+      "rank": 3
+    },
+    {
+      "trial_id": 14,
+      "overall_score": 1.3636,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0,
+          "target": -0.3,
+          "surplus": 0.3,
+          "score": 0.6
+        },
+        "gpu_peak": {
+          "value": -0.5349,
+          "target": -0.4,
+          "surplus": 0.1349,
+          "score": 0.1349
+        },
+        "latency": {
+          "value": 0.3712,
+          "target": 1.0,
+          "surplus": 0.6288,
+          "score": 0.6288
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.05,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -1.8817339400426379e-16,
+        "gpu_peak_change": -0.5348614667969835,
+        "latency_change": 0.3712351808093909
+      },
+      "rank": 4
+    },
+    {
+      "trial_id": 17,
+      "overall_score": 1.2736,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2373,
+          "target": -0.3,
+          "surplus": 0.0627,
+          "score": 0.1254
+        },
+        "gpu_peak": {
+          "value": -0.5345,
+          "target": -0.4,
+          "surplus": 0.1345,
+          "score": 0.1345
+        },
+        "latency": {
+          "value": -0.0137,
+          "target": 1.0,
+          "surplus": 1.0137,
+          "score": 1.0137
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.2372881355932205,
+        "gpu_peak_change": -0.5344526877386596,
+        "latency_change": -0.013678588632653015
+      },
+      "rank": 5
+    },
+    {
+      "trial_id": 8,
+      "overall_score": 1.2504,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1864,
+          "target": -0.3,
+          "surplus": 0.1136,
+          "score": 0.2271
+        },
+        "gpu_peak": {
+          "value": -0.535,
+          "target": -0.4,
+          "surplus": 0.135,
+          "score": 0.135
+        },
+        "latency": {
+          "value": 0.1117,
+          "target": 1.0,
+          "surplus": 0.8883,
+          "score": 0.8883
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.18644067796610184,
+        "gpu_peak_change": -0.5350110126040145,
+        "latency_change": 0.11173242590944378
+      },
+      "rank": 6
+    },
+    {
+      "trial_id": 7,
+      "overall_score": 1.1956,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2203,
+          "target": -0.3,
+          "surplus": 0.0797,
+          "score": 0.1593
+        },
+        "gpu_peak": {
+          "value": -0.5351,
+          "target": -0.4,
+          "surplus": 0.1351,
+          "score": 0.1351
+        },
+        "latency": {
+          "value": 0.0988,
+          "target": 1.0,
+          "surplus": 0.9012,
+          "score": 0.9012
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.05,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.22033898305084754,
+        "gpu_peak_change": -0.5350539295959732,
+        "latency_change": 0.09876438126853071
+      },
+      "rank": 7
+    },
+    {
+      "trial_id": 0,
+      "overall_score": 1.1791,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2203,
+          "target": -0.3,
+          "surplus": 0.0797,
+          "score": 0.1593
+        },
+        "gpu_peak": {
+          "value": -0.5347,
+          "target": -0.4,
+          "surplus": 0.1347,
+          "score": 0.1347
+        },
+        "latency": {
+          "value": 0.115,
+          "target": 1.0,
+          "surplus": 0.885,
+          "score": 0.885
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.05,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.22033898305084754,
+        "gpu_peak_change": -0.5347408721656125,
+        "latency_change": 0.11496626458018369
+      },
+      "rank": 8
+    },
+    {
+      "trial_id": 18,
+      "overall_score": 1.1744,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0847,
+          "target": -0.3,
+          "surplus": 0.2153,
+          "score": 0.4305
+        },
+        "gpu_peak": {
+          "value": -0.5355,
+          "target": -0.4,
+          "surplus": 0.1355,
+          "score": 0.1355
+        },
+        "latency": {
+          "value": 0.3916,
+          "target": 1.0,
+          "surplus": 0.6084,
+          "score": 0.6084
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.08474576271186447,
+        "gpu_peak_change": -0.5355108003082175,
+        "latency_change": 0.39163679853055555
+      },
+      "rank": 9
+    },
+    {
+      "trial_id": 10,
+      "overall_score": 1.1352,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1186,
+          "target": -0.3,
+          "surplus": 0.1814,
+          "score": 0.3627
+        },
+        "gpu_peak": {
+          "value": -0.5351,
+          "target": -0.4,
+          "surplus": 0.1351,
+          "score": 0.1351
+        },
+        "latency": {
+          "value": 0.3626,
+          "target": 1.0,
+          "surplus": 0.6374,
+          "score": 0.6374
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.11864406779661026,
+        "gpu_peak_change": -0.5351260670768538,
+        "latency_change": 0.3626198349095444
+      },
+      "rank": 10
+    },
+    {
+      "trial_id": 4,
+      "overall_score": 1.1138,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0678,
+          "target": -0.3,
+          "surplus": 0.2322,
+          "score": 0.4644
+        },
+        "gpu_peak": {
+          "value": -0.535,
+          "target": -0.4,
+          "surplus": 0.135,
+          "score": 0.135
+        },
+        "latency": {
+          "value": 0.4856,
+          "target": 1.0,
+          "surplus": 0.5144,
+          "score": 0.5144
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.06779661016949158,
+        "gpu_peak_change": -0.5349816959317846,
+        "latency_change": 0.4855531973554439
+      },
+      "rank": 11
+    },
+    {
+      "trial_id": 1,
+      "overall_score": 1.1086,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1017,
+          "target": -0.3,
+          "surplus": 0.1983,
+          "score": 0.3966
+        },
+        "gpu_peak": {
+          "value": -0.5354,
+          "target": -0.4,
+          "surplus": 0.1354,
+          "score": 0.1354
+        },
+        "latency": {
+          "value": 0.4234,
+          "target": 1.0,
+          "surplus": 0.5766,
+          "score": 0.5766
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.10169491525423736,
+        "gpu_peak_change": -0.5353664291631482,
+        "latency_change": 0.4234169887861106
+      },
+      "rank": 12
+    },
+    {
+      "trial_id": 2,
+      "overall_score": 1.1085,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.1186,
+          "target": -0.3,
+          "surplus": 0.1814,
+          "score": 0.3627
+        },
+        "gpu_peak": {
+          "value": -0.535,
+          "target": -0.4,
+          "surplus": 0.135,
+          "score": 0.135
+        },
+        "latency": {
+          "value": 0.3892,
+          "target": 1.0,
+          "surplus": 0.6108,
+          "score": 0.6108
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.11864406779661026,
+        "gpu_peak_change": -0.5349975661775783,
+        "latency_change": 0.38919183639231164
+      },
+      "rank": 13
+    },
+    {
+      "trial_id": 3,
+      "overall_score": 1.0582,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0847,
+          "target": -0.3,
+          "surplus": 0.2153,
+          "score": 0.4305
+        },
+        "gpu_peak": {
+          "value": -0.5349,
+          "target": -0.4,
+          "surplus": 0.1349,
+          "score": 0.1349
+        },
+        "latency": {
+          "value": 0.5071,
+          "target": 1.0,
+          "surplus": 0.4929,
+          "score": 0.4929
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.08474576271186447,
+        "gpu_peak_change": -0.5348511367097214,
+        "latency_change": 0.507114383396462
+      },
+      "rank": 14
+    },
+    {
+      "trial_id": 5,
+      "overall_score": 1.0047,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2373,
+          "target": -0.3,
+          "surplus": 0.0627,
+          "score": 0.1254
+        },
+        "gpu_peak": {
+          "value": -0.5341,
+          "target": -0.4,
+          "surplus": 0.1341,
+          "score": 0.1341
+        },
+        "latency": {
+          "value": 0.2548,
+          "target": 1.0,
+          "surplus": 0.7452,
+          "score": 0.7452
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.2372881355932205,
+        "gpu_peak_change": -0.5340838247530897,
+        "latency_change": 0.25479416737135113
+      },
+      "rank": 15
+    },
+    {
+      "trial_id": 11,
+      "overall_score": 0.896,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.2373,
+          "target": -0.3,
+          "surplus": 0.0627,
+          "score": 0.1254
+        },
+        "gpu_peak": {
+          "value": -0.535,
+          "target": -0.4,
+          "surplus": 0.135,
+          "score": 0.135
+        },
+        "latency": {
+          "value": 0.3644,
+          "target": 1.0,
+          "surplus": 0.6356,
+          "score": 0.6356
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.23728813559322043,
+        "gpu_peak_change": -0.5349975661775783,
+        "latency_change": 0.3644282680551879
+      },
+      "rank": 16
+    }
+  ],
+  "statistics": {
+    "avg_overall_score": 1.2012,
+    "median_overall_score": 1.1791,
+    "score_range": {
+      "min": 0.896,
+      "max": 1.4968
+    },
+    "pareto_in_satisfying": 7,
+    "best_dimension_performers": {
+      "accuracy": 15,
+      "gpu_peak": 18,
+      "latency": 17
+    }
+  }
+}

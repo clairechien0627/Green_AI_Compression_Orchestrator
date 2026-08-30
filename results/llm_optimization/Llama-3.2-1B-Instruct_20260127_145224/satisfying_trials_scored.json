@@ -1,0 +1,322 @@
+{
+  "scoring_method": "weighted_surplus",
+  "scoring_details": {
+    "formula": "w_acc*(acc - acc_min) + w_gpu*(gpu_max - gpu) + w_lat*(lat_max - lat)",
+    "description": "基於超越目標幅度(surplus)的加權評分，滿足目標時分數 >= 0",
+    "weights": {
+      "accuracy": 2.0,
+      "gpu_peak": 1.0,
+      "latency": 1.0
+    }
+  },
+  "targets": {
+    "accuracy_min": -0.1,
+    "gpu_peak_max": -0.5,
+    "latency_max": 1.0
+  },
+  "total_satisfying_trials": 7,
+  "pareto_overlap": {
+    "count": 4,
+    "trial_ids": [
+      2,
+      3,
+      15,
+      16
+    ]
+  },
+  "ranked_trials": [
+    {
+      "trial_id": 16,
+      "overall_score": 1.7262,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.68,
+          "target": -0.1,
+          "surplus": 0.78,
+          "score": 1.56
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.8777,
+          "target": 1.0,
+          "surplus": 0.1223,
+          "score": 0.1223
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.6800000000000002,
+        "gpu_peak_change": -0.5438946785277984,
+        "latency_change": 0.8776831505675573
+      },
+      "rank": 1
+    },
+    {
+      "trial_id": 2,
+      "overall_score": 1.7036,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.64,
+          "target": -0.1,
+          "surplus": 0.74,
+          "score": 1.48
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.8203,
+          "target": 1.0,
+          "surplus": 0.1797,
+          "score": 0.1797
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.6400000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.8203224348796608
+      },
+      "rank": 2
+    },
+    {
+      "trial_id": 19,
+      "overall_score": 1.6758,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.64,
+          "target": -0.1,
+          "surplus": 0.74,
+          "score": 1.48
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.8481,
+          "target": 1.0,
+          "surplus": 0.1519,
+          "score": 0.1519
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.6400000000000001,
+        "gpu_peak_change": -0.5438946785277984,
+        "latency_change": 0.8481286776416671
+      },
+      "rank": 3
+    },
+    {
+      "trial_id": 18,
+      "overall_score": 1.6662,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.64,
+          "target": -0.1,
+          "surplus": 0.74,
+          "score": 1.48
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.8577,
+          "target": 1.0,
+          "surplus": 0.1423,
+          "score": 0.1423
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.6400000000000001,
+        "gpu_peak_change": -0.5438946785277984,
+        "latency_change": 0.857704435516728
+      },
+      "rank": 4
+    },
+    {
+      "trial_id": 13,
+      "overall_score": 1.5806,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.6,
+          "target": -0.1,
+          "surplus": 0.7,
+          "score": 1.4
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.8633,
+          "target": 1.0,
+          "surplus": 0.1367,
+          "score": 0.1367
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438946785277984,
+        "latency_change": 0.8633195137549664
+      },
+      "rank": 5
+    },
+    {
+      "trial_id": 3,
+      "overall_score": 0.9686,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.24,
+          "target": -0.1,
+          "surplus": 0.34,
+          "score": 0.68
+        },
+        "gpu_peak": {
+          "value": -0.5213,
+          "target": -0.5,
+          "surplus": 0.0213,
+          "score": 0.0213
+        },
+        "latency": {
+          "value": 0.7327,
+          "target": 1.0,
+          "surplus": 0.2673,
+          "score": 0.2673
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5212790134671819,
+        "latency_change": 0.7326763477792786
+      },
+      "rank": 6
+    },
+    {
+      "trial_id": 15,
+      "overall_score": 0.9532,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.24,
+          "target": -0.1,
+          "surplus": 0.34,
+          "score": 0.68
+        },
+        "gpu_peak": {
+          "value": -0.5219,
+          "target": -0.5,
+          "surplus": 0.0219,
+          "score": 0.0219
+        },
+        "latency": {
+          "value": 0.7487,
+          "target": 1.0,
+          "surplus": 0.2513,
+          "score": 0.2513
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5219295449809983,
+        "latency_change": 0.7487116679547928
+      },
+      "rank": 7
+    }
+  ],
+  "statistics": {
+    "avg_overall_score": 1.4677,
+    "median_overall_score": 1.6662,
+    "score_range": {
+      "min": 0.9532,
+      "max": 1.7262
+    },
+    "pareto_in_satisfying": 4,
+    "best_dimension_performers": {
+      "accuracy": 16,
+      "gpu_peak": 16,
+      "latency": 3
+    }
+  }
+}

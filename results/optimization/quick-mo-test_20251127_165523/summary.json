@@ -1,0 +1,124 @@
+{
+  "experiment_name": "quick-mo-test",
+  "timestamp": "20251127_192119",
+  "baseline": {
+    "model": "meta-llama/Llama-3.2-1B-Instruct",
+    "accuracy": 0.25,
+    "gpu_peak_mb": 2475.5142,
+    "avg_latency_ms": 404.981
+  },
+  "optimization": {
+    "optimizer": "optuna_multiobjective",
+    "total_trials": 15,
+    "pareto_solutions": 4,
+    "satisfying_solutions": 0,
+    "satisfying_and_pareto": 0
+  },
+  "targets": {
+    "accuracy_min": -0.1,
+    "gpu_peak_max": -0.2,
+    "latency_max": 0.4
+  },
+  "recommended": {
+    "method": "bnb",
+    "config": {
+      "method": "bnb",
+      "bits": 4,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": false,
+      "bnb_4bit_compute_dtype": "bfloat16",
+      "llm_int8_threshold": 4.0,
+      "llm_int8_skip_modules": [
+        "lm_head"
+      ],
+      "llm_int8_has_fp16_weight": false,
+      "llm_int8_enable_fp32_cpu_offload": false
+    },
+    "objectives": {
+      "accuracy_change": 0.52,
+      "gpu_peak_change": -0.12080863846387963,
+      "latency_change": 0.739029732259044
+    },
+    "satisfies_targets": false,
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.44,
+        "gpu_peak_mb": 1721.5815,
+        "num_samples": 25,
+        "correct": 11,
+        "avg_latency_ms": 705.476,
+        "throughput_tokens_per_sec": 1614.3956
+      },
+      "truthfulqa": {
+        "accuracy": 0.32,
+        "gpu_peak_mb": 2176.4507,
+        "num_samples": 25,
+        "correct": 8,
+        "avg_latency_ms": 703.0719999999999,
+        "throughput_tokens_per_sec": 321.731
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.38,
+      "gpu_peak_mb": 2176.4507,
+      "avg_latency_ms": 704.2739999999999,
+      "aggregation_method": "average"
+    }
+  },
+  "solution_categories": {
+    "all_pareto": {
+      "count": 4,
+      "accuracy_change": {
+        "min": 0.2,
+        "max": 0.52,
+        "avg": 0.44
+      },
+      "gpu_peak_change": {
+        "min": -0.5183,
+        "max": -0.1208,
+        "avg": -0.2349
+      },
+      "latency_change": {
+        "min": 0.739,
+        "max": 1.196,
+        "avg": 0.9301
+      }
+    },
+    "all_satisfying": {
+      "count": 0,
+      "accuracy_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      },
+      "gpu_peak_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      },
+      "latency_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      }
+    },
+    "satisfying_and_pareto": {
+      "count": 0,
+      "accuracy_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      },
+      "gpu_peak_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      },
+      "latency_change": {
+        "min": null,
+        "max": null,
+        "avg": null
+      }
+    }
+  }
+}

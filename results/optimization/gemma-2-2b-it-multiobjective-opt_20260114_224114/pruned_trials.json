@@ -1,0 +1,119 @@
+{
+  "n_pruned": 4,
+  "pruned_trials": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.6779661016949153,
+        "gpu_peak_change": -0.6302998156820034,
+        "latency_change": 1.1780689856799482
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it-multiobjective-opt_20260114_224114/models/trial08-20260114_233806-gptq-2bit",
+      "datetime_start": "2026-01-14T23:38:06.669704",
+      "datetime_complete": "2026-01-14T23:49:23.170065"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 5.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -0.18644067796610184,
+        "gpu_peak_change": -0.18831320101280244,
+        "latency_change": 0.45166172924943226
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it-multiobjective-opt_20260114_224114/models/trial13-20260115_002744-bnb-4bit",
+      "datetime_start": "2026-01-15T00:27:44.000506",
+      "datetime_complete": "2026-01-15T00:31:58.860139"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -0.16949152542372894,
+        "gpu_peak_change": -0.1805223530776888,
+        "latency_change": 0.579559647762619
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it-multiobjective-opt_20260114_224114/models/trial16-20260115_005538-bnb-4bit",
+      "datetime_start": "2026-01-15T00:55:38.646406",
+      "datetime_complete": "2026-01-15T01:00:14.281117"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -1.0,
+        "gpu_peak_change": -0.6368275074719041,
+        "latency_change": 1.1920485686424356
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it-multiobjective-opt_20260114_224114/models/trial18-20260115_010021-gptq-2bit",
+      "datetime_start": "2026-01-15T01:00:21.510035",
+      "datetime_complete": "2026-01-15T01:10:37.285608"
+    }
+  ]
+}

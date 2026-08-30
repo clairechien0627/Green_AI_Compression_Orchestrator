@@ -1,0 +1,92 @@
+{
+  "pareto_solutions": 4,
+  "solutions": [
+    {
+      "trial_id": 1,
+      "config": {
+        "method": "awq",
+        "parameters": {
+          "w_bit": 4,
+          "q_group_size": 64,
+          "zero_point": false,
+          "version": "gemm",
+          "modules_to_not_convert": []
+        }
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.7643420308607071
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 2,
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": 0.3599999999999999,
+        "gpu_peak_change": -0.1372793579612672,
+        "latency_change": 0.5208491262553058
+      },
+      "satisfies_targets": false,
+      "violation_score": 0.3627206420387328
+    },
+    {
+      "trial_id": 5,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5212790134671819,
+        "latency_change": 0.666984377044849
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 8,
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.05,
+        "damp_auto_increment": 0.05,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.12,
+        "gpu_peak_change": -0.353386177304093,
+        "latency_change": 0.28671221612865805
+      },
+      "satisfies_targets": false,
+      "violation_score": 0.18661382269590698
+    }
+  ]
+}

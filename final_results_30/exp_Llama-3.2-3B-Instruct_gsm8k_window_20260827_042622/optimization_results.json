@@ -1,0 +1,1048 @@
+[
+  {
+    "iteration": 1,
+    "trial_name": "trial_001_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.05,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "In early iterations, it's essential to evaluate each compression technique independently to understand its isolated impact on the model's performance metrics. The 'gptq' mode with 4-bit quantization is expected to provide a good balance of compression and accuracy retention, as 4 bits represent a sweet spot between aggressive compression and maintaining precision. Using a quant group size of 128 strikes a balance between memory savings and the computational overhead, making it adept at reducing VRAM and Latency. The 'fisher' scaling method should help in preserving essential features. The risk of an accuracy drop should be minimal but needs validation through isolated testing.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.05
+    },
+    "metrics": {
+      "accuracy": 0.672,
+      "latency": 490.7373,
+      "vram": 2.320545703125,
+      "emissions": 0.01573591,
+      "score": 4.631425246160973,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.672,
+          "latency": 490.7373,
+          "vram": 2.320545703125,
+          "emissions": 0.01573591
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_001_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_001_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 2,
+    "trial_name": "trial_002_asvd_only_r090_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.9,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'asvd_only' mode offers an innovative approach to compressing models by focusing on preserving the activation distribution through alpha control and leveraging param_ratio_target for deeper compression. This method fills a gap in the current approach matrix by emphasizing parameter reduction while maintaining accuracy, assuming the activation distribution is preserved correctly. Given that modes like 'gptq' have been explored with promising results in latency and VRAM reductions, the exploration of 'asvd_only' will help compare its effectiveness relative to gptq, particularly in ensuring accuracy while maximizing compression. The choice of 'fisher' scaling minimizes accuracy drops by basing the weights' importance on their contribution to the loss. The risks associated involve potential decreases in parameter effectiveness if the compression is too aggressive, but with strategically set 'alpha' and 'param_ratio_target', this method aims to balance compression with performance retention.",
+      "mode": "asvd_only",
+      "alpha": 0.5,
+      "param_ratio_target": 0.9,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.148,
+      "latency": 400.873,
+      "vram": 5.65982958984375,
+      "emissions": 0.01968309,
+      "score": -5.020841599022331,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.148,
+          "latency": 400.873,
+          "vram": 5.65982958984375,
+          "emissions": 0.01968309
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_002_asvd_only_r090_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_002_asvd_only_r090_a50"
+  },
+  {
+    "iteration": 3,
+    "trial_name": "trial_003_awq_4bit_g128",
+    "config": {
+      "mode": "awq",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 128
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given the substantial penalty experienced using the asvd_only mode (Iteration 2) due to a significant accuracy drop, it is crucial to avoid configurations that heavily compromise accuracy. The optimal configuration from Iteration 1 used gptq, yielding a relatively balanced trade-off between compression and accuracy degradation. Since current coverage includes only two iterations with distinct performance results, a third alternative exploring a different quantization approach could fill gaps in understanding. The awq quantization mode offers a chance to achieve competitive performance while possibly maintaining higher accuracy. With its fixed 4-bit quantization, the awq mode has the potential to offer a good trade-off on memory usage and computational efficiency while preserving more accuracy compared to other quantization modes. The chosen quant_group_size of 128 aligns with the previous best configuration size, potentially optimizing both speed and model performance.",
+      "mode": "awq",
+      "quant_group_size": 128
+    },
+    "metrics": {
+      "accuracy": 0.63,
+      "latency": 494.5874,
+      "vram": 2.330799609375,
+      "emissions": 0.01506276,
+      "score": 4.469302794884938,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.63,
+          "latency": 494.5874,
+          "vram": 2.330799609375,
+          "emissions": 0.01506276
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_003_awq_4bit_g128",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_003_awq_4bit_g128"
+  },
+  {
+    "iteration": 4,
+    "trial_name": "trial_004_hybrid_asvd_bnb_r092_a50_4bit",
+    "config": {
+      "mode": "hybrid_asvd_bnb",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.92,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given that previous trials with isolated modes have not achieved optimal scores, a hybrid approach could potentially yield better results by leveraging the strengths of multiple compression strategies. The 'hybrid_asvd_bnb' mode is designed to combine structured pruning with aggressive VRAM savings to achieve significant improvements in both latency and emission while maintaining competitive accuracy. This approach fills a gap in the current coverage by introducing the benefits of both ASVD and BNB quantization without compromising performance drastically. The expected trade-offs include the risk of minimal accuracy degradation, but it should remain within acceptable limits as the hybrid strategy carefully balances compression and parameter retention. Additionally, the chosen parameters in the hybrid strategy reduce the probability of encountering the severe penalties associated with accuracy drops over the threshold.",
+      "mode": "hybrid_asvd_bnb",
+      "alpha": 0.5,
+      "param_ratio_target": 0.92,
+      "scaling_method": "fisher",
+      "quant_bits": 4,
+      "use_double_quant": false
+    },
+    "metrics": {
+      "accuracy": 0.152,
+      "latency": 694.7936,
+      "vram": 2.38483193359375,
+      "emissions": 0.01895352,
+      "score": -4.548773854273808,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.152,
+          "latency": 694.7936,
+          "vram": 2.38483193359375,
+          "emissions": 0.01895352
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_004_hybrid_asvd_bnb_r092_a50_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_004_hybrid_asvd_bnb_r092_a50_4bit"
+  },
+  {
+    "iteration": 5,
+    "trial_name": "trial_005_bnb_4bit",
+    "config": {
+      "mode": "bnb",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "reasoning": "The model has not yet explored the 'bnb' mode, which could provide significant VRAM savings given its focus on quantization. With gptq and awq modes already demonstrating improved performance, the addition of bnb will provide a new perspective on the trade-offs by focusing more on VRAM efficiency. It helps fill the gap between the pure quantization approaches and structured sparsification like hybrid techniques. Expected trade-offs include potentially larger latency reductions and VRAM efficiency, but with a moderate risk to accuracy due to aggressive compression techniques. However, by adhering to the parameters specified, the risk of exceeding a 0.15 accuracy drop can be minimized.",
+      "mode": "bnb",
+      "quant_bits": 4,
+      "use_double_quant": false
+    },
+    "metrics": {
+      "accuracy": 0.686,
+      "latency": 677.0086,
+      "vram": 2.4949412109375,
+      "emissions": 0.02042414,
+      "score": 4.038287738963207,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.686,
+          "latency": 677.0086,
+          "vram": 2.4949412109375,
+          "emissions": 0.02042414
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_005_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_005_bnb_4bit"
+  },
+  {
+    "iteration": 6,
+    "trial_name": "trial_006_sparse_structured_2x4",
+    "config": {
+      "mode": "sparse_structured",
+      "sparse": {
+        "structure": "2:4"
+      }
+    },
+    "suggestion": {
+      "reasoning": "The modes not tried yet, qqq and both sparse options, can provide additional insights and potential optimizations. Given the penalty is heavily focused on accuracy drop, it's critical to explore methods that might retain accuracy while still optimizing other factors. The sparse_structured mode, specifically, is designed to leverage hardware acceleration, which can potentially maintain latency and energy efficiency gains similar to prior successful attempts (like bnb and gptq), while aiming to conserve accuracy. This mode also hasn't been tried yet, offering a fresh perspective and untapped potential. Risks include potential underperformance in accuracy as observed with aggressive compressions, but hardware-friendly sparsity might balance this effectively.",
+      "mode": "sparse_structured",
+      "sparsity_structure": "2:4"
+    },
+    "metrics": {
+      "accuracy": 0.062,
+      "latency": 464.7332,
+      "vram": 6.93581728515625,
+      "emissions": 0.02307899,
+      "score": -9.001354445753591,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.062,
+          "latency": 464.7332,
+          "vram": 6.93581728515625,
+          "emissions": 0.02307899
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_006_sparse_structured_2x4",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_006_sparse_structured_2x4"
+  },
+  {
+    "iteration": 7,
+    "trial_name": "trial_007_qqq_4bit_g128",
+    "config": {
+      "mode": "qqq",
+      "quant": {
+        "method": "qqq",
+        "bits": 4,
+        "group_size": 128,
+        "damp": 0.005
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'qqq' mode has not been tried yet, offering a unique approach that could balance compression with accuracy. Given that many previous iterations have resulted in large accuracy drops due to aggressive compression attempts, a new technique like 'qqq' may offer beneficial middle ground trade-offs. The settings for quant_group_size and damp_percent are chosen to maximize precision and stabilization, respectively, without excessively compromising model performance.",
+      "mode": "qqq",
+      "quant_group_size": 128,
+      "damp_percent": 0.005
+    },
+    "metrics": {
+      "accuracy": 0.02,
+      "latency": 1886.1685,
+      "vram": 5.3291091796875,
+      "emissions": 0.04728698,
+      "score": -14.67017539936285,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.02,
+          "latency": 1886.1685,
+          "vram": 5.3291091796875,
+          "emissions": 0.04728698
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_007_qqq_4bit_g128",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_007_qqq_4bit_g128"
+  },
+  {
+    "iteration": 8,
+    "trial_name": "trial_008_sparse_unstructured_50pct",
+    "config": {
+      "mode": "sparse_unstructured",
+      "sparse": {
+        "structure": "unstructured",
+        "ratio": 0.5
+      }
+    },
+    "suggestion": {
+      "reasoning": "The sparse_unstructured mode has not yet been tried, offering a unique opportunity to explore its effects on compression and performance. Given the current iteration, introducing sparsity might lead to significant reductions in Lat, VRAM, and Emit without repeating any previously explored combinations. The selected sparsity_ratio of 0.5 balances between preserving accuracy and maximizing model compression. However, notable risks include exceeding the accuracy drop penalty threshold, yet this ratio is chosen to cautiously limit this chance while still pursuing improvements in latency and resource usage.",
+      "mode": "sparse_unstructured",
+      "sparsity_ratio": 0.5
+    },
+    "metrics": {
+      "accuracy": 0.052,
+      "latency": 492.9591,
+      "vram": 6.93581728515625,
+      "emissions": 0.02435252,
+      "score": -9.741699559204616,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.052,
+          "latency": 492.9591,
+          "vram": 6.93581728515625,
+          "emissions": 0.02435252
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_008_sparse_unstructured_50pct",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_008_sparse_unstructured_50pct"
+  },
+  {
+    "iteration": 9,
+    "trial_name": "trial_009_asvd_only_r092_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.92,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "The asvd_only mode with an alpha of 0.5 and a param_ratio_target of 0.92 using the fisher scaling method offers a strategic middle ground for further exploration. While previous asvd_only attempts yielded poor results with high accuracy drops, a moderate compression target with improved scaling may improve trade-offs. As all single-mode transformations have been explored, adjusting the ratio within the asvd_only approach could reveal an under-explored region in parameter efficiency while mildly impacting accuracy, potentially avoiding the significant penalties seen in earlier trials.",
+      "mode": "asvd_only",
+      "alpha": 0.5,
+      "param_ratio_target": 0.92,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.238,
+      "latency": 429.2661,
+      "vram": 5.7650123046875,
+      "emissions": 0.02119591,
+      "score": -2.856556964041167,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.238,
+          "latency": 429.2661,
+          "vram": 5.7650123046875,
+          "emissions": 0.02119591
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_009_asvd_only_r092_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_009_asvd_only_r092_a50"
+  },
+  {
+    "iteration": 10,
+    "trial_name": "trial_010_hybrid_asvd_bnb_r090_a50_4bit",
+    "config": {
+      "mode": "hybrid_asvd_bnb",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.9,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "reasoning": "Considering the prior trials, we've observed that the pure quantization-based approach using 'gptq' achieved the highest score when compared to other configurations. The focus here should be maintaining or slightly improving accuracy while also benefiting from reductions in latency, VRAM, and emission. Although all modes have been explored, combining strategies that have shown promise can potentially leverage their individual strengths. Given the success of 'bnb' and 'awq' as well, experimenting with hybrid configurations combining 'asvd' and 'bnb' seems promising due to their compatible nature, allowing us to explore a new performance frontier by harnessing the benefits of both. The 'hybrid_asvd_bnb' configuration should therefore be targeted, slightly adjusting parameters to enhance performance based on observations from prior iterations.",
+      "mode": "hybrid_asvd_bnb",
+      "alpha": 0.5,
+      "param_ratio_target": 0.9,
+      "scaling_method": "fisher",
+      "quant_bits": 4,
+      "use_double_quant": false
+    },
+    "metrics": {
+      "accuracy": 0.092,
+      "latency": 626.4995,
+      "vram": 2.36060185546875,
+      "emissions": 0.01702137,
+      "score": -6.433856726314092,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.092,
+          "latency": 626.4995,
+          "vram": 2.36060185546875,
+          "emissions": 0.01702137
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_010_hybrid_asvd_bnb_r090_a50_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_010_hybrid_asvd_bnb_r090_a50_4bit"
+  },
+  {
+    "iteration": 11,
+    "trial_name": "trial_011_asvd_only_r095_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.95,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'asvd_only' mode with a higher 'param_ratio_target' of 0.95 offers an opportunity to explore higher retention of parameters while maintaining a similar scaling method and alpha value. This will help to test if preserving more parameters can lead to a better balance between accuracy and resource efficiency. The previous 'asvd_only' trials with lower 'param_ratio_target' focused on heavier compression led to significant accuracy losses. The goal is to approach the Pareto frontier by optimizing parameter retention, especially since the hybrid approaches with aggressive parameter reduction had adverse effects. The risk involves achieving insufficient latency and VRAM savings, but this is a worthwhile trade-off given the substantial accuracy penalty incurred in recent iterations.",
+      "mode": "asvd_only",
+      "alpha": 0.5,
+      "param_ratio_target": 0.95,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.392,
+      "latency": 430.9369,
+      "vram": 5.93428369140625,
+      "emissions": 0.02144879,
+      "score": 0.13573338723460204,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.392,
+          "latency": 430.9369,
+          "vram": 5.93428369140625,
+          "emissions": 0.02144879
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_011_asvd_only_r095_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_011_asvd_only_r095_a50"
+  },
+  {
+    "iteration": 12,
+    "trial_name": "trial_012_hybrid_asvd_bnb_r095_a50_4bit",
+    "config": {
+      "mode": "hybrid_asvd_bnb",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.95,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given that all modes have been explored individually and hybrid approaches have potential for significant gains, we should focus on optimizing the 'hybrid_asvd_bnb' strategy. This mode combines the structural decomposition advantages of ASVD with the straightforward quantization benefits of BNB. The use of alpha=0.5 and param_ratio_target=0.92 maintains a balance between model fidelity and compression. Previous runs indicated the VRAM and latency reductions were significant, with some accuracy retention. By adjusting the param_ratio_target from 0.92 to 0.95, we aim to further limit accuracy loss observed in previous attempts without exceeding the penalty threshold for accuracy drop. This approach leverages the unique benefits of structural decomposition and quantization while aiming for a region not yet explored in combination, focused on accuracy retention.",
+      "mode": "hybrid_asvd_bnb",
+      "alpha": 0.5,
+      "param_ratio_target": 0.95,
+      "scaling_method": "fisher",
+      "quant_bits": 4,
+      "use_double_quant": false
+    },
+    "metrics": {
+      "accuracy": 0.306,
+      "latency": 637.2149,
+      "vram": 2.4275484375,
+      "emissions": 0.01804285,
+      "score": -0.7916679510198943,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.306,
+          "latency": 637.2149,
+          "vram": 2.4275484375,
+          "emissions": 0.01804285
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_012_hybrid_asvd_bnb_r095_a50_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_012_hybrid_asvd_bnb_r095_a50_4bit"
+  },
+  {
+    "iteration": 13,
+    "trial_name": "trial_013_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.03,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given the constraints and prior results, the 'gptq' mode with 4-bit precision and dampening has shown promising results, especially in terms of maintaining accuracy while providing significant reductions in latency, VRAM usage, and CO2 emissions. The previous attempt in Iter 1 resulted in a high final score without exceeding the accuracy penalty threshold. Although 'gptq' has been explored, there remains an opportunity to test finer dampening percentages to seek improvements, particularly targeting accuracy retention. The trade-off between slight accuracy drops and gains in resource efficiency is favorable, given the goal to maximize the overall score while avoiding massive penalties.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.03
+    },
+    "metrics": {
+      "accuracy": 0.628,
+      "latency": 471.2115,
+      "vram": 2.320545703125,
+      "emissions": 0.01462464,
+      "score": 4.542105396115319,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.628,
+          "latency": 471.2115,
+          "vram": 2.320545703125,
+          "emissions": 0.01462464
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_013_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_013_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 14,
+    "trial_name": "trial_014_gptq_4bit_g128_gptq_v2",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq_v2",
+        "damp": 0.05,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Based on the current exploration of configurations, Iteration 13 with the gptq mode and specific settings showed promising results with a score of 4.5421, which is close to the best score recorded (4.6314) with similar configurations in Iteration 1. This indicates that GPTQ is a strong contender for obtaining high scores while maintaining accuracy within acceptable limits. However, the gptq with damp 0.05 yielded the highest score and is worth revisiting for fine-tuning to possibly improve accuracy further without incurring high penalties. Given that gptq_v2 fixes overflow issues, it would be beneficial in achieving the goal metrics more effectively. Therefore, exploring gptq_v2 may help address any remaining overflow issues and could improve model performance especially by boosting accuracy without the risk of incurring penalties due to an accuracy drop beyond the tolerated threshold.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq_v2",
+      "damp_percent": 0.05
+    },
+    "metrics": {
+      "accuracy": 0.68,
+      "latency": 502.1482,
+      "vram": 2.88764765625,
+      "emissions": 0.0163054,
+      "score": 4.389753766452718,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.68,
+          "latency": 502.1482,
+          "vram": 2.88764765625,
+          "emissions": 0.0163054
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_014_gptq_4bit_g128_gptq_v2",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_014_gptq_4bit_g128_gptq_v2"
+  },
+  {
+    "iteration": 15,
+    "trial_name": "trial_015_gptq_4bit_g128_gptq_v2",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq_v2",
+        "damp": 0.03,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Although all modes have been attempted, the gptq mode has shown the best performance recently, with scores consistently above 4.3. However, there's still room for optimization within this mode by adjusting parameters. By selecting gptq with specific parameters that have not been previously combined, we may uncover better trade-offs. The gptq_v2 format, which addresses overflow issues, has shown promising results. Fine-tuning the damping factor within the successful range could further improve accuracy retention.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq_v2",
+      "damp_percent": 0.03
+    },
+    "metrics": {
+      "accuracy": 0.63,
+      "latency": 484.9814,
+      "vram": 2.88764765625,
+      "emissions": 0.015185,
+      "score": 4.266603303812244,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.63,
+          "latency": 484.9814,
+          "vram": 2.88764765625,
+          "emissions": 0.015185
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_015_gptq_4bit_g128_gptq_v2",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_015_gptq_4bit_g128_gptq_v2"
+  },
+  {
+    "iteration": 16,
+    "trial_name": "trial_016_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.02,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Considering the available data, the gptq mode has demonstrated substantial success with scores consistently above 4.0 in previous iterations. The asvd_only mode, particularly with varied param_ratio_target, hasn't provided optimal performance thus far, with penalties due to significant accuracy drops. However, the best peer performance within the explored regions is clustered around the gptq mode with a damp of 0.05 and 0.03. Since all modes have been tried, a precise optimization within these parameters and utilizing the format version that has slightly better results are worth exploring. Adjusting the `damp_percent` towards the lower end closer to 0.02 could minimize potential underfitting and further optimize the outcome. This exploration is critical to ensure we're not redeploying previously failed strategies while pushing current limits.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.02
+    },
+    "metrics": {
+      "accuracy": 0.684,
+      "latency": 467.0797,
+      "vram": 2.320545703125,
+      "emissions": 0.0153996,
+      "score": 4.755535463321792,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.684,
+          "latency": 467.0797,
+          "vram": 2.320545703125,
+          "emissions": 0.0153996
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_016_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_016_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 17,
+    "trial_name": "trial_017_hybrid_asvd_bnb_r094_a50_4bit",
+    "config": {
+      "mode": "hybrid_asvd_bnb",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.94,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given the current exploration and results, a small incremental change based on the Pareto-optimal configurations can yield better results. The 'hybrid_asvd_bnb' mode has not been maximized fully; earlier attempts have focused on 'alpha' and 'param_ratio_target' values that are close. Adjusting these parameters slightly into unexplored territory could enhance the configuration without introducing redundancy. Prior hybrid configurations already have shown promise with a balance between VRAM and latency savings, while 'gptq' and 'bnb' merely served to improve accuracy or latency minimally without drastic changes when over-prioritized. Thus, slightly adjusting parameters in 'hybrid_asvd_bnb' promises uncharted benefits due to unexplored values in 'alpha' and 'param_ratio_target'. Risks are minimal with careful parameter tuning, avoiding duplicates.",
+      "mode": "hybrid_asvd_bnb",
+      "alpha": 0.5,
+      "param_ratio_target": 0.94,
+      "scaling_method": "fisher",
+      "quant_bits": 4,
+      "use_double_quant": false
+    },
+    "metrics": {
+      "accuracy": 0.24,
+      "latency": 608.7247,
+      "vram": 2.41761259765625,
+      "emissions": 0.01708535,
+      "score": -2.07613927967742,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.24,
+          "latency": 608.7247,
+          "vram": 2.41761259765625,
+          "emissions": 0.01708535
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_017_hybrid_asvd_bnb_r094_a50_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_017_hybrid_asvd_bnb_r094_a50_4bit"
+  },
+  {
+    "iteration": 18,
+    "config": {},
+    "suggestion": null,
+    "metrics": {
+      "score": 0.0
+    },
+    "model_path": null,
+    "error": "重複 config，已跳過",
+    "trial_name": "trial_018_skipped"
+  },
+  {
+    "iteration": 19,
+    "trial_name": "trial_019_asvd_only_r089_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.89,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "The asvd_only mode with different parameter settings has previously demonstrated divergent outcomes depending on parameter ratios. While it has led to severe accuracy drops in some iterations, it may allow for significant latency, VRAM, and emission reductions at milder compression levels. Exploring asvd_only with a slightly lower param_ratio_target than previously successful configurations might fill a gap, especially to explore potential gains in resource efficiency without breaching the critical accuracy penalty threshold. This approach carries the risk of notable accuracy sacrifices but could strategically enhance the overall score by optimizing other metrics assuming accuracy remains within the penalty-free range.",
+      "mode": "asvd_only",
+      "alpha": 0.5,
+      "param_ratio_target": 0.89,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.114,
+      "latency": 496.2425,
+      "vram": 5.59845302734375,
+      "emissions": 0.02388659,
+      "score": -6.539948034254987,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.114,
+          "latency": 496.2425,
+          "vram": 5.59845302734375,
+          "emissions": 0.02388659
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_019_asvd_only_r089_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_019_asvd_only_r089_a50"
+  },
+  {
+    "iteration": 20,
+    "trial_name": "trial_020_sparse_unstructured_40pct",
+    "config": {
+      "mode": "sparse_unstructured",
+      "sparse": {
+        "structure": "unstructured",
+        "ratio": 0.4
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'sparse_unstructured' mode offers significant reductions in resource usage, which could enhance Lat, VRAM, and Emit metrics. However, previous attempts with sparsity ratios resulted in suboptimal accuracy drops but not with these precise settings. A sparsity ratio of 0.4 might provide a balanced trade-off by maintaining an acceptable level of network connections while still significantly reducing model size. It's also an unexplored configuration in this iteration window and could fill a niche between existing high-accuracy but suboptimal resource configurations and those with better resource utilization but poor accuracy.",
+      "mode": "sparse_unstructured",
+      "sparsity_ratio": 0.4
+    },
+    "metrics": {
+      "accuracy": 0.076,
+      "latency": 462.9116,
+      "vram": 6.93581728515625,
+      "emissions": 0.02295446,
+      "score": -8.241220024434153,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.076,
+          "latency": 462.9116,
+          "vram": 6.93581728515625,
+          "emissions": 0.02295446
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_020_sparse_unstructured_40pct",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_020_sparse_unstructured_40pct"
+  },
+  {
+    "iteration": 21,
+    "trial_name": "trial_021_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.01,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given that we have already explored a wide range of single and hybrid approaches, the best scores so far have come from using the 'gptq' mode, specifically in iteration 16 with a combined large reduction in latency, VRAM, and emissions while keeping accuracy loss to a minimum. The most significant gains in these areas were achieved with the configuration using 4-bit quantization and a damp percent of 0.02. To further enhance accuracy while maintaining these latency and resource benefits, it seems optimal to attempt further refinement within the 'gptq' mode setup. By selecting a smaller damp percent closer to 0.01, we aim to improve the accuracy as previous damp percent trials did not go lower than 0.02. Potential risks involve minor stability issues but the significant resource gains and previous performance indicate high potential benefit.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.01
+    },
+    "metrics": {
+      "accuracy": 0.684,
+      "latency": 471.118,
+      "vram": 2.320545703125,
+      "emissions": 0.01605617,
+      "score": 4.705177767749932,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.684,
+          "latency": 471.118,
+          "vram": 2.320545703125,
+          "emissions": 0.01605617
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_021_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_021_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 22,
+    "config": {},
+    "suggestion": null,
+    "metrics": {
+      "score": 0.0
+    },
+    "model_path": null,
+    "error": "重複 config，已跳過",
+    "trial_name": "trial_022_skipped"
+  },
+  {
+    "iteration": 23,
+    "trial_name": "trial_023_gptq_4bit_g128_gptq_v2",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq_v2",
+        "damp": 0.025,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "The current exploration suggests that the gptq mode has shown promise in achieving high scores with favorable trade-offs. Previous configurations with gptq achieved high accuracy retention while significantly optimizing latency, VRAM, and emissions. To further optimize the gptq configuration without repeating past attempts, adopting the gptq_v2 format, which addresses overflow issues, might provide marginal accuracy gains or stability improvements. The testing of configurations with quant_bits set to 4 and quant_group_size to 128 within the gptq_v2 format is currently underexplored. This approach aims to expand the search within the known high-performing configurations, minimizing risk by focusing on proven settings and making minor adjustments for potential gain.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq_v2",
+      "damp_percent": 0.025
+    },
+    "metrics": {
+      "accuracy": 0.66,
+      "latency": 498.5733,
+      "vram": 2.88764765625,
+      "emissions": 0.015967,
+      "score": 4.328310501828402,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.66,
+          "latency": 498.5733,
+          "vram": 2.88764765625,
+          "emissions": 0.015967
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_023_gptq_4bit_g128_gptq_v2",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_023_gptq_4bit_g128_gptq_v2"
+  },
+  {
+    "iteration": 24,
+    "trial_name": "trial_024_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.015,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "The gptq mode has previously achieved the highest scores, indicating it has a favorable balance of maintaining accuracy and reducing latency, VRAM, and emissions. Given this context, a slight tweak on the gptq configuration might improve the previous outcomes. Since using gptq with a damp percent of 0.02 gave the highest score in iteration 16, for this iteration, fine-tuning the damp percent between iterations 13 and 16 settings could potentially yield better results. Thus, setting the damp_percent to 0.015 is expected to maintain a high accuracy while possibly achieving further optimization in resource usage.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.015
+    },
+    "metrics": {
+      "accuracy": 0.668,
+      "latency": 476.735,
+      "vram": 2.320545703125,
+      "emissions": 0.01529391,
+      "score": 4.670951733542892,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.668,
+          "latency": 476.735,
+          "vram": 2.320545703125,
+          "emissions": 0.01529391
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_024_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_024_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 25,
+    "trial_name": "trial_025_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.012,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'gptq' mode has consistently produced the highest scores with minimal accuracy impact, as observed in iterations 21, 23, and 24. Testing a slightly different parameter not yet explored within this mode's Pareto improvements could further increase gains. Slightly lowering the dampening factor within the observed efficacy range reflects exploration within known limits for potential higher score without going outside proven performant configurations.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.012
+    },
+    "metrics": {
+      "accuracy": 0.632,
+      "latency": 512.5405,
+      "vram": 2.320545703125,
+      "emissions": 0.01559288,
+      "score": 4.412978008125433,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.632,
+          "latency": 512.5405,
+          "vram": 2.320545703125,
+          "emissions": 0.01559288
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_025_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_025_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 26,
+    "config": {},
+    "suggestion": null,
+    "metrics": {
+      "score": 0.0
+    },
+    "model_path": null,
+    "error": "重複 config，已跳過",
+    "trial_name": "trial_026_skipped"
+  },
+  {
+    "iteration": 27,
+    "config": {},
+    "suggestion": null,
+    "metrics": {
+      "score": 0.0
+    },
+    "model_path": null,
+    "error": "重複 config，已跳過",
+    "trial_name": "trial_027_skipped"
+  },
+  {
+    "iteration": 28,
+    "trial_name": "trial_028_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.0225,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "As we approach the final iterations, we want to solidify gains while taking risks to explore potentially untapped performance improvements. The gptq mode has consistently given high scores due to its ability to balance accuracy and compression, especially with 4-bit quantization and a 128 quant group size. However, the strategy to try gptq with a different damp_percent in the previous attempts suggests a remaining opportunity to adjust the dampening slightly to find further optimization in accuracy. By making a small adjustment to the damp_percent, we can potentially avoid the massive penalty incurred by going over the accuracy drop threshold, while still capitalizing on significant reductions in latency, VRAM, and emissions. This minor exploration also aligns well with the Pareto frontier objective, picking a parameter space slightly unexplored.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.0225
+    },
+    "metrics": {
+      "accuracy": 0.664,
+      "latency": 469.9599,
+      "vram": 2.320545703125,
+      "emissions": 0.0144014,
+      "score": 4.727372304324858,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.664,
+          "latency": 469.9599,
+          "vram": 2.320545703125,
+          "emissions": 0.0144014
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_028_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_028_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 29,
+    "trial_name": "trial_029_asvd_only_r091_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.91,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "All modes have been explored, but there’s an opportunity to further explore the 'asvd_only' mode which has shown significantly variable results. The previously tried configurations 'asvd_only' with a param_ratio_target of 0.90 and 0.92 showed promising reductions in latency, albeit with severe accuracy penalties. With the massive penalty for accuracy drops exceeding 0.15 pp considered, the aim will be to select a configuration that balances compression with maintained accuracy. By using a 'param_ratio_target' of 0.91 with the 'alpha' value at 0.5 to provide a moderate preservation of activation distribution, and relying on the 'fisher' scaling method, we can attempt to find a sweet spot that optimizes the trade-off between size reduction and model performance, mitigating risk of severe accuracy loss while preserving the attractive latency and resource benefits observed in this mode previously.",
+      "mode": "asvd_only",
+      "alpha": 0.5,
+      "param_ratio_target": 0.91,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.208,
+      "latency": 402.9431,
+      "vram": 5.7146125,
+      "emissions": 0.01964446,
+      "score": -3.412683155781399,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.208,
+          "latency": 402.9431,
+          "vram": 5.7146125,
+          "emissions": 0.01964446
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_029_asvd_only_r091_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_029_asvd_only_r091_a50"
+  },
+  {
+    "iteration": 30,
+    "trial_name": "trial_030_bnb_4bit",
+    "config": {
+      "mode": "bnb",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "suggestion": {
+      "reasoning": "The 'bnb' method was only attempted once and delivered a competitive performance (Score=4.0383 with an accuracy drop of 4.46%). The configuration showed a substantial VRAM reduction of approximately 59.73% with significant latency and emission improvements. Exploring the 'bnb' mode with a slight modification by introducing 'use_double_quant=true' could potentially amplify VRAM savings without severely impacting accuracy, as this configuration has not been tested yet. This experiment will provide new insights into optimizing the model for better trade-offs in VRAM usage specifically while maintaining competitive performance, leveraging the unique aspects of double quantization when bits are set to 4. Considering previous penalties from significant accuracy drops, this method holds the promise of preserving accuracy while maximizing hardware efficiency.",
+      "mode": "bnb",
+      "quant_bits": 4,
+      "use_double_quant": true
+    },
+    "metrics": {
+      "accuracy": 0.684,
+      "latency": 866.4088,
+      "vram": 2.37238359375,
+      "emissions": 0.02344288,
+      "score": 3.695382707481169,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.684,
+          "latency": 866.4088,
+          "vram": 2.37238359375,
+          "emissions": 0.02344288
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_030_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_window_20260827_042622/trial_030_bnb_4bit"
+  }
+]

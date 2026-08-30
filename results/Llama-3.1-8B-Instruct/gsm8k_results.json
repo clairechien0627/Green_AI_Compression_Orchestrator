@@ -1,0 +1,18 @@
+{
+  "accuracy": 0.7657316148597423,
+  "correct": 1010,
+  "total": 1319,
+  "model_path": "meta-llama/Llama-3.1-8B-Instruct",
+  "dataset": "openai/gsm8k (test)",
+  "num_samples": "ALL",
+  "prompt_type": "fewshot",
+  "temperature": 0.0,
+  "max_new_tokens": 256,
+  "output_file": "./results/20251110_094620.txt",
+  "gpu_peak_mb": 15605.4746,
+  "total_prompt_tokens": 1384549,
+  "total_output_tokens": 151610,
+  "total_generation_time_sec": 3050.9627,
+  "throughput_tokens_per_sec": 503.4998,
+  "quantization_config": null
+}

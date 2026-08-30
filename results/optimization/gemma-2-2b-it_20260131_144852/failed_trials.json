@@ -1,0 +1,103 @@
+{
+  "n_failed": 4,
+  "failed_trials": [
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 16,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head",
+          "layers.*norm*"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-31T15:12:59.678247",
+      "datetime_complete": "2026-01-31T15:13:06.898862"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head",
+          "layers.*norm*"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-31T15:13:06.899475",
+      "datetime_complete": "2026-01-31T15:13:15.238927"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "embed_tokens"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-31T15:52:51.724634",
+      "datetime_complete": "2026-01-31T15:53:24.012173"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-31T16:34:39.321599",
+      "datetime_complete": "2026-01-31T16:34:46.083340"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "n_failed": 5,
+  "failed_trials": [
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": false,
+        "version": "marlin",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": -Infinity,
+        "gpu_peak_change": Infinity,
+        "latency_change": Infinity
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": Infinity,
+      "status": "failed",
+      "error": "\u274c \u8acb\u5148\u5b89\u88dd AWQ \u4f9d\u8cf4:\n   pip install autoawq",
+      "datetime_start": "2025-11-27T16:56:36.595469",
+      "datetime_complete": "2025-11-27T16:56:36.620757"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemv",
+        "modules_to_not_convert": [
+          "lm_head",
+          "embed_tokens"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": -Infinity,
+        "gpu_peak_change": Infinity,
+        "latency_change": Infinity
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": Infinity,
+      "status": "failed",
+      "error": "\u274c \u8acb\u5148\u5b89\u88dd AWQ \u4f9d\u8cf4:\n   pip install autoawq",
+      "datetime_start": "2025-11-27T17:18:53.852427",
+      "datetime_complete": "2025-11-27T17:18:53.855997"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": -1,
+        "zero_point": true,
+        "version": "gemv_fast",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": -Infinity,
+        "gpu_peak_change": Infinity,
+        "latency_change": Infinity
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": Infinity,
+      "status": "failed",
+      "error": "q_group_size \u5fc5\u9808 > 0\uff0c\u5f97\u5230: -1",
+      "datetime_start": "2025-11-27T17:18:53.856105",
+      "datetime_complete": "2025-11-27T17:18:53.856573"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 8,
+        "bnb_4bit_quant_type": "fp4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 4.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": true,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -Infinity,
+        "gpu_peak_change": Infinity,
+        "latency_change": Infinity
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": Infinity,
+      "status": "failed",
+      "error": "'Tensor' object has no attribute 'SCB'",
+      "datetime_start": "2025-11-27T17:20:39.917755",
+      "datetime_complete": "2025-11-27T17:20:41.766855"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 8,
+        "bnb_4bit_quant_type": "fp4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": true,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -Infinity,
+        "gpu_peak_change": Infinity,
+        "latency_change": Infinity
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": Infinity,
+      "status": "failed",
+      "error": "'Tensor' object has no attribute 'SCB'",
+      "datetime_start": "2025-11-27T17:27:52.062280",
+      "datetime_complete": "2025-11-27T17:27:53.904704"
+    }
+  ]
+}

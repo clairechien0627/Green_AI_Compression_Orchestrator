@@ -1,0 +1,54 @@
+{
+  "n_failed": 2,
+  "failed_trials": [
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "",
+      "datetime_start": "2025-12-02T22:23:30.050642",
+      "datetime_complete": "2025-12-02T22:23:38.554375"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head",
+          "embed_tokens"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "",
+      "datetime_start": "2025-12-02T22:30:07.222626",
+      "datetime_complete": "2025-12-02T22:30:15.038740"
+    }
+  ]
+}

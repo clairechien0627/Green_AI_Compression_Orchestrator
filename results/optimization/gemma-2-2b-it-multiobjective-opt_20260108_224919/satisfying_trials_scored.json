@@ -1,0 +1,182 @@
+{
+  "scoring_method": "weighted_surplus",
+  "scoring_details": {
+    "formula": "w_acc*(acc - acc_min) + w_gpu*(gpu_max - gpu) + w_lat*(lat_max - lat)",
+    "description": "基於超越目標幅度(surplus)的加權評分，滿足目標時分數 >= 0",
+    "weights": {
+      "accuracy": 2.0,
+      "gpu_peak": 1.0,
+      "latency": 1.0
+    }
+  },
+  "targets": {
+    "accuracy_min": -0.1,
+    "gpu_peak_max": -0.5,
+    "latency_max": 1.5
+  },
+  "total_satisfying_trials": 3,
+  "pareto_overlap": {
+    "count": 2,
+    "trial_ids": [
+      8,
+      16
+    ]
+  },
+  "ranked_trials": [
+    {
+      "trial_id": 16,
+      "overall_score": 1.2296,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0169,
+          "target": -0.1,
+          "surplus": 0.0831,
+          "score": 0.1661
+        },
+        "gpu_peak": {
+          "value": -0.5369,
+          "target": -0.5,
+          "surplus": 0.0369,
+          "score": 0.0369
+        },
+        "latency": {
+          "value": 0.4734,
+          "target": 1.5,
+          "surplus": 1.0266,
+          "score": 1.0266
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.016949152542372895,
+        "gpu_peak_change": -0.5368863947402965,
+        "latency_change": 0.473421522204808
+      },
+      "rank": 1
+    },
+    {
+      "trial_id": 5,
+      "overall_score": 1.1394,
+      "is_pareto": false,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0508,
+          "target": -0.1,
+          "surplus": 0.0492,
+          "score": 0.0983
+        },
+        "gpu_peak": {
+          "value": -0.5366,
+          "target": -0.5,
+          "surplus": 0.0366,
+          "score": 0.0366
+        },
+        "latency": {
+          "value": 0.4955,
+          "target": 1.5,
+          "surplus": 1.0045,
+          "score": 1.0045
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.5365688166944675,
+        "latency_change": 0.49548601023997507
+      },
+      "rank": 2
+    },
+    {
+      "trial_id": 8,
+      "overall_score": 1.1381,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": -0.0508,
+          "target": -0.1,
+          "surplus": 0.0492,
+          "score": 0.0983
+        },
+        "gpu_peak": {
+          "value": -0.5373,
+          "target": -0.5,
+          "surplus": 0.0373,
+          "score": 0.0373
+        },
+        "latency": {
+          "value": 0.4974,
+          "target": 1.5,
+          "surplus": 1.0026,
+          "score": 1.0026
+        }
+      },
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.5372658571263905,
+        "latency_change": 0.49742335284245326
+      },
+      "rank": 3
+    }
+  ],
+  "statistics": {
+    "avg_overall_score": 1.169,
+    "median_overall_score": 1.1394,
+    "score_range": {
+      "min": 1.1381,
+      "max": 1.2296
+    },
+    "pareto_in_satisfying": 2,
+    "best_dimension_performers": {
+      "accuracy": 16,
+      "gpu_peak": 8,
+      "latency": 16
+    }
+  }
+}

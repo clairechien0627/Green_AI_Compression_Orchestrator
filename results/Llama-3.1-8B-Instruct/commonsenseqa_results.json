@@ -1,0 +1,18 @@
+{
+  "accuracy": 0.7788697788697788,
+  "correct": 951,
+  "total": 1221,
+  "model_path": "meta-llama/Llama-3.1-8B-Instruct",
+  "dataset": "tau/commonsense_qa (validation)",
+  "num_samples": "ALL",
+  "prompt_type": "fewshot",
+  "temperature": 0.0,
+  "max_new_tokens": 128,
+  "output_file": "./results/20251110_110032.txt",
+  "gpu_peak_mb": 15439.9878,
+  "total_prompt_tokens": 529226,
+  "total_output_tokens": 2491,
+  "total_generation_time_sec": 84.5832,
+  "throughput_tokens_per_sec": 6286.317,
+  "quantization_config": null
+}

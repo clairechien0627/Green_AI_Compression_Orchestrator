@@ -1,0 +1,29 @@
+{
+  "n_failed": 1,
+  "failed_trials": [
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "",
+      "datetime_start": "2025-12-03T16:53:23.871975",
+      "datetime_complete": "2025-12-03T16:53:35.413234"
+    }
+  ]
+}

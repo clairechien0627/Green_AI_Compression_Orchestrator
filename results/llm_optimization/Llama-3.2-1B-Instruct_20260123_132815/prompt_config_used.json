@@ -1,0 +1,66 @@
+{
+  "prompt_type": "zh",
+  "config_path": "tmp/config/prompt_config.yaml",
+  "metadata": {
+    "name": "繁體中文",
+    "description": "LLM 多代理優化的繁體中文提示詞",
+    "version": "1.0"
+  },
+  "supported_types": [
+    "en",
+    "zh"
+  ],
+  "prompts": {
+    "analyzer": {
+      "system_role": "你是一位量化優化試驗的專家分析師。請逐步思考分析。",
+      "task_description": "系統性地分析歷史試驗數據，了解哪些配置有效、哪些無效。\n",
+      "analysis_requirements": "請按照以下思維鏈（Chain of Thought）進行分析：\n\n## 步驟 1：方法表現分析\n針對每個量化方法（gptq/awq/bnb）分析：\n- 進行了多少次試驗？成功/失敗各幾次？\n- 平均的 accuracy_change、gpu_peak_change、latency_change\n- 哪個方法在各目標上表現最好？\n\n## 步驟 2：失敗模式分析\n檢視失敗的試驗，識別：\n- 哪些參數組合導致失敗？\n- 是否有共同模式（例如：bits=2 總是失敗）？\n- 應該避免哪些方法/參數？\n\n## 步驟 3：成功模式分析\n檢視成功的試驗（特別是 Pareto 解）：\n- 哪些參數組合效果好？\n- 準確率和壓縮率之間的權衡是什麼？\n- 哪些配置達到最佳平衡？\n\n## 步驟 4：參數敏感度分析\n分析每個參數如何影響結果：\n- bits：2/3/4/8 bit 如何影響準確率和壓縮？\n- group_size：較小/較大的 group_size 是否有幫助？\n- 其他參數：有任何值得注意的觀察嗎？\n\n## 步驟 5：策略性建議\n基於以上分析：\n- 哪些區域尚未探索但有潛力？\n- 下一步應該嘗試哪些具體配置？\n",
+      "output_format": "輸出包含完整分析的 JSON 物件：\n{\n  \"method_analysis\": {\n    \"gptq\": {\"trials\": N, \"success_rate\": X, \"avg_accuracy\": Y, \"avg_gpu\": Z, \"observations\": \"...\"},\n    \"awq\": {\"trials\": N, \"success_rate\": X, \"avg_accuracy\": Y, \"avg_gpu\": Z, \"observations\": \"...\"},\n    \"bnb\": {\"trials\": N, \"success_rate\": X, \"avg_accuracy\": Y, \"avg_gpu\": Z, \"observations\": \"...\"}\n  },\n  \"failure_patterns\": [\n    {\"pattern\": \"描述\", \"affected_params\": {...}, \"suggestion\": \"避免/調整\"}\n  ],\n  \"success_patterns\": [\n    {\"pattern\": \"描述\", \"winning_params\": {...}, \"trade_off\": \"準確率 vs 壓縮率\"}\n  ],\n  \"parameter_insights\": {\n    \"bits\": \"關於 bits 影響的觀察\",\n    \"group_size\": \"關於 group_size 影響的觀察\",\n    \"other\": \"其他值得注意的發現\"\n  },\n  \"unexplored_regions\": [\n    {\"method\": \"...\", \"params\": {...}, \"rationale\": \"基於以上分析，為何有潛力\"}\n  ],\n  \"recommendations\": [\"策略建議 1\", \"策略建議 2\"]\n}\n\n僅輸出 JSON 物件（不要有其他文字）。\n",
+      "section_headers": {
+        "your_task": "# 你的任務",
+        "historical_trials": "# 歷史試驗摘要",
+        "pareto_frontier": "# 當前 Pareto 前沿",
+        "search_space": "# 搜尋空間",
+        "analysis_req": "# 分析要求"
+      },
+      "labels": {
+        "total_trials": "總試驗次數",
+        "successful_trials": "成功試驗",
+        "failed_trials": "失敗/剪枝試驗",
+        "non_dominated_solutions": "個非支配解",
+        "recent_trials": "最近試驗",
+        "no_trials": "尚無試驗數據。",
+        "no_pareto": "尚無 Pareto 解。"
+      }
+    },
+    "planner": {
+      "system_role": "你是量化優化的策略規劃師。",
+      "strategy_guide": "# 策略選擇指南\n- **EXPLORATION（探索）**（早期階段或陷入困境時）：\n  - 嘗試未探索的參數區域\n  - 測試多樣化的配置\n  - 注重覆蓋範圍\n\n- **EXPLOITATION（利用）**（中後期且有良好模式時）：\n  - 精細調整有潛力的配置\n  - 在成功試驗周圍進行小幅調整\n  - 注重改善\n\n- **BALANCED（平衡）**：\n  - 兩種策略的混合\n  - 良好的預設選擇\n",
+      "progress_recommendation": "# 基於進度的建議策略\n- < 20% 進度：傾向 EXPLORATION（70%）\n- 20-70% 進度：BALANCED（50/50）\n- > 70% 進度：傾向 EXPLOITATION（80%）\n",
+      "output_format": "以 JSON 格式提供你的決策：\n\n{\n  \"strategy\": \"exploration\" / \"exploitation\" / \"balanced\",\n  \"next_config\": {\n    \"method\": \"gptq\" / \"awq\" / \"bnb\",\n    \"bits\": ...,\n    \"group_size\": ...,\n    ...（從搜尋空間中選擇的所有相關參數）\n  },\n  \"rationale\": \"解釋你選擇此配置的原因（2-3 句話）\",\n  \"confidence\": 0.0-1.0\n}\n\n僅輸出 JSON 物件（不要有其他文字）。\n",
+      "section_headers": {
+        "current_state": "# 當前狀態",
+        "search_space": "# 搜尋空間（可用參數）",
+        "analysis_from_analyzer": "# 來自 AnalyzerAgent 的分析",
+        "optimization_targets": "# 優化目標",
+        "pareto_frontier": "# 當前 Pareto 前沿",
+        "your_task": "# 你的任務"
+      },
+      "labels": {
+        "trial": "試驗",
+        "progress": "進度",
+        "budget_remaining": "剩餘預算",
+        "trials": "次試驗",
+        "solutions_on_frontier": "個解在前沿上",
+        "decide_next_config": "根據分析決定下一個試驗配置。重要：只能使用上方搜尋空間中的參數值！"
+      }
+    },
+    "formatting": {
+      "methods": "方法",
+      "and_more": "... 還有 {count} 個",
+      "trial_format": "試驗 {num}",
+      "config_format": "{method}-{bits}bit",
+      "objectives_format": "準確率:{acc}, GPU:{gpu}, 延遲:{lat}"
+    }
+  }
+}

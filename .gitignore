@@ -1,12 +1,7 @@
 __pycache__/
-quant_models/
 output/
-gptq_method_2.py
 .env
-quantized_old/
 quantized/
-quantized_test/
-old_results/
 results/llm_optimization
 results/optimization
 results/*.txt
@@ -24,7 +19,6 @@ Llama*
 *.sh
 CLAUDE.md
 gptqmodel_offload/
-tmp/docs/
 cache/
 .cache
 .vscode

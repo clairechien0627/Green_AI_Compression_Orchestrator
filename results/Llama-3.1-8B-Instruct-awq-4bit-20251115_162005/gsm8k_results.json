@@ -1,0 +1,25 @@
+{
+  "accuracy": 0.7391963608794542,
+  "correct": 975,
+  "total": 1319,
+  "model_path": "quantized/Llama-3.1-8B-Instruct-awq-4bit-20251115_162005",
+  "dataset": "openai/gsm8k (test)",
+  "num_samples": "ALL",
+  "prompt_type": "fewshot",
+  "temperature": 0.0,
+  "max_new_tokens": 256,
+  "output_file": "./results/20251115_163957.txt",
+  "gpu_peak_mb": 5831.3184,
+  "total_prompt_tokens": 1384549,
+  "total_output_tokens": 147285,
+  "total_generation_time_sec": 2599.1722,
+  "throughput_tokens_per_sec": 589.3546,
+  "quantization_config": {
+    "bits": 4,
+    "group_size": 128,
+    "modules_to_not_convert": null,
+    "quant_method": "awq",
+    "version": "gemm",
+    "zero_point": true
+  }
+}

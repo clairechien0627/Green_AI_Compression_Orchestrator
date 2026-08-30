@@ -1,0 +1,100 @@
+{
+  "n_failed": 4,
+  "failed_trials": [
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 16,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-14T23:10:58.122013",
+      "datetime_complete": "2026-01-14T23:11:07.023165"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-14T23:11:07.024011",
+      "datetime_complete": "2026-01-14T23:11:13.625004"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "embed_tokens"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-14T23:11:13.626234",
+      "datetime_complete": "2026-01-14T23:11:20.168275"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head",
+          "layers.*norm*"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'",
+      "datetime_start": "2026-01-15T01:00:14.281310",
+      "datetime_complete": "2026-01-15T01:00:21.508197"
+    }
+  ]
+}

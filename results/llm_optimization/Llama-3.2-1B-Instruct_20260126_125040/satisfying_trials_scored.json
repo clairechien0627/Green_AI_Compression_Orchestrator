@@ -1,0 +1,121 @@
+{
+  "scoring_method": "weighted_surplus",
+  "scoring_details": {
+    "formula": "w_acc*(acc - acc_min) + w_gpu*(gpu_max - gpu) + w_lat*(lat_max - lat)",
+    "description": "基於超越目標幅度(surplus)的加權評分，滿足目標時分數 >= 0",
+    "weights": {
+      "accuracy": 2.0,
+      "gpu_peak": 1.0,
+      "latency": 1.0
+    }
+  },
+  "targets": {
+    "accuracy_min": -0.1,
+    "gpu_peak_max": -0.5,
+    "latency_max": 1.0
+  },
+  "total_satisfying_trials": 2,
+  "pareto_overlap": {
+    "count": 2,
+    "trial_ids": [
+      1,
+      5
+    ]
+  },
+  "ranked_trials": [
+    {
+      "trial_id": 1,
+      "overall_score": 1.6796,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.6,
+          "target": -0.1,
+          "surplus": 0.7,
+          "score": 1.4
+        },
+        "gpu_peak": {
+          "value": -0.5439,
+          "target": -0.5,
+          "surplus": 0.0439,
+          "score": 0.0439
+        },
+        "latency": {
+          "value": 0.7643,
+          "target": 1.0,
+          "surplus": 0.2357,
+          "score": 0.2357
+        }
+      },
+      "config": {
+        "method": "awq",
+        "parameters": {
+          "w_bit": 4,
+          "q_group_size": 64,
+          "zero_point": false,
+          "version": "gemm",
+          "modules_to_not_convert": []
+        }
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.7643420308607071
+      },
+      "rank": 1
+    },
+    {
+      "trial_id": 5,
+      "overall_score": 1.0343,
+      "is_pareto": true,
+      "dimension_scores": {
+        "accuracy": {
+          "value": 0.24,
+          "target": -0.1,
+          "surplus": 0.34,
+          "score": 0.68
+        },
+        "gpu_peak": {
+          "value": -0.5213,
+          "target": -0.5,
+          "surplus": 0.0213,
+          "score": 0.0213
+        },
+        "latency": {
+          "value": 0.667,
+          "target": 1.0,
+          "surplus": 0.333,
+          "score": 0.333
+        }
+      },
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5212790134671819,
+        "latency_change": 0.666984377044849
+      },
+      "rank": 2
+    }
+  ],
+  "statistics": {
+    "avg_overall_score": 1.3569,
+    "median_overall_score": 1.6796,
+    "score_range": {
+      "min": 1.0343,
+      "max": 1.6796
+    },
+    "pareto_in_satisfying": 2,
+    "best_dimension_performers": {
+      "accuracy": 1,
+      "gpu_peak": 1,
+      "latency": 5
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "pass@1": 0.9878048780487805,
+  "total": 164,
+  "model_path": "meta-llama/Llama-3.1-8B-Instruct",
+  "dataset": "openai_humaneval (test)",
+  "num_samples": "ALL",
+  "prompt_type": "instruct",
+  "temperature": 0.0,
+  "max_new_tokens": 1024,
+  "output_file": "./results/20251114_174107.txt",
+  "gpu_peak_mb": 15495.5303,
+  "total_prompt_tokens": 30574,
+  "total_output_tokens": 63637,
+  "total_generation_time_sec": 1219.8915,
+  "throughput_tokens_per_sec": 77.229,
+  "quantization_config": null
+}

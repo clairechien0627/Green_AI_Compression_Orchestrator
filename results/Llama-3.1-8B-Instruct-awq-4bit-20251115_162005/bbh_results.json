@@ -1,0 +1,271 @@
+{
+  "accuracy": 0.680694209798802,
+  "correct": 4432,
+  "total": 6511,
+  "model_path": "quantized/Llama-3.1-8B-Instruct-awq-4bit-20251115_162005",
+  "dataset": "lukaemon/bbh (test)",
+  "num_samples": "ALL",
+  "num_tasks": 27,
+  "prompt_type": "fewshot",
+  "temperature": 0.0,
+  "max_new_tokens": 1024,
+  "output_file": "./results/20251115_180524.txt",
+  "gpu_peak_mb": 5711.126,
+  "total_prompt_tokens": 6025123,
+  "total_output_tokens": 1400087,
+  "total_generation_time_sec": 24698.1073,
+  "throughput_tokens_per_sec": 300.6388,
+  "quantization_config": {
+    "bits": 4,
+    "group_size": 128,
+    "modules_to_not_convert": null,
+    "quant_method": "awq",
+    "version": "gemm",
+    "zero_point": true
+  },
+  "task_results": [
+    {
+      "task_name": "boolean_expressions",
+      "accuracy": 0.884,
+      "correct": 221,
+      "total": 250,
+      "gen_time": 669.9217445850372,
+      "prompt_tokens": 138000,
+      "output_tokens": 37836
+    },
+    {
+      "task_name": "causal_judgement",
+      "accuracy": 0.6256684491978609,
+      "correct": 117,
+      "total": 187,
+      "gen_time": 371.01508712768555,
+      "prompt_tokens": 202134,
+      "output_tokens": 20266
+    },
+    {
+      "task_name": "date_understanding",
+      "accuracy": 0.792,
+      "correct": 198,
+      "total": 250,
+      "gen_time": 461.0372579097748,
+      "prompt_tokens": 153874,
+      "output_tokens": 25343
+    },
+    {
+      "task_name": "disambiguation_qa",
+      "accuracy": 0.472,
+      "correct": 118,
+      "total": 250,
+      "gen_time": 931.720883846283,
+      "prompt_tokens": 250926,
+      "output_tokens": 52083
+    },
+    {
+      "task_name": "dyck_languages",
+      "accuracy": 0.292,
+      "correct": 73,
+      "total": 250,
+      "gen_time": 1633.2657794952393,
+      "prompt_tokens": 235487,
+      "output_tokens": 94333
+    },
+    {
+      "task_name": "formal_fallacies",
+      "accuracy": 0.572,
+      "correct": 143,
+      "total": 250,
+      "gen_time": 1693.5039682388306,
+      "prompt_tokens": 330472,
+      "output_tokens": 98915
+    },
+    {
+      "task_name": "geometric_shapes",
+      "accuracy": 0.464,
+      "correct": 116,
+      "total": 250,
+      "gen_time": 1889.0811882019043,
+      "prompt_tokens": 499556,
+      "output_tokens": 110053
+    },
+    {
+      "task_name": "hyperbaton",
+      "accuracy": 0.68,
+      "correct": 170,
+      "total": 250,
+      "gen_time": 1372.787785768509,
+      "prompt_tokens": 250384,
+      "output_tokens": 79411
+    },
+    {
+      "task_name": "logical_deduction_five_objects",
+      "accuracy": 0.564,
+      "correct": 141,
+      "total": 250,
+      "gen_time": 855.5880391597748,
+      "prompt_tokens": 208155,
+      "output_tokens": 46855
+    },
+    {
+      "task_name": "logical_deduction_seven_objects",
+      "accuracy": 0.432,
+      "correct": 108,
+      "total": 250,
+      "gen_time": 1466.740715265274,
+      "prompt_tokens": 219195,
+      "output_tokens": 81057
+    },
+    {
+      "task_name": "logical_deduction_three_objects",
+      "accuracy": 0.88,
+      "correct": 220,
+      "total": 250,
+      "gen_time": 503.0818021297455,
+      "prompt_tokens": 196815,
+      "output_tokens": 27180
+    },
+    {
+      "task_name": "movie_recommendation",
+      "accuracy": 0.64,
+      "correct": 160,
+      "total": 250,
+      "gen_time": 585.0130059719086,
+      "prompt_tokens": 171176,
+      "output_tokens": 33078
+    },
+    {
+      "task_name": "multistep_arithmetic_two",
+      "accuracy": 0.58,
+      "correct": 145,
+      "total": 250,
+      "gen_time": 1082.855365037918,
+      "prompt_tokens": 246882,
+      "output_tokens": 61739
+    },
+    {
+      "task_name": "navigate",
+      "accuracy": 0.836,
+      "correct": 209,
+      "total": 250,
+      "gen_time": 699.2362284660339,
+      "prompt_tokens": 196414,
+      "output_tokens": 39428
+    },
+    {
+      "task_name": "object_counting",
+      "accuracy": 0.592,
+      "correct": 148,
+      "total": 250,
+      "gen_time": 395.75508522987366,
+      "prompt_tokens": 133138,
+      "output_tokens": 22074
+    },
+    {
+      "task_name": "penguins_in_a_table",
+      "accuracy": 0.773972602739726,
+      "correct": 113,
+      "total": 146,
+      "gen_time": 293.5868990421295,
+      "prompt_tokens": 139743,
+      "output_tokens": 15733
+    },
+    {
+      "task_name": "reasoning_about_colored_objects",
+      "accuracy": 0.76,
+      "correct": 190,
+      "total": 250,
+      "gen_time": 485.71358156204224,
+      "prompt_tokens": 208828,
+      "output_tokens": 26289
+    },
+    {
+      "task_name": "ruin_names",
+      "accuracy": 0.816,
+      "correct": 204,
+      "total": 250,
+      "gen_time": 903.8975758552551,
+      "prompt_tokens": 260905,
+      "output_tokens": 52793
+    },
+    {
+      "task_name": "salient_translation_error_detection",
+      "accuracy": 0.536,
+      "correct": 134,
+      "total": 250,
+      "gen_time": 750.6514031887054,
+      "prompt_tokens": 407572,
+      "output_tokens": 42149
+    },
+    {
+      "task_name": "snarks",
+      "accuracy": 0.7191011235955056,
+      "correct": 128,
+      "total": 178,
+      "gen_time": 499.19820046424866,
+      "prompt_tokens": 129240,
+      "output_tokens": 28193
+    },
+    {
+      "task_name": "sports_understanding",
+      "accuracy": 0.844,
+      "correct": 211,
+      "total": 250,
+      "gen_time": 171.49677157402039,
+      "prompt_tokens": 65814,
+      "output_tokens": 9328
+    },
+    {
+      "task_name": "temporal_sequences",
+      "accuracy": 0.944,
+      "correct": 236,
+      "total": 250,
+      "gen_time": 474.46261501312256,
+      "prompt_tokens": 280054,
+      "output_tokens": 26417
+    },
+    {
+      "task_name": "tracking_shuffled_objects_five_objects",
+      "accuracy": 0.804,
+      "correct": 201,
+      "total": 250,
+      "gen_time": 961.7744462490082,
+      "prompt_tokens": 220900,
+      "output_tokens": 54169
+    },
+    {
+      "task_name": "tracking_shuffled_objects_seven_objects",
+      "accuracy": 0.728,
+      "correct": 182,
+      "total": 250,
+      "gen_time": 1627.882491827011,
+      "prompt_tokens": 233453,
+      "output_tokens": 93627
+    },
+    {
+      "task_name": "tracking_shuffled_objects_three_objects",
+      "accuracy": 0.904,
+      "correct": 226,
+      "total": 250,
+      "gen_time": 518.6862835884094,
+      "prompt_tokens": 210095,
+      "output_tokens": 27859
+    },
+    {
+      "task_name": "web_of_lies",
+      "accuracy": 1.0,
+      "correct": 250,
+      "total": 250,
+      "gen_time": 913.3818461894989,
+      "prompt_tokens": 226340,
+      "output_tokens": 51009
+    },
+    {
+      "task_name": "word_sorting",
+      "accuracy": 0.28,
+      "correct": 70,
+      "total": 250,
+      "gen_time": 2486.7712783813477,
+      "prompt_tokens": 209571,
+      "output_tokens": 142870
+    }
+  ]
+}

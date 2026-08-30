@@ -1,0 +1,52 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 1,
+    "satisfying_targets": 0,
+    "close_to_targets": 0,
+    "violating_targets": 1
+  },
+  "tradeoff_analysis": {
+    "correlations": {},
+    "key_insights": [
+      "資料點太少，無法進行相關性分析"
+    ]
+  },
+  "recommendations": {
+    "for_memory_critical": {
+      "recommended_trial_id": 2,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": true,
+        "sym": false
+      },
+      "objectives": {
+        "accuracy_change": -0.16949152542372894,
+        "gpu_peak_change": -0.5145963748280434,
+        "latency_change": 1.803604900533093
+      },
+      "overall_score": -1.628,
+      "reason": "GPU 節省最多（51.5%）",
+      "warning": "不滿足所有目標"
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 2,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": true,
+        "sym": false
+      },
+      "objectives": {
+        "accuracy_change": -0.16949152542372894,
+        "gpu_peak_change": -0.5145963748280434,
+        "latency_change": 1.803604900533093
+      },
+      "overall_score": -1.628,
+      "reason": "準確率下降最少（16.9%）"
+    }
+  }
+}

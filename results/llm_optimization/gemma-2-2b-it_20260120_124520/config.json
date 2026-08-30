@@ -1,0 +1,261 @@
+{
+  "experiment": {
+    "name": "gemma-2-2b-it",
+    "output_dir": "results/llm_optimization"
+  },
+  "baseline": {
+    "model_name": "google/gemma-2-2b-it",
+    "model_dtype": "float16",
+    "device_map": "cuda:0",
+    "trust_remote_code": true,
+    "datasets": {
+      "gsm8k": {
+        "enabled": true,
+        "num_samples": 50
+      },
+      "truthfulqa": {
+        "enabled": true,
+        "num_samples": 50
+      }
+    }
+  },
+  "quantization_eval": {
+    "use_same_datasets_as_baseline": true
+  },
+  "multiobjective": {
+    "objectives": [
+      {
+        "name": "accuracy_change",
+        "direction": "maximize",
+        "weight": 2.0
+      },
+      {
+        "name": "gpu_peak_change",
+        "direction": "minimize",
+        "weight": 1.0
+      },
+      {
+        "name": "latency_change",
+        "direction": "minimize",
+        "weight": 1.0
+      }
+    ],
+    "aggregation": {
+      "method": "weighted",
+      "dataset_weights": {
+        "gsm8k": 0.5,
+        "truthfulqa": 0.5
+      }
+    },
+    "constraints": {
+      "enabled": false
+    },
+    "targets": {
+      "accuracy_min": -0.1,
+      "gpu_peak_max": -0.5,
+      "latency_max": 1.0
+    }
+  },
+  "optimizer": {
+    "type": "llm_multiagent",
+    "llm_agent": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "api_key_env": "OPENAI_API_KEY",
+      "temperature": 0.7,
+      "max_tokens": 2048,
+      "prompt": {
+        "config_file": "tmp/config/prompt_config.yaml",
+        "type": "en"
+      },
+      "agent_temperatures": {
+        "analyzer": 0.3,
+        "planner": 0.7,
+        "monitor": 0.4
+      },
+      "max_trials": 15,
+      "min_trials": 10
+    },
+    "stopping": {
+      "budget": {
+        "max_trials": 5,
+        "max_time_hours": 24
+      },
+      "convergence": {
+        "enabled": false,
+        "window": 3,
+        "threshold": 0.05
+      }
+    },
+    "validation": {
+      "rules": [
+        "gptq.act_group_aware=True requires desc_act=False"
+      ],
+      "check_gpu_memory": true,
+      "max_expected_gpu_gb": 16
+    },
+    "fallback": {
+      "on_llm_failure": "stop",
+      "max_llm_failures": 3
+    },
+    "logging": {
+      "save_conversations": true,
+      "conversation_file": "agent_conversations.jsonl",
+      "save_prompts": true
+    },
+    "search_space": {
+      "methods": [
+        "gptq",
+        "awq",
+        "bnb"
+      ],
+      "gptq": {
+        "bits": [
+          2,
+          3,
+          4,
+          8
+        ],
+        "group_size": [
+          -1,
+          16,
+          32,
+          64,
+          128
+        ],
+        "calib_num": [
+          256
+        ],
+        "desc_act": [
+          true,
+          false
+        ],
+        "sym": [
+          true,
+          false
+        ],
+        "damp_percent": [
+          0.001,
+          0.005,
+          0.01,
+          0.03,
+          0.05
+        ],
+        "damp_auto_increment": [
+          0.001,
+          0.005,
+          0.01,
+          0.03,
+          0.05
+        ],
+        "act_group_aware": [
+          true,
+          false
+        ],
+        "static_groups": [
+          true,
+          false
+        ],
+        "true_sequential": [
+          true,
+          false
+        ],
+        "lm_head": [
+          false
+        ],
+        "mse": [
+          0.0,
+          0.1,
+          0.2
+        ],
+        "rotation": [
+          null
+        ]
+      },
+      "awq": {
+        "w_bit": [
+          4
+        ],
+        "q_group_size": [
+          16,
+          32,
+          64,
+          128
+        ],
+        "zero_point": [
+          true,
+          false
+        ],
+        "version": [
+          "gemm"
+        ],
+        "modules_to_not_convert": [
+          [
+            "lm_head"
+          ],
+          []
+        ]
+      },
+      "bnb": {
+        "bits": [
+          4,
+          8
+        ],
+        "bnb_4bit_quant_type": [
+          "nf4",
+          "fp4"
+        ],
+        "bnb_4bit_use_double_quant": [
+          true,
+          false
+        ],
+        "bnb_4bit_compute_dtype": [
+          "float16",
+          "bfloat16"
+        ],
+        "llm_int8_threshold": [
+          4.0,
+          4.5,
+          5.0,
+          6.0
+        ],
+        "llm_int8_skip_modules": [
+          [
+            "lm_head"
+          ]
+        ],
+        "llm_int8_has_fp16_weight": [
+          false
+        ],
+        "llm_int8_enable_fp32_cpu_offload": [
+          false
+        ]
+      }
+    }
+  },
+  "output": {
+    "save_all_trials": true,
+    "save_pareto_frontier": true,
+    "recommendation": {
+      "strategy": "closest_to_target"
+    },
+    "visualization": {
+      "enabled": false,
+      "plot_types": [
+        "3d_pareto",
+        "parallel_coordinates",
+        "trade_off_matrix"
+      ],
+      "output_format": "html"
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "save_logs": true,
+    "log_file": "optimization.log"
+  },
+  "cache": {
+    "enable_baseline_cache": true,
+    "cache_dir": ".cache/optimization"
+  }
+}

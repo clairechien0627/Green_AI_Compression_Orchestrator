@@ -1,0 +1,109 @@
+{
+  "pareto_solutions": 5,
+  "solutions": [
+    {
+      "trial_id": 2,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.6400000000000001,
+        "gpu_peak_change": -0.5438950824842774,
+        "latency_change": 0.8203224348796608
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 3,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5212790134671819,
+        "latency_change": 0.7326763477792786
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 6,
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -1.0,
+        "gpu_peak_change": -0.5465485918036745,
+        "latency_change": 6.824376946078953
+      },
+      "satisfies_targets": false,
+      "violation_score": 7.624376946078953
+    },
+    {
+      "trial_id": 15,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "objectives": {
+        "accuracy_change": 0.2400000000000002,
+        "gpu_peak_change": -0.5219295449809983,
+        "latency_change": 0.7487116679547928
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 16,
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": 0.6800000000000002,
+        "gpu_peak_change": -0.5438946785277984,
+        "latency_change": 0.8776831505675573
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    }
+  ]
+}

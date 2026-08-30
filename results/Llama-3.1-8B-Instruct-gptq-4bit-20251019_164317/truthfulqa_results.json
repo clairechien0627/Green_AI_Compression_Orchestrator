@@ -1,0 +1,41 @@
+{
+  "accuracy": 0.5091799265605875,
+  "correct": 416,
+  "total": 817,
+  "model_path": "quantized/Llama-3.1-8B-Instruct-gptq-4bit-20251019_164317",
+  "dataset": "truthful_qa (validation)",
+  "num_samples": "ALL",
+  "prompt_type": "multiple_choice",
+  "temperature": 0.0,
+  "max_new_tokens": 128,
+  "output_file": "./results/20251111_001438.txt",
+  "gpu_peak_mb": 5641.8638,
+  "total_prompt_tokens": 95459,
+  "total_output_tokens": 72442,
+  "total_generation_time_sec": 2527.4265,
+  "throughput_tokens_per_sec": 66.4316,
+  "quantization_config": {
+    "bits": 4,
+    "checkpoint_format": "gptq",
+    "desc_act": true,
+    "group_size": 128,
+    "lm_head": false,
+    "meta": {
+      "act_group_aware": false,
+      "damp_auto_increment": 0.01,
+      "damp_percent": 0.01,
+      "mse": 0.0,
+      "quantizer": [
+        "gptqmodel:4.2.5"
+      ],
+      "static_groups": false,
+      "true_sequential": true,
+      "uri": "https://github.com/modelcloud/gptqmodel",
+      "v2": false,
+      "v2_alpha": 0.25
+    },
+    "pack_dtype": "int32",
+    "quant_method": "gptq",
+    "sym": true
+  }
+}

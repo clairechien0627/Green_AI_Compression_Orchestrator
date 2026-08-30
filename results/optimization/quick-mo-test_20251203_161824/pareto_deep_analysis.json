@@ -1,0 +1,110 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 8,
+    "satisfying_targets": 1,
+    "close_to_targets": 5,
+    "violating_targets": 2
+  },
+  "tradeoff_analysis": {
+    "correlations": {
+      "accuracy_vs_gpu_peak": {
+        "pearson_r": 0.38,
+        "interpretation": "弱正相關"
+      },
+      "accuracy_vs_latency": {
+        "pearson_r": 0.433,
+        "interpretation": "中等正相關"
+      },
+      "gpu_peak_vs_latency": {
+        "pearson_r": -0.124,
+        "interpretation": "幾乎沒有負相關：GPU 節省和延遲變化之間的關係"
+      }
+    },
+    "key_insights": [
+      "最佳壓縮配置節省 63.6% GPU，但準確率下降 44.0%",
+      "1/8 個 Pareto 解滿足所有目標"
+    ]
+  },
+  "recommendations": {
+    "for_production": {
+      "recommended_trial_id": 9,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.01,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.20000000000000007,
+        "gpu_peak_change": -0.5328762000234134,
+        "latency_change": 0.4404231309616996
+      },
+      "overall_score": 0.9925,
+      "reason": "滿足所有目標且綜合評分最高（0.9925 分）"
+    },
+    "for_memory_critical": {
+      "recommended_trial_id": 1,
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.43999999999999995,
+        "gpu_peak_change": -0.6363924311159275,
+        "latency_change": 5.20054274151133
+      },
+      "overall_score": -5.4442,
+      "reason": "GPU 節省最多（63.6%）",
+      "warning": "不滿足所有目標"
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 2,
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": 0.6000000000000001,
+        "gpu_peak_change": -0.5450678893298209,
+        "latency_change": 12.488657492573727
+      },
+      "overall_score": -10.7436,
+      "reason": "準確率下降最少（-60.0%）"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "prompt_type": "zh",
+  "config_path": "tmp/config/prompt_config.yaml",
+  "metadata": {
+    "name": "繁體中文",
+    "description": "LLM 多代理優化的繁體中文提示詞",
+    "version": "1.0"
+  },
+  "supported_types": [
+    "en",
+    "zh"
+  ],
+  "prompts": {
+    "analyzer": {
+      "system_role": "你是一位量化優化試驗的專家分析師。",
+      "task_description": "分析歷史試驗數據，識別模式、失敗原因和未探索的區域。\n",
+      "analysis_requirements": "以 JSON 格式提供完整的分析報告，包含以下欄位：\n\n1. **failure_patterns（失敗模式）**: 識別到的失敗模式列表\n   - pattern: 模式描述\n   - confidence: 0.0-1.0（置信度）\n   - affected_configs: 可能會失敗的相似配置列表\n\n2. **unexplored_regions（未探索區域）**: 尚未嘗試的有潛力參數組合\n   - method: 量化方法\n   - params: 具體參數值\n   - exploration_score: 0.0-1.0（探索價值）\n   - rationale: 為何此區域值得探索\n\n3. **parameter_sensitivity（參數敏感度）**: 哪些參數影響最大\n   - parameter: 參數名稱\n   - impact_score: 0.0-1.0（影響程度，越高越重要）\n   - observation: 觀察結果\n\n4. **pareto_quality（Pareto 前沿品質）**: Pareto 前沿的品質評估\n   - diversity: 0.0-1.0（目標間的分散程度）\n   - coverage: 0.0-1.0（覆蓋理論前沿的百分比）\n   - improvement_rate: 新解決方案添加的趨勢\n\n5. **recommendations（建議）**: 策略性建議列表\n   - recommendation: 簡短可行的建議\n",
+      "output_format": "僅輸出 JSON 物件（不要有其他文字）：\n{\n  \"failure_patterns\": [...],\n  \"unexplored_regions\": [...],\n  \"parameter_sensitivity\": {...},\n  \"pareto_quality\": {...},\n  \"recommendations\": [...]\n}\n",
+      "section_headers": {
+        "your_task": "# 你的任務",
+        "historical_trials": "# 歷史試驗摘要",
+        "pareto_frontier": "# 當前 Pareto 前沿",
+        "search_space": "# 搜尋空間",
+        "analysis_req": "# 分析要求"
+      },
+      "labels": {
+        "total_trials": "總試驗次數",
+        "successful_trials": "成功試驗",
+        "failed_trials": "失敗/剪枝試驗",
+        "non_dominated_solutions": "個非支配解",
+        "recent_trials": "最近試驗",
+        "no_trials": "尚無試驗數據。",
+        "no_pareto": "尚無 Pareto 解。"
+      }
+    },
+    "planner": {
+      "system_role": "你是量化優化的策略規劃師。",
+      "strategy_guide": "# 策略選擇指南\n- **EXPLORATION（探索）**（早期階段或陷入困境時）：\n  - 嘗試未探索的參數區域\n  - 測試多樣化的配置\n  - 注重覆蓋範圍\n\n- **EXPLOITATION（利用）**（中後期且有良好模式時）：\n  - 精細調整有潛力的配置\n  - 在成功試驗周圍進行小幅調整\n  - 注重改善\n\n- **BALANCED（平衡）**：\n  - 兩種策略的混合\n  - 良好的預設選擇\n",
+      "progress_recommendation": "# 基於進度的建議策略\n- < 20% 進度：傾向 EXPLORATION（70%）\n- 20-70% 進度：BALANCED（50/50）\n- > 70% 進度：傾向 EXPLOITATION（80%）\n",
+      "output_format": "以 JSON 格式提供你的決策：\n\n{\n  \"strategy\": \"exploration\" / \"exploitation\" / \"balanced\",\n  \"next_config\": {\n    \"method\": \"gptq\" / \"awq\" / \"bnb\",\n    \"bits\": ...,\n    \"group_size\": ...,\n    ...（所有相關參數）\n  },\n  \"rationale\": \"解釋你選擇此配置的原因（2-3 句話）\",\n  \"confidence\": 0.0-1.0,\n  \"expected_objectives\": {\n    \"accuracy_change\": 預期值,\n    \"gpu_peak_change\": 預期值,\n    \"latency_change\": 預期值\n  },\n  \"alternative_configs\": [\n    {...},  # 備選方案 1\n    {...}   # 備選方案 2\n  ]\n}\n\n僅輸出 JSON 物件（不要有其他文字）。\n",
+      "section_headers": {
+        "current_state": "# 當前狀態",
+        "analysis_from_analyzer": "# 來自 AnalyzerAgent 的分析",
+        "optimization_targets": "# 優化目標",
+        "pareto_frontier": "# 當前 Pareto 前沿",
+        "your_task": "# 你的任務"
+      },
+      "labels": {
+        "trial": "試驗",
+        "progress": "進度",
+        "budget_remaining": "剩餘預算",
+        "trials": "次試驗",
+        "solutions_on_frontier": "個解在前沿上",
+        "decide_next_config": "根據分析決定下一個試驗配置。"
+      }
+    },
+    "formatting": {
+      "methods": "方法",
+      "and_more": "... 還有 {count} 個",
+      "trial_format": "試驗 {num}",
+      "config_format": "{method}-{bits}bit",
+      "objectives_format": "準確率:{acc}, GPU:{gpu}, 延遲:{lat}"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "n_pruned": 2,
+  "pruned_trials": [
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -0.16949152542372894,
+        "gpu_peak_change": -0.18093113213601264,
+        "latency_change": 0.5921039565334579
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it_20260131_144852/models/trial14-20260131_161550-bnb-4bit",
+      "datetime_start": "2026-01-31T16:15:50.986220",
+      "datetime_complete": "2026-01-31T16:20:29.813368"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 5.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": -0.15254237288135605,
+        "gpu_peak_change": -0.1254468868848904,
+        "latency_change": 0.28715907612010905
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it_20260131_144852/models/trial18-20260131_163446-bnb-4bit",
+      "datetime_start": "2026-01-31T16:34:46.084224",
+      "datetime_complete": "2026-01-31T16:38:36.748770"
+    }
+  ]
+}

@@ -1,0 +1,474 @@
+{
+  "total_trials": 10,
+  "completed": 9,
+  "pruned": 0,
+  "failed": 1,
+  "trials": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.43999999999999995,
+        "gpu_peak_change": -0.35093525215892524,
+        "latency_change": 0.695235085102758
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.8290647478410746,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.06,
+          "gpu_peak_mb": 1606.769,
+          "num_samples": 50,
+          "correct": 3,
+          "avg_latency_ms": 1013.4259999999999,
+          "throughput_tokens_per_sec": 1090.2811
+        },
+        "truthfulqa": {
+          "accuracy": 0.22,
+          "gpu_peak_mb": 1529.1929,
+          "num_samples": 50,
+          "correct": 11,
+          "avg_latency_ms": 359.65000000000003,
+          "throughput_tokens_per_sec": 405.2269
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.14,
+        "gpu_peak_mb": 1606.769,
+        "avg_latency_ms": 686.538,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial01-20260122_141545-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.96,
+        "gpu_peak_change": -0.5168651022078564,
+        "latency_change": 3.8568969902291714
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 4.576896990229171,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 1196.0073,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 2614.606,
+          "throughput_tokens_per_sec": 497.6122
+        },
+        "truthfulqa": {
+          "accuracy": 0.02,
+          "gpu_peak_mb": 1115.9429,
+          "num_samples": 50,
+          "correct": 1,
+          "avg_latency_ms": 1319.296,
+          "throughput_tokens_per_sec": 141.1056
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.01,
+        "gpu_peak_mb": 1196.0073,
+        "avg_latency_ms": 1966.951,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial02-20260122_141950-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": 0.24,
+        "gpu_peak_change": -0.5294960133939042,
+        "latency_change": 9.951303888330566
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 8.951303888330566,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.04,
+          "gpu_peak_mb": 1164.7393,
+          "num_samples": 50,
+          "correct": 2,
+          "avg_latency_ms": 5852.602000000001,
+          "throughput_tokens_per_sec": 222.9538
+        },
+        "truthfulqa": {
+          "accuracy": 0.58,
+          "gpu_peak_mb": 1068.5054,
+          "num_samples": 50,
+          "correct": 29,
+          "avg_latency_ms": 3017.538,
+          "throughput_tokens_per_sec": 84.1944
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.31,
+        "gpu_peak_mb": 1164.7393,
+        "avg_latency_ms": 4435.070000000001,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial03-20260122_144617-gptq-3bit"
+    },
+    {
+      "config": {
+        "method": "bnb",
+        "bits": 8,
+        "bnb_4bit_quant_type": "fp4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 5.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "objectives": {
+        "accuracy_change": 0.3600000000000001,
+        "gpu_peak_change": -0.36159808737917964,
+        "latency_change": 5.267049565288249
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 4.40545147790907,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.34,
+          "gpu_peak_mb": 1580.373,
+          "num_samples": 50,
+          "correct": 17,
+          "avg_latency_ms": 2485.6600000000003,
+          "throughput_tokens_per_sec": 457.0536
+        },
+        "truthfulqa": {
+          "accuracy": 0.34,
+          "gpu_peak_mb": 1482.7656,
+          "num_samples": 50,
+          "correct": 17,
+          "avg_latency_ms": 2590.4120000000003,
+          "throughput_tokens_per_sec": 83.9403
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.34,
+        "gpu_peak_mb": 1580.373,
+        "avg_latency_ms": 2538.036,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial04-20260122_145644-bnb-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 64,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -1.0,
+        "gpu_peak_change": -0.6276959348486064,
+        "latency_change": 3.6493242892876454
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 4.449324289287645,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 921.644,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 2508.8379999999997,
+          "throughput_tokens_per_sec": 520.1054
+        },
+        "truthfulqa": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 844.0679,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 1256.9379999999999,
+          "throughput_tokens_per_sec": 202.3966
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.0,
+        "gpu_peak_mb": 921.644,
+        "avg_latency_ms": 1882.888,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial05-20260122_150145-gptq-2bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.76,
+        "gpu_peak_change": -0.5400622222243767,
+        "latency_change": 10.060523827043738
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 10.380523827043739,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 1138.5825,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 6076.018,
+          "throughput_tokens_per_sec": 192.0172
+        },
+        "truthfulqa": {
+          "accuracy": 0.12,
+          "gpu_peak_mb": 1069.5054,
+          "num_samples": 50,
+          "correct": 6,
+          "avg_latency_ms": 2882.586,
+          "throughput_tokens_per_sec": 82.079
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.06,
+        "gpu_peak_mb": 1138.5825,
+        "avg_latency_ms": 4479.302,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial06-20260122_151110-gptq-3bit"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": ""
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.84,
+        "gpu_peak_change": -0.5171613638895709,
+        "latency_change": 3.605304940231764
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 4.085304940231763,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.02,
+          "gpu_peak_mb": 1195.2739,
+          "num_samples": 50,
+          "correct": 1,
+          "avg_latency_ms": 2482.524,
+          "throughput_tokens_per_sec": 440.616
+        },
+        "truthfulqa": {
+          "accuracy": 0.06,
+          "gpu_peak_mb": 1115.9429,
+          "num_samples": 50,
+          "correct": 3,
+          "avg_latency_ms": 1247.598,
+          "throughput_tokens_per_sec": 195.0308
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.04,
+        "gpu_peak_mb": 1195.2739,
+        "avg_latency_ms": 1865.061,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial08-20260122_153030-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 16,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "act_group_aware": true
+      },
+      "objectives": {
+        "accuracy_change": 0.040000000000000036,
+        "gpu_peak_change": -0.48775300905161445,
+        "latency_change": 0.9215296520083658
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.01224699094838555,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.28,
+          "gpu_peak_mb": 1268.0747,
+          "num_samples": 50,
+          "correct": 14,
+          "avg_latency_ms": 822.966,
+          "throughput_tokens_per_sec": 1373.4223
+        },
+        "truthfulqa": {
+          "accuracy": 0.24,
+          "gpu_peak_mb": 1188.1929,
+          "num_samples": 50,
+          "correct": 12,
+          "avg_latency_ms": 733.4000000000001,
+          "throughput_tokens_per_sec": 272.3483
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.26,
+        "gpu_peak_mb": 1268.0747,
+        "avg_latency_ms": 778.183,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial09-20260122_154454-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 64,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.76,
+        "gpu_peak_change": -0.5306197395272465,
+        "latency_change": 0.5179452863220741
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 1.32,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.04,
+          "gpu_peak_mb": 1161.9575,
+          "num_samples": 50,
+          "correct": 2,
+          "avg_latency_ms": 182.348,
+          "throughput_tokens_per_sec": 5838.1744
+        },
+        "truthfulqa": {
+          "accuracy": 0.08,
+          "gpu_peak_mb": 1079.4429,
+          "num_samples": 50,
+          "correct": 4,
+          "avg_latency_ms": 1047.1299999999999,
+          "throughput_tokens_per_sec": 220.584
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.06,
+        "gpu_peak_mb": 1161.9575,
+        "avg_latency_ms": 614.7389999999999,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/Llama-3.2-1B-Instruct_20260122_141529/models/trial10-20260122_154923-gptq-4bit"
+    }
+  ]
+}

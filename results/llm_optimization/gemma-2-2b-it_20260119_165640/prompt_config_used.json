@@ -1,0 +1,95 @@
+{
+  "prompt_type": "en",
+  "config_path": "tmp/config/prompt_config.yaml",
+  "metadata": {
+    "name": "English",
+    "description": "Standard English prompts for LLM multi-agent optimization",
+    "version": "1.0"
+  },
+  "supported_types": [
+    "en",
+    "zh"
+  ],
+  "prompts": {
+    "analyzer": {
+      "system_role": "You are an expert analyzer for quantization optimization trials.",
+      "task_description": "Analyze the historical trials and identify patterns, failures, and unexplored regions.\n",
+      "analysis_requirements": "Provide a comprehensive analysis in JSON format with these fields:\n\n1. **failure_patterns**: List of failure patterns identified\n   - pattern: Description of the pattern\n   - confidence: 0.0-1.0 (how confident you are)\n   - affected_configs: List of similar configs that might fail\n\n2. **unexplored_regions**: Promising parameter combinations not yet tried\n   - method: quantization method\n   - params: specific parameter values\n   - exploration_score: 0.0-1.0 (how valuable to explore)\n   - rationale: why this region is promising\n\n3. **parameter_sensitivity**: Which parameters have the most impact\n   - parameter: parameter name\n   - impact_score: 0.0-1.0 (higher = more important)\n   - observation: what you observed\n\n4. **pareto_quality**: Quality assessment of Pareto frontier\n   - diversity: 0.0-1.0 (spread across objectives)\n   - coverage: 0.0-1.0 (% of theoretical frontier covered)\n   - improvement_rate: trend of new solutions added\n\n5. **recommendations**: List of strategic recommendations\n   - recommendation: brief actionable advice\n",
+      "output_format": "Output ONLY a JSON object (no other text):\n{\n  \"failure_patterns\": [...],\n  \"unexplored_regions\": [...],\n  \"parameter_sensitivity\": {...},\n  \"pareto_quality\": {...},\n  \"recommendations\": [...]\n}\n",
+      "section_headers": {
+        "your_task": "# Your Task",
+        "historical_trials": "# Historical Trials Summary",
+        "pareto_frontier": "# Current Pareto Frontier",
+        "search_space": "# Search Space",
+        "analysis_req": "# Analysis Requirements"
+      },
+      "labels": {
+        "total_trials": "Total trials",
+        "successful_trials": "Successful trials",
+        "failed_trials": "Failed/Pruned trials",
+        "non_dominated_solutions": "non-dominated solutions found",
+        "recent_trials": "Recent trials",
+        "no_trials": "No trials yet.",
+        "no_pareto": "No Pareto solutions yet."
+      }
+    },
+    "planner": {
+      "system_role": "You are a strategic planner for quantization optimization.",
+      "strategy_guide": "# Strategy Selection Guide\n- **EXPLORATION** (early phase or when stuck):\n  - Try unexplored parameter regions\n  - Test diverse configurations\n  - Focus on coverage\n\n- **EXPLOITATION** (mid-late phase with good patterns):\n  - Refine promising configurations\n  - Small perturbations around successful trials\n  - Focus on improvement\n\n- **BALANCED**:\n  - Mix of both strategies\n  - Good default choice\n",
+      "progress_recommendation": "# Recommended Strategy Based on Progress\n- < 20% progress: Prefer EXPLORATION (70%)\n- 20-70% progress: BALANCED (50/50)\n- > 70% progress: Prefer EXPLOITATION (80%)\n",
+      "output_format": "Provide your decision in JSON format:\n\n{\n  \"strategy\": \"exploration\" / \"exploitation\" / \"balanced\",\n  \"next_config\": {\n    \"method\": \"gptq\" / \"awq\" / \"bnb\",\n    \"bits\": ...,\n    \"group_size\": ...,\n    ... (all relevant parameters)\n  },\n  \"rationale\": \"Explain why you chose this config (2-3 sentences)\",\n  \"confidence\": 0.0-1.0,\n  \"expected_objectives\": {\n    \"accuracy_change\": expected value,\n    \"gpu_peak_change\": expected value,\n    \"latency_change\": expected value\n  },\n  \"alternative_configs\": [\n    {...},  # Backup option 1\n    {...}   # Backup option 2\n  ]\n}\n\nOutput ONLY the JSON object (no other text).\n",
+      "section_headers": {
+        "current_state": "# Current State",
+        "analysis_from_analyzer": "# Analysis from AnalyzerAgent",
+        "optimization_targets": "# Optimization Targets",
+        "pareto_frontier": "# Current Pareto Frontier",
+        "your_task": "# Your Task"
+      },
+      "labels": {
+        "trial": "Trial",
+        "progress": "Progress",
+        "budget_remaining": "Budget remaining",
+        "trials": "trials",
+        "solutions_on_frontier": "solutions on frontier",
+        "decide_next_config": "Decide the next trial configuration based on the analysis."
+      }
+    },
+    "monitor": {
+      "system_role": "You are monitoring the optimization progress.",
+      "stopping_criteria": "# Stopping Criteria to Consider\n1. **CONVERGENCE**: Pareto front hasn't improved in last N trials\n2. **TARGET_MET**: Found solutions satisfying all user targets\n3. **BUDGET**: Budget almost exhausted (>95%)\n4. **DIMINISHING_RETURNS**: Little improvement despite many trials\n",
+      "output_format": "Provide assessment in JSON:\n\n{\n  \"should_stop\": true / false,\n  \"reason\": \"convergence\" / \"target_met\" / \"budget_exhausted\" / \"continue\" / null,\n  \"convergence_score\": 0.0-1.0,  # 0=no convergence, 1=fully converged\n  \"progress_metrics\": {\n    \"pareto_improvement_rate\": recent improvement rate,\n    \"target_satisfaction\": % of targets met (0.0-1.0),\n    \"budget_used\": % of budget consumed (0.0-1.0),\n    \"trials_since_improvement\": count\n  },\n  \"recommendation\": \"Brief recommendation (1-2 sentences)\"\n}\n\nOutput ONLY the JSON object (no other text).\n",
+      "section_headers": {
+        "progress_summary": "# Progress Summary",
+        "budget_status": "# Budget Status",
+        "targets_vs_best": "# Targets vs Current Best",
+        "your_task": "# Your Task"
+      },
+      "labels": {
+        "total_trials": "Total trials",
+        "successful_trials": "Successful trials",
+        "pareto_solutions": "Pareto solutions",
+        "satisfying_targets": "Satisfying targets",
+        "trials_used": "Trials used",
+        "progress": "Progress",
+        "evaluate_task": "Evaluate whether optimization should continue or stop.",
+        "targets": "Targets",
+        "accuracy_min": "accuracy_min",
+        "gpu_peak_max": "gpu_peak_max",
+        "latency_max": "latency_max",
+        "best_solution": "Best solution",
+        "accuracy": "accuracy",
+        "gpu_peak": "gpu_peak",
+        "latency": "latency",
+        "satisfies_targets": "Satisfies targets",
+        "no_solutions": "No solutions to compare."
+      }
+    },
+    "formatting": {
+      "methods": "Methods",
+      "and_more": "... and {count} more",
+      "trial_format": "Trial {num}",
+      "config_format": "{method}-{bits}bit",
+      "objectives_format": "acc:{acc}, gpu:{gpu}, lat:{lat}"
+    }
+  }
+}

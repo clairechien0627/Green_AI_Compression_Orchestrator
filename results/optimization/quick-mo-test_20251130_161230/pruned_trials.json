@@ -1,0 +1,98 @@
+{
+  "n_pruned": 3,
+  "pruned_trials": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.05,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": 1.0,
+        "gpu_peak_change": -0.5433625062623353,
+        "latency_change": 3.25803185828471
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "pruned_reason": "constraint_violation",
+      "quantized_model_path": "results/optimization/quick-mo-test_20251130_161230/models/trial06-20251130_162137-gptq-4bit",
+      "datetime_start": "2025-11-30T16:21:37.604791",
+      "datetime_complete": "2025-11-30T16:24:26.475913"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.36,
+        "gpu_peak_change": -0.5438554139580375,
+        "latency_change": 6.948027191399103
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "pruned_reason": "constraint_violation",
+      "quantized_model_path": "results/optimization/quick-mo-test_20251130_161230/models/trial07-20251130_162426-gptq-3bit",
+      "datetime_start": "2025-11-30T16:24:26.476121",
+      "datetime_complete": "2025-11-30T16:30:52.211567"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.040000000000000036,
+        "gpu_peak_change": -0.6309863623484769,
+        "latency_change": 3.446875285507221
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "pruned_reason": "constraint_violation",
+      "quantized_model_path": "results/optimization/quick-mo-test_20251130_161230/models/trial08-20251130_163052-gptq-2bit",
+      "datetime_start": "2025-11-30T16:30:52.211756",
+      "datetime_complete": "2025-11-30T16:35:11.508080"
+    }
+  ]
+}

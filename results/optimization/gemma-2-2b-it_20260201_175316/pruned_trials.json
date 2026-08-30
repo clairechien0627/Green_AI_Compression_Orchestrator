@@ -1,0 +1,35 @@
+{
+  "n_pruned": 1,
+  "pruned_trials": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.05,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.576271186440678,
+        "gpu_peak_change": -0.5347789992288408,
+        "latency_change": -0.23569212967674577
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "pruned",
+      "quantized_model_path": "results/optimization/gemma-2-2b-it_20260201_175316/models/trial00-20260201_175317-gptq-4bit",
+      "datetime_start": "2026-02-01T17:53:16.672884",
+      "datetime_complete": "2026-02-01T18:01:40.342811"
+    }
+  ]
+}

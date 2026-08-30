@@ -1,0 +1,79 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 6,
+    "satisfying_targets": 0,
+    "close_to_targets": 5,
+    "violating_targets": 1
+  },
+  "tradeoff_analysis": {
+    "correlations": {
+      "accuracy_vs_gpu_peak": {
+        "pearson_r": 0.727,
+        "interpretation": "強正相關"
+      },
+      "accuracy_vs_latency": {
+        "pearson_r": -0.84,
+        "interpretation": "強負相關：準確率越高，延遲可能越長"
+      },
+      "gpu_peak_vs_latency": {
+        "pearson_r": -0.457,
+        "interpretation": "中等負相關：GPU 節省和延遲變化之間的關係"
+      }
+    },
+    "key_insights": [
+      "準確率和 GPU 節省可以同時優化（0.73 相關性）",
+      "最佳壓縮配置節省 61.5% GPU，但準確率下降 89.8%"
+    ]
+  },
+  "recommendations": {
+    "for_memory_critical": {
+      "recommended_trial_id": 4,
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.8983050847457626,
+        "gpu_peak_change": -0.6148460628478661,
+        "latency_change": 1.1732296383195386
+      },
+      "overall_score": -2.355,
+      "reason": "GPU 節省最多（61.5%）",
+      "warning": "不滿足所有目標"
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 8,
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.3465642322132825,
+        "latency_change": 0.5600104361148786
+      },
+      "overall_score": -0.3151,
+      "reason": "準確率下降最少（5.1%）"
+    }
+  }
+}

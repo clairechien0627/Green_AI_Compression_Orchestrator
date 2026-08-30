@@ -1,0 +1,300 @@
+[
+  {
+    "iteration": 3,
+    "trial_name": "trial_003_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.05,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given the current status and trials, the modes 'asvd_only' and 'hybrid_asvd_bnb' have already been tried with significant penalties due to large accuracy drops. To explore regions with potentially better accuracy retention without extreme over-compression, the 'gptq' mode can be beneficial. GPTQ compression at 4 bits is often a sweet spot for balancing compression ratios while retaining model accuracy. Moreover, having not tried this mode yet provides new insights into its isolated effects on the task. GPTQ is also known to maintain prediction quality better by using per-group quantization to address the curse of quantization noise. Risks include not achieving as heavy VRAM reduction compared to hybrid methods, but the primary focus at this stage is finding a setup that doesn't trigger the heavy penalty for accuracy drop.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.05
+    },
+    "metrics": {
+      "accuracy": 0.676,
+      "latency": 472.047,
+      "vram": 2.320545703125,
+      "emissions": 0.01576352,
+      "score": 4.686306913029134,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.676,
+          "latency": 472.047,
+          "vram": 2.320545703125,
+          "emissions": 0.01576352
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_003_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_003_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 22,
+    "trial_name": "trial_022_awq_4bit_g64",
+    "config": {
+      "mode": "awq",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 64
+      }
+    },
+    "suggestion": {
+      "reasoning": "To explore the potential of the AWQ method, which has been tested only once, showing a substantial reduction in VRAM usage (62.38%) with a trade-off of about 13.09% accuracy loss overall. Testing different settings for group size might provide a better balance between latency, VRAM, and accuracy. This will help determine if adjustments to group size can yield greater efficiency while retaining acceptable accuracy levels.",
+      "mode": "awq",
+      "quant_group_size": 64
+    },
+    "metrics": {
+      "accuracy": 0.662,
+      "latency": 475.0678,
+      "vram": 2.382069140625,
+      "emissions": 0.01459743,
+      "score": 4.667826124865653,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.662,
+          "latency": 475.0678,
+          "vram": 2.382069140625,
+          "emissions": 0.01459743
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_022_awq_4bit_g64",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_022_awq_4bit_g64"
+  },
+  {
+    "iteration": 23,
+    "trial_name": "trial_023_awq_4bit_g32",
+    "config": {
+      "mode": "awq",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 32
+      }
+    },
+    "suggestion": {
+      "reasoning": "The awq method has shown good results in previous iterations, achieving a high score with significant reductions in latency and VRAM usage while maintaining a reasonable accuracy. However, the group size tested so far was either 64 or 128. This suggests an opportunity to experiment with the lower end of group size within the awq constraints to potentially enhance precision given the fixed 4-bit quantization. A smaller group size may improve localized precision and accuracy retention, hence preserving performance while still achieving a good compression ratio. By using awq with a group size of 32, we aim to balance between compression and accuracy more effectively, exploring how this impacts the trade-offs observed in prior tests. This approach aims to refine existing results and potentially improve upon the accuracy drop while maintaining the efficiency gains observed.",
+      "mode": "awq",
+      "quant_group_size": 32
+    },
+    "metrics": {
+      "accuracy": 0.664,
+      "latency": 478.0477,
+      "vram": 2.48896171875,
+      "emissions": 0.01456274,
+      "score": 4.62910590039693,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.664,
+          "latency": 478.0477,
+          "vram": 2.48896171875,
+          "emissions": 0.01456274
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_023_awq_4bit_g32",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_023_awq_4bit_g32"
+  },
+  {
+    "iteration": 24,
+    "trial_name": "trial_024_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.04,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "From the trials data, it is evident that `gptq` with lower dampening percentages can maintain a reasonably low accuracy drop while significantly reducing both latency and VRAM. This setup has already shown potential. Current configurations of `sparse_unstructured` and `sparse_structured` have led to large accuracy drops, indicating their ineffectiveness for this task. By focusing on slightly adjusting `gptq` configurations with the sweet spot already observed at 4-bit and group size of 128, we can potentially refine the balance between accuracy retention and resources saved. Hence, a `gptq` reconfiguration could further optimize scores by exploring a slightly less aggressive dampening at a stable setup already shown to perform best.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.04
+    },
+    "metrics": {
+      "accuracy": 0.664,
+      "latency": 470.2209,
+      "vram": 2.320545703125,
+      "emissions": 0.01518784,
+      "score": 4.673651003661112,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.664,
+          "latency": 470.2209,
+          "vram": 2.320545703125,
+          "emissions": 0.01518784
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_024_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_024_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 26,
+    "trial_name": "trial_026_asvd_only_r090_a60",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.6,
+        "ratio": 0.9,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "reasoning": "After reviewing previous ASVD and GPTQ configurations, it is evident that some parameter settings have not yet been explored. Among the ASVD configurations tried, the alpha level has consistently been set at 0.5, and the scaling method has always been 'fisher', which has shown varying results but lack a higher alpha value evaluation. On the other hand, the GPTQ configuration with 'gptq_v2' format and other dampers is promising but not yet maximized. Since we have reached impressive results with the 'gptq' 4-bit format using both formats and dampers in other configurations, we can attempt to explore an increased alpha level in ASVD to see if it could positively impact performance gains while still maintaining reasonable trade-offs. Given the aim to explore unexplored parameters while optimizing across the metrics, we will test ASVD with slightly heavier compression using a higher alpha.",
+      "mode": "asvd_only",
+      "alpha": 0.6,
+      "param_ratio_target": 0.9,
+      "scaling_method": "fisher"
+    },
+    "metrics": {
+      "accuracy": 0.168,
+      "latency": 383.7247,
+      "vram": 5.66368623046875,
+      "emissions": 0.01876771,
+      "score": -4.349928783368635,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.168,
+          "latency": 383.7247,
+          "vram": 5.66368623046875,
+          "emissions": 0.01876771
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_026_asvd_only_r090_a60",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_026_asvd_only_r090_a60"
+  },
+  {
+    "iteration": 27,
+    "trial_name": "trial_027_awq_4bit_g16",
+    "config": {
+      "mode": "awq",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 16
+      }
+    },
+    "suggestion": {
+      "reasoning": "To further enhance the AWQ configurations that showed promising results, we can leverage its capacity for minimal accuracy decline alongside significant latency and memory efficiency. Considering that the smaller quant_group_size led to slight accuracy improvements in Iterations 22 and 23, this task iteration will utilize the AWQ mode with a quant_group_size of 16 to test if more incremental adjustments can push the boundaries of the trade-offs further. Globally optimizing latency and VRAM while constraining accuracy loss is imperative in this context. Predictably, this should maintain or improve the accuracy to within the current performance envelope and potentially better the cross-parameter savings, especially within soft limits on the existing latency bottleneck.",
+      "mode": "awq",
+      "quant_group_size": 16
+    },
+    "metrics": {
+      "accuracy": 0.0,
+      "latency": 0.0,
+      "vram": 0.0,
+      "emissions": 0.0,
+      "score": -18.68723733950018,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "latency": 0.0,
+          "vram": 0.0,
+          "emissions": 0.0
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_027_awq_4bit_g16",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_027_awq_4bit_g16"
+  },
+  {
+    "iteration": 28,
+    "trial_name": "trial_028_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.045,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "Given the exploration of both asvd and gptq configurations, it appears that the current settings for gptq, especially with 4-bit quantization and a group size of 128, consistently achieve strong performance on the Pareto frontier. Asvd configurations, while varied, have not provided competitive scores in comparison. The previous best gptq configuration used a damp of 0.04 and achieved significant reductions in latency, VRAM, and emissions without overly compromising accuracy. It’s prudent to optimize this setting further by adjusting the damp parameter slightly, considering past attempts had damp percentages of 0.04 and 0.05. Trying an intermediate value of 0.045 within the context of gptq might strike an effective balance.",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.045
+    },
+    "metrics": {
+      "accuracy": 0.644,
+      "latency": 460.3983,
+      "vram": 2.320545703125,
+      "emissions": 0.0148192,
+      "score": 4.6275811660863795,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.644,
+          "latency": 460.3983,
+          "vram": 2.320545703125,
+          "emissions": 0.0148192
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_028_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_028_gptq_4bit_g128_gptq"
+  },
+  {
+    "iteration": 29,
+    "trial_name": "trial_029_gptq_4bit_g128_gptq",
+    "config": {
+      "mode": "gptq",
+      "quant": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "format": "gptq",
+        "damp": 0.055,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "reasoning": "The exploration of gptq configurations revealed multiple promising setups. The damp_percent parameter varied from 0.03 to 0.05, demonstrating a balance in accuracy and computational performance. However, gptq iterations consistently maintain the highest accuracy when damp_percent is set closer to 0.05, as seen in Iter 3, which achieved an accuracy of 0.6760 with a competitive score. On the awq side, configurations with quant_group_size of 32 and 64 showed competitive performance and slightly better efficiency than larger group sizes. Given that gptq's performance is ahead in terms of accuracy and is slightly favorable with higher damp percentages, choosing a similar yet not identical setting that offers a chance to maintain a high score while optimizing other metrics appears judicious. The unexplored combination of gptq with 0.055 damp could potentially offer the robustness observed with 0.05 while improving efficiency.\n\n",
+      "mode": "gptq",
+      "quant_bits": 4,
+      "quant_group_size": 128,
+      "quant_format": "gptq",
+      "damp_percent": 0.055
+    },
+    "metrics": {
+      "accuracy": 0.634,
+      "latency": 440.801,
+      "vram": 2.320545703125,
+      "emissions": 0.01495408,
+      "score": 4.615070382594187,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.634,
+          "latency": 440.801,
+          "vram": 2.320545703125,
+          "emissions": 0.01495408
+        }
+      }
+    },
+    "model_path": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_029_gptq_4bit_g128_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/tuning_results/benchmark_20260826_171618/exp_Llama-3.2-3B-Instruct_gsm8k_tool_20260828_134529/trial_029_gptq_4bit_g128_gptq"
+  }
+]

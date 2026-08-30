@@ -1,0 +1,954 @@
+{
+  "experiment_name": "gemma-2-2b-it",
+  "timestamp": "20260120_144203",
+  "config_file": "optimization_config.yaml",
+  "baseline": {
+    "model": "google/gemma-2-2b-it",
+    "dtype": "float16",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.64,
+        "gpu_peak_mb": 5198.4072,
+        "num_samples": 50,
+        "correct": 32,
+        "avg_latency_ms": 2051.056,
+        "throughput_tokens_per_sec": 591.198
+      },
+      "truthfulqa": {
+        "accuracy": 0.54,
+        "gpu_peak_mb": 5038.4805,
+        "num_samples": 50,
+        "correct": 27,
+        "avg_latency_ms": 1191.53,
+        "throughput_tokens_per_sec": 189.5042
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.5900000000000001,
+      "gpu_peak_mb": 5198.4072,
+      "avg_latency_ms": 1621.2930000000001,
+      "aggregation_method": "average"
+    }
+  },
+  "optimization_summary": {
+    "optimizer_type": "llm_multiagent",
+    "n_total_trials": 11,
+    "n_completed_trials": 10,
+    "n_pruned_trials": 0,
+    "n_failed_trials": 1,
+    "n_pareto_solutions": 6,
+    "n_satisfying_solutions": 0,
+    "success_rate": "90.9%"
+  },
+  "objectives": [
+    {
+      "name": "accuracy_change",
+      "direction": "maximize",
+      "weight": 2.0
+    },
+    {
+      "name": "gpu_peak_change",
+      "direction": "minimize",
+      "weight": 1.0
+    },
+    {
+      "name": "latency_change",
+      "direction": "minimize",
+      "weight": 1.0
+    }
+  ],
+  "constraints": {
+    "enabled": false
+  },
+  "targets": {
+    "accuracy_min": -0.1,
+    "gpu_peak_max": -0.5,
+    "latency_max": 1.0
+  },
+  "all_trials": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.16949152542372894,
+        "gpu_peak_change": -0.3570158951765071,
+        "latency_change": 0.5177484883978405
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.28196715567095076,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.46,
+          "gpu_peak_mb": 3342.4932,
+          "num_samples": 50,
+          "correct": 23,
+          "avg_latency_ms": 2768.7720000000004,
+          "throughput_tokens_per_sec": 440.2024
+        },
+        "truthfulqa": {
+          "accuracy": 0.52,
+          "gpu_peak_mb": 3200.0752,
+          "num_samples": 50,
+          "correct": 26,
+          "avg_latency_ms": 2152.6580000000004,
+          "throughput_tokens_per_sec": 103.565
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.49,
+        "gpu_peak_mb": 3342.4932,
+        "avg_latency_ms": 2460.715,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial01-20260120_124538-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "objectives": {
+        "accuracy_change": null,
+        "gpu_peak_change": null,
+        "latency_change": null
+      },
+      "satisfies_constraints": false,
+      "satisfies_targets": false,
+      "violation_score": null,
+      "status": "failed",
+      "error": "'Catcher' object has no attribute 'attention_type'"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.15254237288135605,
+        "gpu_peak_change": -0.5136640315518184,
+        "latency_change": 0.20576601514963672
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.1050847457627121,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.3,
+          "gpu_peak_mb": 2528.1724,
+          "num_samples": 50,
+          "correct": 15,
+          "avg_latency_ms": 2074.42,
+          "throughput_tokens_per_sec": 568.207
+        },
+        "truthfulqa": {
+          "accuracy": 0.7,
+          "gpu_peak_mb": 2358.9521,
+          "num_samples": 50,
+          "correct": 35,
+          "avg_latency_ms": 1835.38,
+          "throughput_tokens_per_sec": 110.8218
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.5,
+        "gpu_peak_mb": 2528.1724,
+        "avg_latency_ms": 1954.9,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial03-20260120_125349-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.5254237288135594,
+        "gpu_peak_change": -0.5537117984908916,
+        "latency_change": 0.996051916587563
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.8508474576271188,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.2,
+          "gpu_peak_mb": 2319.9878,
+          "num_samples": 50,
+          "correct": 10,
+          "avg_latency_ms": 3652.9719999999998,
+          "throughput_tokens_per_sec": 319.5918
+        },
+        "truthfulqa": {
+          "accuracy": 0.36,
+          "gpu_peak_mb": 2196.0229,
+          "num_samples": 50,
+          "correct": 18,
+          "avg_latency_ms": 2819.398,
+          "throughput_tokens_per_sec": 64.8224
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.28,
+        "gpu_peak_mb": 2319.9878,
+        "avg_latency_ms": 3236.185,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial04-20260120_130548-gptq-3bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.8983050847457626,
+        "gpu_peak_change": -0.6148460628478661,
+        "latency_change": 1.1732296383195386
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 1.769839807811064,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 2002.187,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 4739.38,
+          "throughput_tokens_per_sec": 234.5919
+        },
+        "truthfulqa": {
+          "accuracy": 0.12,
+          "gpu_peak_mb": 1853.917,
+          "num_samples": 50,
+          "correct": 6,
+          "avg_latency_ms": 2307.5040000000004,
+          "throughput_tokens_per_sec": 78.8124
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.06,
+        "gpu_peak_mb": 2002.187,
+        "avg_latency_ms": 3523.442,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial05-20260120_132013-gptq-2bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.2542372881355933,
+        "gpu_peak_change": -0.32766779024159554,
+        "latency_change": 0.5245196272357927
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.4808067860295911,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.46,
+          "gpu_peak_mb": 3495.0566,
+          "num_samples": 50,
+          "correct": 23,
+          "avg_latency_ms": 2761.186,
+          "throughput_tokens_per_sec": 439.7674
+        },
+        "truthfulqa": {
+          "accuracy": 0.42,
+          "gpu_peak_mb": 3364.48,
+          "num_samples": 50,
+          "correct": 21,
+          "avg_latency_ms": 2182.2,
+          "throughput_tokens_per_sec": 102.2271
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.44,
+        "gpu_peak_mb": 3495.0566,
+        "avg_latency_ms": 2471.693,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial06-20260120_133503-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.2542372881355933,
+        "gpu_peak_change": -0.32768140979798577,
+        "latency_change": 0.5309706512024661
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.48079316647320086,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.46,
+          "gpu_peak_mb": 3494.9858,
+          "num_samples": 50,
+          "correct": 23,
+          "avg_latency_ms": 2785.764,
+          "throughput_tokens_per_sec": 435.8877
+        },
+        "truthfulqa": {
+          "accuracy": 0.42,
+          "gpu_peak_mb": 3364.7568,
+          "num_samples": 50,
+          "correct": 21,
+          "avg_latency_ms": 2178.54,
+          "throughput_tokens_per_sec": 102.3989
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.44,
+        "gpu_peak_mb": 3494.9858,
+        "avg_latency_ms": 2482.152,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial07-20260120_134715-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.7457627118644068,
+        "gpu_peak_change": -0.5143750762733631,
+        "latency_change": 0.775841874355838
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 1.2915254237288136,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.06,
+          "gpu_peak_mb": 2524.4761,
+          "num_samples": 50,
+          "correct": 3,
+          "avg_latency_ms": 4711.657999999999,
+          "throughput_tokens_per_sec": 234.0068
+        },
+        "truthfulqa": {
+          "accuracy": 0.24,
+          "gpu_peak_mb": 2364.1826,
+          "num_samples": 50,
+          "correct": 12,
+          "avg_latency_ms": 1046.662,
+          "throughput_tokens_per_sec": 149.0834
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.15,
+        "gpu_peak_mb": 2524.4761,
+        "avg_latency_ms": 2879.16,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial08-20260120_135934-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.3465642322132825,
+        "latency_change": 0.5600104361148786
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.15343576778671753,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.56,
+          "gpu_peak_mb": 3396.8252,
+          "num_samples": 50,
+          "correct": 28,
+          "avg_latency_ms": 2842.52,
+          "throughput_tokens_per_sec": 427.3884
+        },
+        "truthfulqa": {
+          "accuracy": 0.56,
+          "gpu_peak_mb": 3253.9209,
+          "num_samples": 50,
+          "correct": 28,
+          "avg_latency_ms": 2215.948,
+          "throughput_tokens_per_sec": 101.9518
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.56,
+        "gpu_peak_mb": 3396.8252,
+        "avg_latency_ms": 2529.234,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial09-20260120_141211-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.15254237288135605,
+        "gpu_peak_change": -0.5137942252773118,
+        "latency_change": 0.20632976272641632
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.1050847457627121,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.3,
+          "gpu_peak_mb": 2527.4956,
+          "num_samples": 50,
+          "correct": 15,
+          "avg_latency_ms": 2094.944,
+          "throughput_tokens_per_sec": 562.6405
+        },
+        "truthfulqa": {
+          "accuracy": 0.7,
+          "gpu_peak_mb": 2365.0898,
+          "num_samples": 50,
+          "correct": 35,
+          "avg_latency_ms": 1816.684,
+          "throughput_tokens_per_sec": 111.9623
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.5,
+        "gpu_peak_mb": 2527.4956,
+        "avg_latency_ms": 1955.8139999999999,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial10-20260120_142003-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": false,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.22033898305084754,
+        "gpu_peak_change": -0.3465642322132825,
+        "latency_change": 0.46679286224019934
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.3941137338884126,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.4,
+          "gpu_peak_mb": 3396.8252,
+          "num_samples": 50,
+          "correct": 20,
+          "avg_latency_ms": 2645.8679999999995,
+          "throughput_tokens_per_sec": 457.5588
+        },
+        "truthfulqa": {
+          "accuracy": 0.52,
+          "gpu_peak_mb": 3253.9209,
+          "num_samples": 50,
+          "correct": 26,
+          "avg_latency_ms": 2110.334,
+          "throughput_tokens_per_sec": 101.927
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.46,
+        "gpu_peak_mb": 3396.8252,
+        "avg_latency_ms": 2378.1009999999997,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial11-20260120_143236-gptq-8bit"
+    }
+  ],
+  "pareto_frontier": [
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.15254237288135605,
+        "gpu_peak_change": -0.5136640315518184,
+        "latency_change": 0.20576601514963672
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.1050847457627121,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.3,
+          "gpu_peak_mb": 2528.1724,
+          "num_samples": 50,
+          "correct": 15,
+          "avg_latency_ms": 2074.42,
+          "throughput_tokens_per_sec": 568.207
+        },
+        "truthfulqa": {
+          "accuracy": 0.7,
+          "gpu_peak_mb": 2358.9521,
+          "num_samples": 50,
+          "correct": 35,
+          "avg_latency_ms": 1835.38,
+          "throughput_tokens_per_sec": 110.8218
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.5,
+        "gpu_peak_mb": 2528.1724,
+        "avg_latency_ms": 1954.9,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial03-20260120_125349-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.5254237288135594,
+        "gpu_peak_change": -0.5537117984908916,
+        "latency_change": 0.996051916587563
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.8508474576271188,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.2,
+          "gpu_peak_mb": 2319.9878,
+          "num_samples": 50,
+          "correct": 10,
+          "avg_latency_ms": 3652.9719999999998,
+          "throughput_tokens_per_sec": 319.5918
+        },
+        "truthfulqa": {
+          "accuracy": 0.36,
+          "gpu_peak_mb": 2196.0229,
+          "num_samples": 50,
+          "correct": 18,
+          "avg_latency_ms": 2819.398,
+          "throughput_tokens_per_sec": 64.8224
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.28,
+        "gpu_peak_mb": 2319.9878,
+        "avg_latency_ms": 3236.185,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial04-20260120_130548-gptq-3bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.8983050847457626,
+        "gpu_peak_change": -0.6148460628478661,
+        "latency_change": 1.1732296383195386
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 1.769839807811064,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "gpu_peak_mb": 2002.187,
+          "num_samples": 50,
+          "correct": 0,
+          "avg_latency_ms": 4739.38,
+          "throughput_tokens_per_sec": 234.5919
+        },
+        "truthfulqa": {
+          "accuracy": 0.12,
+          "gpu_peak_mb": 1853.917,
+          "num_samples": 50,
+          "correct": 6,
+          "avg_latency_ms": 2307.5040000000004,
+          "throughput_tokens_per_sec": 78.8124
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.06,
+        "gpu_peak_mb": 2002.187,
+        "avg_latency_ms": 3523.442,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial05-20260120_132013-gptq-2bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.7457627118644068,
+        "gpu_peak_change": -0.5143750762733631,
+        "latency_change": 0.775841874355838
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 1.2915254237288136,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.06,
+          "gpu_peak_mb": 2524.4761,
+          "num_samples": 50,
+          "correct": 3,
+          "avg_latency_ms": 4711.657999999999,
+          "throughput_tokens_per_sec": 234.0068
+        },
+        "truthfulqa": {
+          "accuracy": 0.24,
+          "gpu_peak_mb": 2364.1826,
+          "num_samples": 50,
+          "correct": 12,
+          "avg_latency_ms": 1046.662,
+          "throughput_tokens_per_sec": 149.0834
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.15,
+        "gpu_peak_mb": 2524.4761,
+        "avg_latency_ms": 2879.16,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial08-20260120_135934-gptq-4bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.3465642322132825,
+        "latency_change": 0.5600104361148786
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.15343576778671753,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.56,
+          "gpu_peak_mb": 3396.8252,
+          "num_samples": 50,
+          "correct": 28,
+          "avg_latency_ms": 2842.52,
+          "throughput_tokens_per_sec": 427.3884
+        },
+        "truthfulqa": {
+          "accuracy": 0.56,
+          "gpu_peak_mb": 3253.9209,
+          "num_samples": 50,
+          "correct": 28,
+          "avg_latency_ms": 2215.948,
+          "throughput_tokens_per_sec": 101.9518
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.56,
+        "gpu_peak_mb": 3396.8252,
+        "avg_latency_ms": 2529.234,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial09-20260120_141211-gptq-8bit"
+    },
+    {
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": true,
+        "mse": 0.1
+      },
+      "objectives": {
+        "accuracy_change": -0.15254237288135605,
+        "gpu_peak_change": -0.5137942252773118,
+        "latency_change": 0.20632976272641632
+      },
+      "satisfies_constraints": true,
+      "satisfies_targets": false,
+      "violation_score": 0.1050847457627121,
+      "status": "completed",
+      "per_dataset": {
+        "gsm8k": {
+          "accuracy": 0.3,
+          "gpu_peak_mb": 2527.4956,
+          "num_samples": 50,
+          "correct": 15,
+          "avg_latency_ms": 2094.944,
+          "throughput_tokens_per_sec": 562.6405
+        },
+        "truthfulqa": {
+          "accuracy": 0.7,
+          "gpu_peak_mb": 2365.0898,
+          "num_samples": 50,
+          "correct": 35,
+          "avg_latency_ms": 1816.684,
+          "throughput_tokens_per_sec": 111.9623
+        }
+      },
+      "aggregated": {
+        "accuracy": 0.5,
+        "gpu_peak_mb": 2527.4956,
+        "avg_latency_ms": 1955.8139999999999,
+        "aggregation_method": "weighted"
+      },
+      "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial10-20260120_142003-gptq-4bit"
+    }
+  ],
+  "satisfying_solutions": [],
+  "recommended_config": {
+    "config": {
+      "method": "gptq",
+      "bits": 4,
+      "group_size": 32,
+      "calib_num": 256,
+      "desc_act": false,
+      "sym": false,
+      "damp_percent": 0.01,
+      "damp_auto_increment": 0.005,
+      "act_group_aware": true,
+      "static_groups": false,
+      "true_sequential": true,
+      "lm_head": false,
+      "mse": 0.1,
+      "rotation": null
+    },
+    "objectives": {
+      "accuracy_change": -0.15254237288135605,
+      "gpu_peak_change": -0.5136640315518184,
+      "latency_change": 0.20576601514963672
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": false,
+    "violation_score": 0.1050847457627121,
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.3,
+        "gpu_peak_mb": 2528.1724,
+        "num_samples": 50,
+        "correct": 15,
+        "avg_latency_ms": 2074.42,
+        "throughput_tokens_per_sec": 568.207
+      },
+      "truthfulqa": {
+        "accuracy": 0.7,
+        "gpu_peak_mb": 2358.9521,
+        "num_samples": 50,
+        "correct": 35,
+        "avg_latency_ms": 1835.38,
+        "throughput_tokens_per_sec": 110.8218
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.5,
+      "gpu_peak_mb": 2528.1724,
+      "avg_latency_ms": 1954.9,
+      "aggregation_method": "weighted"
+    },
+    "quantized_model_path": "results/llm_optimization/gemma-2-2b-it_20260120_124520/models/trial03-20260120_125349-gptq-4bit"
+  },
+  "prompt_info": {
+    "prompt_type": "en",
+    "config_path": "tmp/config/prompt_config.yaml",
+    "metadata": {
+      "name": "English",
+      "description": "Standard English prompts for LLM multi-agent optimization",
+      "version": "1.0"
+    }
+  }
+}

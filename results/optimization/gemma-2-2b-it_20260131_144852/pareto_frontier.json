@@ -1,0 +1,161 @@
+{
+  "pareto_solutions": 6,
+  "solutions": [
+    {
+      "trial_id": 0,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.10169491525423736,
+        "gpu_peak_change": -0.5373382831571948,
+        "latency_change": 0.1629039291479085
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 1,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.2711864406779662,
+        "gpu_peak_change": -0.5365688166944675,
+        "latency_change": -0.09761283124025084
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 4,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.03,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": true,
+        "lm_head": false,
+        "mse": 0.2,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.3559322033898306,
+        "gpu_peak_change": -0.5363419779812555,
+        "latency_change": -0.3326456106329949
+      },
+      "satisfies_targets": false,
+      "violation_score": 0.11186440677966125
+    },
+    {
+      "trial_id": 6,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.22033898305084762,
+        "gpu_peak_change": -0.5358714877126209,
+        "latency_change": -0.03616619574623476
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 7,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": true,
+        "damp_percent": 0.001,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.05084745762711868,
+        "gpu_peak_change": -0.5353665253464561,
+        "latency_change": 0.5766860154210247
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    },
+    {
+      "trial_id": 13,
+      "config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.20338983050847464,
+        "gpu_peak_change": -0.5347547610352648,
+        "latency_change": -0.09229917109368894
+      },
+      "satisfies_targets": true,
+      "violation_score": 0.0
+    }
+  ]
+}

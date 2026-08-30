@@ -1,0 +1,2031 @@
+======================================================================
+LLM MULTI-AGENT OPTIMIZATION - CONVERSATION LOG
+======================================================================
+
+======================================================================
+Trial 1
+======================================================================
+
+[14:52:26] TRIAL START
+
+----------------------------------------------------------------------
+
+[14:52:37] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 0,
+    "pareto_count": 0,
+    "trial_num": 1,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trial_count": 0,
+          "success_rate": 0.0,
+          "average_metrics": {}
+        },
+        "awq": {
+          "trial_count": 0,
+          "success_rate": 0.0,
+          "average_metrics": {}
+        },
+        "bnb": {
+          "trial_count": 0,
+          "success_rate": 0.0,
+          "average_metrics": {}
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Higher bits likely improve accuracy but may increase resource usage.",
+        "group_size": "Smaller group sizes may lead to better accuracy but potentially higher latency."
+      },
+      "unexplored_regions": [
+        {
+          "method": "gptq",
+          "parameters": {
+            "bits": [
+              2,
+              3,
+              4,
+              8
+            ],
+            "group_size": [
+              -1,
+              16,
+              32,
+              64,
+              128
+            ]
+          }
+        },
+        {
+          "method": "awq",
+          "parameters": {
+            "w_bit": [
+              4
+            ],
+            "q_group_size": [
+              16,
+              32,
+              64,
+              128
+            ]
+          }
+        },
+        {
+          "method": "bnb",
+          "parameters": {
+            "bits": [
+              4,
+              8
+            ]
+          }
+        }
+      ],
+      "recommendations": [
+        "Start with a balanced configuration in gptq to explore its potential.",
+        "Try different group sizes to find a sweet spot for performance and resource usage."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "No historical data available; starting with exploration.",
+        "target_gap": "Need to ensure accuracy change is within limits while reducing GPU peak change.",
+        "avoid_repeating": "No configurations tried yet.",
+        "chosen_strategy_reason": "Early stage of trials, need to explore the parameter space."
+      },
+      "strategy": "exploration",
+      "next_config": {
+        "method": "gptq",
+        "bits": 4,
+        "group_size": 32,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "rationale": "Selecting gptq with moderate bits and group size to balance accuracy and resource usage.",
+      "confidence": 0.5
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[14:59:11] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -92.00%
+  GPU peak change: -51.99%
+  Latency change: +345.56%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 2
+======================================================================
+
+[14:59:11] TRIAL START
+
+----------------------------------------------------------------------
+
+[14:59:25] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 1,
+    "pareto_count": 1,
+    "trial_num": 2,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 0.0,
+          "average_metrics": {
+            "accuracy_change": -92.0,
+            "gpu_peak_change": -51.99,
+            "latency_change": 345.56
+          }
+        },
+        "awq": {
+          "trials": 0,
+          "success_rate": null,
+          "average_metrics": null
+        },
+        "bnb": {
+          "trials": 0,
+          "success_rate": null,
+          "average_metrics": null
+        }
+      },
+      "failure_patterns": [
+        {
+          "method": "gptq",
+          "parameters": {
+            "bits": 4,
+            "group_size": 32
+          },
+          "issues": [
+            "accuracy significantly dropped",
+            "latency increased"
+          ]
+        }
+      ],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": {
+          "impact": "Higher bits may improve accuracy but increase latency and peak memory usage."
+        },
+        "group_size": {
+          "impact": "Smaller group sizes may reduce latency but can negatively affect accuracy."
+        }
+      },
+      "unexplored_regions": [
+        "awq and bnb configurations",
+        "gptq with different bits and group sizes"
+      ],
+      "recommendations": [
+        "Explore awq method to see if it offers better trade-offs.",
+        "Consider bnb method for potentially different performance characteristics."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "The current configuration of gptq with 4 bits and group size 32 failed to meet accuracy and latency targets. Exploring alternative methods like awq or bnb might offer better trade-offs.",
+        "target_gap": "Accuracy and latency need significant improvement. Explore configurations that might improve these metrics.",
+        "avoid_repeating": "Ensure the new configuration does not repeat gptq 4bit/gs32.",
+        "chosen_strategy_reason": "Early stage of trials (8%), focus on exploring new methods and configurations."
+      },
+      "strategy": "exploration",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "Choosing awq method as it is unexplored and might offer better accuracy and latency trade-offs. The selected parameters aim to balance between accuracy and resource usage.",
+      "confidence": 0.6
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:02:16] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -16.00%
+  GPU peak change: -53.66%
+  Latency change: +85.46%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 3
+======================================================================
+
+[15:02:16] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:02:37] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 2,
+    "pareto_count": 1,
+    "trial_num": 3,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.92,
+          "avg_gpu": -0.5199
+        },
+        "awq": {
+          "trials": 1,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.16,
+          "avg_gpu": -0.5366
+        },
+        "bnb": {
+          "trials": 0,
+          "success_rate": 0.0,
+          "avg_accuracy": 0,
+          "avg_gpu": 0
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Lower bits = more compression",
+        "group_size": "Affects quantization granularity"
+      },
+      "unexplored_regions": [
+        {
+          "method": "gptq",
+          "params": {}
+        },
+        {
+          "method": "awq",
+          "params": {}
+        },
+        {
+          "method": "bnb",
+          "params": {}
+        }
+      ],
+      "recommendations": [
+        "Explore gptq",
+        "Explore awq",
+        "Explore bnb"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "Using fallback rule-based analysis",
+        "target_gap": "Unknown",
+        "avoid_repeating": "N/A",
+        "chosen_strategy_reason": "Progress 12%, using exploration"
+      },
+      "strategy": "exploration",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "rationale": "Exploring awq (under-explored)",
+      "confidence": 0.5
+    }
+  },
+  "fallback_mode": true
+}
+----------------------------------------------------------------------
+
+[15:05:21] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +64.00%
+  GPU peak change: -54.39%
+  Latency change: +82.03%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 4
+======================================================================
+
+[15:05:21] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:05:28] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 3,
+    "pareto_count": 1,
+    "trial_num": 4,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.92,
+          "avg_gpu": -0.5199
+        },
+        "awq": {
+          "trials": 2,
+          "success_rate": 1.0,
+          "avg_accuracy": 0.24,
+          "avg_gpu": -0.5402
+        },
+        "bnb": {
+          "trials": 0,
+          "success_rate": 0.0,
+          "avg_accuracy": 0,
+          "avg_gpu": 0
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Lower bits = more compression",
+        "group_size": "Affects quantization granularity"
+      },
+      "unexplored_regions": [
+        {
+          "method": "gptq",
+          "params": {}
+        },
+        {
+          "method": "awq",
+          "params": {}
+        },
+        {
+          "method": "bnb",
+          "params": {}
+        }
+      ],
+      "recommendations": [
+        "Explore gptq",
+        "Explore awq",
+        "Explore bnb"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "Using fallback rule-based analysis",
+        "target_gap": "Unknown",
+        "avoid_repeating": "N/A",
+        "chosen_strategy_reason": "Progress 16%, using exploration"
+      },
+      "strategy": "exploration",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "rationale": "Exploring awq (under-explored)",
+      "confidence": 0.5
+    }
+  },
+  "fallback_mode": true
+}
+----------------------------------------------------------------------
+
+[15:08:22] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +24.00%
+  GPU peak change: -52.13%
+  Latency change: +73.27%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 5
+======================================================================
+
+[15:08:22] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:08:31] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 4,
+    "pareto_count": 2,
+    "trial_num": 5,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 0.0,
+          "average_metrics": {
+            "accuracy_change": -92.0,
+            "gpu_peak_change": -51.99,
+            "latency_change": 345.56
+          }
+        },
+        "awq": {
+          "trials": 3,
+          "success_rate": 1.0,
+          "average_metrics": {
+            "accuracy_change": 24.0,
+            "gpu_peak_change": -53.39,
+            "latency_change": 80.92
+          }
+        },
+        "bnb": {
+          "trials": 0,
+          "success_rate": null,
+          "average_metrics": null
+        }
+      },
+      "failure_patterns": [
+        "gptq with 4bit and gs32 resulted in poor accuracy"
+      ],
+      "success_patterns": [
+        "awq configurations consistently met targets with varying bit and group sizes"
+      ],
+      "parameter_insights": {
+        "bits": {
+          "awq": "higher bits seem to maintain accuracy",
+          "gptq": "lower bits significantly reduce accuracy"
+        },
+        "group_size": {
+          "awq": "flexible group sizes still meet targets",
+          "gptq": "larger group sizes did not help accuracy"
+        }
+      },
+      "unexplored_regions": [
+        "bnb method with any configuration"
+      ],
+      "recommendations": [
+        "Explore bnb configurations as they are unexplored and may offer better trade-offs."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ has shown consistent success, especially with higher bits. GPTQ failed with the tested configuration.",
+        "target_gap": "All targets are currently met, but diversity is needed.",
+        "avoid_repeating": "Ensure no repetition of gptq 4bit/gs32 or any awq configurations.",
+        "chosen_strategy_reason": "Exploration is needed to cover unexplored methods and configurations."
+      },
+      "strategy": "exploration",
+      "next_config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 4.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "rationale": "Exploring BNB with 4 bits and nf4 quant type to potentially find a configuration that meets targets with different trade-offs.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:10:05] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +32.00%
+  GPU peak change: -18.95%
+  Latency change: +111.12%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 6
+======================================================================
+
+[15:10:05] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:10:15] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 5,
+    "pareto_count": 2,
+    "trial_num": 6,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 0,
+          "average": {
+            "accuracy_change": -92.0,
+            "gpu_peak_change": -51.99,
+            "latency_change": 345.56
+          }
+        },
+        "awq": {
+          "trials": 3,
+          "success_rate": 100,
+          "average": {
+            "accuracy_change": 24.0,
+            "gpu_peak_change": -53.39,
+            "latency_change": 80.92
+          }
+        },
+        "bnb": {
+          "trials": 1,
+          "success_rate": 100,
+          "average": {
+            "accuracy_change": 32.0,
+            "gpu_peak_change": -18.95,
+            "latency_change": 111.12
+          }
+        }
+      },
+      "failure_patterns": [
+        "gptq-4bit had significant accuracy drop and high latency."
+      ],
+      "success_patterns": [
+        "awq configurations consistently meet all targets, with high accuracy and low GPU peak.",
+        "bnb-4bit showed good accuracy but higher latency."
+      ],
+      "parameter_insights": {
+        "bits": "Lower bits in GPTQ led to poor accuracy.",
+        "group_size": "AWQ with varied group sizes performed well."
+      },
+      "unexplored_regions": [
+        "AWQ with specific group sizes and zero_point variations.",
+        "BNB with 8 bits and different quant types."
+      ],
+      "recommendations": [
+        "Explore AWQ with different group sizes and zero_point settings.",
+        "Try BNB with 8 bits for potentially better trade-offs."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ consistently meets targets, suggesting further exploration.",
+        "target_gap": "All targets are currently met, focus on diversity.",
+        "avoid_repeating": "Avoid previously tested configurations.",
+        "chosen_strategy_reason": "Midway through trials, need to balance exploration and exploitation."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ has shown strong results; exploring a new configuration within its parameter space could yield further improvements.",
+      "confidence": 0.8
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:13:01] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -16.00%
+  GPU peak change: -53.66%
+  Latency change: +83.17%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 7
+======================================================================
+
+[15:13:01] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:13:15] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 6,
+    "pareto_count": 2,
+    "trial_num": 7,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 1,
+          "success_rate": 100,
+          "average_metrics": {
+            "accuracy_change": "N/A",
+            "gpu_peak_change": "N/A",
+            "latency_change": "N/A"
+          }
+        },
+        "awq": {
+          "trials": 4,
+          "success_rate": 50,
+          "average_metrics": {
+            "accuracy_change": "+14.00%",
+            "gpu_peak_change": "-53.21%",
+            "latency_change": "+81.98%"
+          }
+        },
+        "bnb": {
+          "trials": 1,
+          "success_rate": 0,
+          "average_metrics": {
+            "accuracy_change": "+32.00%",
+            "gpu_peak_change": "-18.95%",
+            "latency_change": "+111.12%"
+          }
+        }
+      },
+      "failure_patterns": [
+        "AWQ configurations with unknown parameters led to failures in accuracy.",
+        "BNB configurations exceeded latency targets."
+      ],
+      "success_patterns": [
+        "AWQ with certain parameters achieved high accuracy and good GPU peak reduction.",
+        "AWQ is the only method on the Pareto front, indicating it has potential for further optimization."
+      ],
+      "parameter_insights": {
+        "bits": "Lower bits tend to reduce GPU peak but may affect accuracy.",
+        "group_size": "Smaller group sizes may improve latency but could impact accuracy."
+      },
+      "unexplored_regions": [
+        "GPTQ with different group sizes and bits.",
+        "AWQ with defined bit and group size parameters."
+      ],
+      "recommendations": [
+        "Explore GPTQ configurations with varied group sizes.",
+        "Define AWQ bit and group size parameters to avoid unknowns."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ has shown potential with high accuracy and good GPU peak reduction. GPTQ remains largely unexplored.",
+        "target_gap": "All targets are currently met, focus on exploration for diverse solutions.",
+        "avoid_repeating": "Ensure new configuration does not repeat previously tested successful configurations.",
+        "chosen_strategy_reason": "Mid-progress with 28% completion, focus on balanced exploration to find diverse solutions."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 64,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": true,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "rationale": "Exploring GPTQ with moderate bit depth and group size to balance accuracy and GPU peak reduction.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:21:04] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -100.00%
+  GPU peak change: -54.65%
+  Latency change: +682.44%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 8
+======================================================================
+
+[15:21:04] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:21:15] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 7,
+    "pareto_count": 3,
+    "trial_num": 8,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 2,
+          "success_rate": 0.0,
+          "average_accuracy_change": -50.0,
+          "average_gpu_peak_change": -54.52,
+          "average_latency_change": 382.24
+        },
+        "awq": {
+          "trials": 4,
+          "success_rate": 0.75,
+          "average_accuracy_change": 32.0,
+          "average_gpu_peak_change": -53.06,
+          "average_latency_change": 79.63
+        },
+        "bnb": {
+          "trials": 1,
+          "success_rate": 0.0,
+          "average_accuracy_change": 32.0,
+          "average_gpu_peak_change": -18.95,
+          "average_latency_change": 111.12
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits and large group_size",
+        "bnb with 4bit and high latency"
+      ],
+      "success_patterns": [
+        "awq configurations generally successful",
+        "awq with moderate accuracy and efficiency"
+      ],
+      "parameter_insights": {
+        "bits": "Lower bits in gptq lead to failure",
+        "group_size": "Smaller group_size in awq seems beneficial"
+      },
+      "unexplored_regions": [
+        "gptq with 8 bits",
+        "awq with different group sizes"
+      ],
+      "recommendations": [
+        "Try awq with different group sizes",
+        "Explore gptq with higher bits"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "awq shows promise, gptq needs higher bits exploration",
+        "target_gap": "All targets currently met",
+        "avoid_repeating": "Avoid previously tested configurations",
+        "chosen_strategy_reason": "Mid-progress, focus on balanced exploration"
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 16,
+        "calib_num": 256,
+        "desc_act": false,
+        "sym": true,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.005,
+        "act_group_aware": false,
+        "static_groups": false,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "rationale": "Exploring gptq with higher bits to improve accuracy and efficiency.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:29:39] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -64.00%
+  GPU peak change: -29.12%
+  Latency change: +349.36%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 9
+======================================================================
+
+[15:29:39] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:29:47] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 8,
+    "pareto_count": 3,
+    "trial_num": 9,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trial_count": 3,
+          "success_rate": 0.33,
+          "average_metrics": {
+            "accuracy_change": -86.67,
+            "gpu_peak_change": -46.72,
+            "latency_change": 371.08
+          }
+        },
+        "awq": {
+          "trial_count": 4,
+          "success_rate": 0.5,
+          "average_metrics": {
+            "accuracy_change": 8.0,
+            "gpu_peak_change": -52.93,
+            "latency_change": 78.15
+          }
+        },
+        "bnb": {
+          "trial_count": 1,
+          "success_rate": 1.0,
+          "average_metrics": {
+            "accuracy_change": 32.0,
+            "gpu_peak_change": -18.95,
+            "latency_change": 111.12
+          }
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits (3bit) leads to high accuracy loss",
+        "gptq with high bits (8bit) results in high latency"
+      ],
+      "success_patterns": [
+        "awq configurations generally meet the targets",
+        "bnb-4bit has good accuracy but needs better gpu_peak reduction"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits tend to increase latency but improve accuracy",
+        "group_size": "Smaller group sizes generally help reduce latency"
+      },
+      "unexplored_regions": [
+        "awq with different q_group_size",
+        "bnb with 8bit configurations"
+      ],
+      "recommendations": [
+        "Explore awq with q_group_size of 64 or 128",
+        "Try bnb with 8bit to see its impact on accuracy and latency"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ seems promising with a good balance of metrics. BNB could be improved by exploring 8bit configurations.",
+        "target_gap": "All targets are currently met, focus on maintaining diversity and exploring new configurations.",
+        "avoid_repeating": "Ensure new configurations are distinct from those already tried.",
+        "chosen_strategy_reason": "We are at 36% progress, so a balanced approach is suitable to explore and exploit promising areas."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "bnb",
+        "bits": 8,
+        "bnb_4bit_quant_type": "fp4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "float16",
+        "llm_int8_threshold": 5.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "rationale": "Exploring BNB with 8bit could improve accuracy while maintaining acceptable latency and GPU usage.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:32:27] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +16.00%
+  GPU peak change: -36.44%
+  Latency change: +272.52%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 10
+======================================================================
+
+[15:32:27] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:32:37] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 9,
+    "pareto_count": 3,
+    "trial_num": 10,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trial_count": 3,
+          "success_rate": 0.0,
+          "average_accuracy_change": -88.0,
+          "average_gpu_peak_change": -46.05,
+          "average_latency_change": 344.58
+        },
+        "awq": {
+          "trial_count": 4,
+          "success_rate": 0.5,
+          "average_accuracy_change": 12.0,
+          "average_gpu_peak_change": -52.89,
+          "average_latency_change": 77.65
+        },
+        "bnb": {
+          "trial_count": 2,
+          "success_rate": 1.0,
+          "average_accuracy_change": 24.0,
+          "average_gpu_peak_change": -27.7,
+          "average_latency_change": 191.82
+        }
+      },
+      "failure_patterns": [
+        "gptq with 3bit and high latency",
+        "awq with negative accuracy impact"
+      ],
+      "success_patterns": [
+        "awq configurations with balanced accuracy and gpu_peak",
+        "bnb configurations with moderate changes"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits tend to maintain accuracy but increase latency",
+        "group_size": "Smaller group sizes may lead to better accuracy but increased latency"
+      },
+      "unexplored_regions": [
+        "AWQ with different q_group_size",
+        "BNB with different bnb_4bit_quant_type"
+      ],
+      "recommendations": [
+        "Explore AWQ with q_group_size of 64 or 128",
+        "Try BNB with bnb_4bit_quant_type of 'fp4'"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ shows potential with balanced metrics, BNB has consistent performance.",
+        "target_gap": "All targets currently met, focus on diversity.",
+        "avoid_repeating": "Ensure new configurations are distinct from tried ones.",
+        "chosen_strategy_reason": "Current progress is 40%, indicating balanced exploration and exploitation."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "gptq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ with q_group_size of 64 has not been tried and may offer a good balance of accuracy and efficiency.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:35:23] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -28.00%
+  GPU peak change: -54.34%
+  Latency change: +93.46%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 11
+======================================================================
+
+[15:35:23] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:35:33] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 10,
+    "pareto_count": 3,
+    "trial_num": 11,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trial_count": 5,
+          "success_rate": 0.2,
+          "average_accuracy_change": -52.4,
+          "average_gpu_peak_change": -49.64,
+          "average_latency_change": 354.55
+        },
+        "awq": {
+          "trial_count": 5,
+          "success_rate": 0.6,
+          "average_accuracy_change": 24.0,
+          "average_gpu_peak_change": -53.39,
+          "average_latency_change": 79.16
+        },
+        "bnb": {
+          "trial_count": 2,
+          "success_rate": 0.5,
+          "average_accuracy_change": 8.0,
+          "average_gpu_peak_change": -36.44,
+          "average_latency_change": 272.52
+        }
+      },
+      "failure_patterns": [
+        "gptq with 3bit configurations tend to fail",
+        "high latency increase in gptq 8bit"
+      ],
+      "success_patterns": [
+        "awq configurations have higher success rates",
+        "bnb 8bit shows potential with positive accuracy change"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits in gptq tend to increase latency significantly",
+        "group_size": "Smaller group sizes in awq tend to maintain better performance"
+      },
+      "unexplored_regions": [
+        "awq with w_bit 4 and q_group_size 64 or 128",
+        "bnb with bits 4 and different compute dtypes"
+      ],
+      "recommendations": [
+        "Explore awq with larger group sizes",
+        "Test bnb with 4bit and different compute dtypes"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "awq shows promising results with higher success rate and balanced metrics",
+        "target_gap": "All targets are met but further diversity is needed",
+        "avoid_repeating": "Ensure new configuration has not been tested",
+        "chosen_strategy_reason": "Mid-stage of trials, focus on balanced exploration of promising methods"
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "Choosing awq with larger group size to explore its potential while maintaining diversity",
+      "confidence": 0.75
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:38:20] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -16.00%
+  GPU peak change: -53.66%
+  Latency change: +85.57%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 12
+======================================================================
+
+[15:38:20] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:38:28] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 11,
+    "pareto_count": 3,
+    "trial_num": 12,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.71,
+          "avg_gpu": -0.4753
+        },
+        "awq": {
+          "trials": 5,
+          "success_rate": 1.0,
+          "avg_accuracy": 0.08,
+          "avg_gpu": -0.535
+        },
+        "bnb": {
+          "trials": 2,
+          "success_rate": 1.0,
+          "avg_accuracy": 0.24,
+          "avg_gpu": -0.277
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Lower bits = more compression",
+        "group_size": "Affects quantization granularity"
+      },
+      "unexplored_regions": [
+        {
+          "method": "bnb",
+          "params": {}
+        }
+      ],
+      "recommendations": [
+        "Explore bnb"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "Using fallback rule-based analysis",
+        "target_gap": "Unknown",
+        "avoid_repeating": "N/A",
+        "chosen_strategy_reason": "Progress 48%, using balanced"
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "bnb",
+        "bits": 8,
+        "bnb_4bit_quant_type": "nf4",
+        "bnb_4bit_use_double_quant": false,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 6.0,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "rationale": "Exploring bnb (under-explored)",
+      "confidence": 0.5
+    }
+  },
+  "fallback_mode": true
+}
+----------------------------------------------------------------------
+
+[15:41:00] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -8.00%
+  GPU peak change: -36.45%
+  Latency change: +255.02%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 13
+======================================================================
+
+[15:41:00] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:41:08] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 12,
+    "pareto_count": 3,
+    "trial_num": 13,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 0.5,
+          "average_accuracy_change": -57.0,
+          "average_gpu_peak_change": -46.88,
+          "average_latency_change": 308.57
+        },
+        "awq": {
+          "trials": 5,
+          "success_rate": 0.4,
+          "average_accuracy_change": 24.0,
+          "average_gpu_peak_change": -52.13,
+          "average_latency_change": 73.27
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 0.33,
+          "average_accuracy_change": 4.0,
+          "average_gpu_peak_change": -36.44,
+          "average_latency_change": 263.02
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits and large group_size",
+        "bnb with high bits",
+        "awq not using optimal w_bit and q_group_size"
+      ],
+      "success_patterns": [
+        "awq with balanced q_group_size and zero_point",
+        "gptq with moderate bits and small group_size"
+      ],
+      "parameter_insights": {
+        "gptq": {
+          "lower bits": "tend to reduce accuracy significantly",
+          "medium group_size": "balance performance"
+        },
+        "awq": {
+          "zero_point": "improves accuracy",
+          "q_group_size": "smaller sizes improve latency"
+        },
+        "bnb": {
+          "higher bits": "increase latency significantly"
+        }
+      },
+      "unexplored_regions": [
+        "gptq with bits=2 and small group_size",
+        "awq with q_group_size=64",
+        "bnb with bits=4 and nf4 quant type"
+      ],
+      "recommendations": [
+        "Explore awq with q_group_size=64",
+        "Try gptq with bits=2 and group_size=16"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ seems promising with smaller q_group_size and zero_point.",
+        "target_gap": "All targets met; focus on diversity and exploration.",
+        "avoid_repeating": "Ensure new configurations differ from previous trials.",
+        "chosen_strategy_reason": "Mid-stage of trials; balance exploration and exploitation."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ with q_group_size=64 and zero_point=true has potential for improved accuracy and latency.",
+      "confidence": 0.75
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:43:58] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: -16.00%
+  GPU peak change: -53.66%
+  Latency change: +86.80%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 14
+======================================================================
+
+[15:43:58] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:44:12] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 13,
+    "pareto_count": 3,
+    "trial_num": 14,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 0.25,
+          "average_accuracy_change": -41.0,
+          "average_gpu_peak_change": -54.49,
+          "average_latency_change": 243.32
+        },
+        "awq": {
+          "trials": 7,
+          "success_rate": 0.29,
+          "average_accuracy_change": 8.0,
+          "average_gpu_peak_change": -53.75,
+          "average_latency_change": 81.73
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 0.33,
+          "average_accuracy_change": 0.0,
+          "average_gpu_peak_change": -36.44,
+          "average_latency_change": 263.02
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits and high group_size",
+        "awq configurations with high latency"
+      ],
+      "success_patterns": [
+        "awq with moderate bits and group_size",
+        "bnb with 4 bits and lower latency configurations"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits generally improve accuracy but increase latency.",
+        "group_size": "Smaller group sizes tend to improve latency but may reduce accuracy."
+      },
+      "unexplored_regions": [
+        "awq with 4 bits and high group_size",
+        "gptq with 3 bits and low group_size"
+      ],
+      "recommendations": [
+        "Explore awq with 4 bits and larger group sizes to potentially improve accuracy while maintaining acceptable latency.",
+        "Try gptq with 3 bits and smaller group sizes for potential improvements in latency."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ shows promise with moderate configurations, but unexplored areas remain.",
+        "target_gap": "All targets are currently met, focus on diversity and potential improvements.",
+        "avoid_repeating": "Ensure new configurations are distinct from those previously tested.",
+        "chosen_strategy_reason": "Given the current progress (56%), a balanced approach is optimal to refine and explore."
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "This configuration explores the unexplored region of AWQ with higher group size, aiming to maintain accuracy while improving latency.",
+      "confidence": 0.7
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:46:57] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +60.00%
+  GPU peak change: -54.39%
+  Latency change: +86.33%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 15
+======================================================================
+
+[15:46:57] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:47:05] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 14,
+    "pareto_count": 3,
+    "trial_num": 15,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 25,
+          "average_accuracy_change": -66.0,
+          "average_gpu_peak_change": -54.46,
+          "average_latency_change": 257.96
+        },
+        "awq": {
+          "trials": 7,
+          "success_rate": 71,
+          "average_accuracy_change": 14.0,
+          "average_gpu_peak_change": -54.39,
+          "average_latency_change": 82.03
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 33,
+          "average_accuracy_change": -8.0,
+          "average_gpu_peak_change": -36.45,
+          "average_latency_change": 255.02
+        }
+      },
+      "failure_patterns": [
+        "gptq-3bit resulted in -100% accuracy",
+        "bnb configurations tend to have high latency"
+      ],
+      "success_patterns": [
+        "awq consistently meets targets with good accuracy and latency",
+        "gptq with higher bits shows potential for better accuracy"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits in gptq lead to better accuracy but higher latency",
+        "group_size": "Smaller group sizes in awq seem to balance well"
+      },
+      "unexplored_regions": [
+        "gptq with bits 2 and group_size 64",
+        "awq with different q_group_size configurations"
+      ],
+      "recommendations": [
+        "Explore gptq with low bits and varied group sizes",
+        "Continue with awq but vary q_group_size for diversity"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "awq has the highest success rate and meets all targets with different configurations",
+        "target_gap": "All targets are currently met, focus on maintaining diversity",
+        "avoid_repeating": "Ensure the new configuration is not a repeat of any previous trials",
+        "chosen_strategy_reason": "We are in the middle phase of trials, balancing exploration and exploitation is key"
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 64,
+        "zero_point": false,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ has shown consistent performance. Trying a different q_group_size could yield new insights.",
+      "confidence": 0.8
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:47:12] TRIAL END - ✗ FAILED
+
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 16
+======================================================================
+
+[15:47:12] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:47:27] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 15,
+    "pareto_count": 3,
+    "trial_num": 16,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.71,
+          "avg_gpu": -0.4753
+        },
+        "awq": {
+          "trials": 8,
+          "success_rate": 0.875,
+          "avg_accuracy": 0.12,
+          "avg_gpu": -0.5365
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 1.0,
+          "avg_accuracy": 0.1333,
+          "avg_gpu": -0.3062
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Lower bits = more compression",
+        "group_size": "Affects quantization granularity"
+      },
+      "unexplored_regions": [],
+      "recommendations": []
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "Using fallback rule-based analysis",
+        "target_gap": "Unknown",
+        "avoid_repeating": "N/A",
+        "chosen_strategy_reason": "Progress 64%, using balanced"
+      },
+      "strategy": "balanced",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 32,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": [
+          "lm_head"
+        ]
+      },
+      "rationale": "Random balanced selection",
+      "confidence": 0.5
+    }
+  },
+  "fallback_mode": true
+}
+----------------------------------------------------------------------
+
+[15:50:22] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +24.00%
+  GPU peak change: -52.19%
+  Latency change: +74.87%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 17
+======================================================================
+
+[15:50:22] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:50:33] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 16,
+    "pareto_count": 4,
+    "trial_num": 17,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 0.5,
+          "average_accuracy_change": -9.0,
+          "average_gpu_peak_change": -54.52,
+          "average_latency_change": 341.22
+        },
+        "awq": {
+          "trials": 10,
+          "success_rate": 0.7,
+          "average_accuracy_change": 21.2,
+          "average_gpu_peak_change": -52.84,
+          "average_latency_change": 82.51
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 0.67,
+          "average_accuracy_change": -8.0,
+          "average_gpu_peak_change": -36.45,
+          "average_latency_change": 255.02
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits and high group_size",
+        "awq configurations with no specific pattern but random failures"
+      ],
+      "success_patterns": [
+        "awq with balanced bits and group_size",
+        "bnb with 8bit configurations"
+      ],
+      "parameter_insights": {
+        "gptq": {
+          "bits": "Lower bits often lead to higher latency",
+          "group_size": "Smaller group sizes seem to perform better"
+        },
+        "awq": {
+          "bits": "Stable performance with 4 bits",
+          "group_size": "Larger group sizes often perform better"
+        },
+        "bnb": {
+          "bits": "8 bits perform better in terms of accuracy"
+        }
+      },
+      "unexplored_regions": [
+        "gptq with bits=2 and group_size=16",
+        "awq with different q_group_size combinations"
+      ],
+      "recommendations": [
+        "Try gptq with lower bits and smaller group sizes",
+        "Explore awq with new q_group_size"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "awq shows the most promise in terms of accuracy and gpu_peak",
+        "target_gap": "All targets are currently met, focus on diversity",
+        "avoid_repeating": "Ensure the new configuration is not one of the previously tested ones",
+        "chosen_strategy_reason": "We are in the late stage of trials; focus on exploitation of awq's potential"
+      },
+      "strategy": "exploitation",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "Choosing awq with higher q_group_size to exploit potential for better accuracy while maintaining acceptable gpu and latency performance.",
+      "confidence": 0.85
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:53:18] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +68.00%
+  GPU peak change: -54.39%
+  Latency change: +87.77%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 18
+======================================================================
+
+[15:53:18] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:53:39] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 17,
+    "pareto_count": 5,
+    "trial_num": 18,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 1.0,
+          "avg_accuracy": -0.71,
+          "avg_gpu": -0.4753
+        },
+        "awq": {
+          "trials": 10,
+          "success_rate": 0.9,
+          "avg_accuracy": 0.1956,
+          "avg_gpu": -0.5357
+        },
+        "bnb": {
+          "trials": 3,
+          "success_rate": 1.0,
+          "avg_accuracy": 0.1333,
+          "avg_gpu": -0.3062
+        }
+      },
+      "failure_patterns": [],
+      "success_patterns": [],
+      "parameter_insights": {
+        "bits": "Lower bits = more compression",
+        "group_size": "Affects quantization granularity"
+      },
+      "unexplored_regions": [],
+      "recommendations": []
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "Using fallback rule-based analysis",
+        "target_gap": "Unknown",
+        "avoid_repeating": "N/A",
+        "chosen_strategy_reason": "Progress 72%, using exploitation"
+      },
+      "strategy": "exploitation",
+      "next_config": {
+        "method": "bnb",
+        "bits": 4,
+        "bnb_4bit_quant_type": "fp4",
+        "bnb_4bit_use_double_quant": true,
+        "bnb_4bit_compute_dtype": "bfloat16",
+        "llm_int8_threshold": 4.5,
+        "llm_int8_skip_modules": [
+          "lm_head"
+        ],
+        "llm_int8_has_fp16_weight": false,
+        "llm_int8_enable_fp32_cpu_offload": false
+      },
+      "rationale": "Random exploitation selection",
+      "confidence": 0.5
+    }
+  },
+  "fallback_mode": true
+}
+----------------------------------------------------------------------
+
+[15:55:18] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +4.00%
+  GPU peak change: -17.66%
+  Latency change: +127.05%
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 19
+======================================================================
+
+[15:55:18] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:55:31] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 18,
+    "pareto_count": 5,
+    "trial_num": 19,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 3,
+          "success_rate": 0.33,
+          "average_accuracy_change": -12.0,
+          "average_gpu_peak_change": -54.39,
+          "average_latency_change": 82.03
+        },
+        "awq": {
+          "trials": 10,
+          "success_rate": 0.9,
+          "average_accuracy_change": 36.0,
+          "average_gpu_peak_change": -53.0,
+          "average_latency_change": 80.0
+        },
+        "bnb": {
+          "trials": 4,
+          "success_rate": 0.5,
+          "average_accuracy_change": 4.0,
+          "average_gpu_peak_change": -17.66,
+          "average_latency_change": 127.05
+        }
+      },
+      "failure_patterns": [
+        "gptq with bits lower than 4",
+        "bnb with high latency"
+      ],
+      "success_patterns": [
+        "awq with diverse bit and group size combinations",
+        "gptq with higher bits and smaller group sizes"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits generally lead to better accuracy but increased latency.",
+        "group_size": "Smaller group sizes tend to improve accuracy and reduce latency."
+      },
+      "unexplored_regions": [
+        "gptq with 4 bits and group size 128",
+        "awq with w_bit 4 and q_group_size 128"
+      ],
+      "recommendations": [
+        "Explore higher bits for gptq with different group sizes.",
+        "Investigate awq configurations with larger group sizes."
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ shows high success rate with diverse configurations.",
+        "target_gap": "All targets are currently met, focus on diversity.",
+        "avoid_repeating": "Avoid combinations already tested.",
+        "chosen_strategy_reason": "Leverage AWQ's success rate while exploring new configurations."
+      },
+      "strategy": "exploitation",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ has shown high success rate and diverse configurations. Testing a larger group size could provide further insights.",
+      "confidence": 0.8
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[15:58:15] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +64.00%
+  GPU peak change: -54.39%
+  Latency change: +85.77%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+
+======================================================================
+Trial 20
+======================================================================
+
+[15:58:15] TRIAL START
+
+----------------------------------------------------------------------
+
+[15:58:24] StrategistAgent → Orchestrator
+Type: strategist_result
+
+Content: {
+  "input_summary": {
+    "trials_count": 19,
+    "pareto_count": 5,
+    "trial_num": 20,
+    "budget_max": 25
+  },
+  "result": {
+    "analysis": {
+      "method_analysis": {
+        "gptq": {
+          "trials": 4,
+          "success_rate": 0.25,
+          "average_accuracy_change": -9.0,
+          "average_gpu_peak_change": -54.65,
+          "average_latency_change": 682.44
+        },
+        "awq": {
+          "trials": 11,
+          "success_rate": 0.82,
+          "average_accuracy_change": 36.0,
+          "average_gpu_peak_change": -52.92,
+          "average_latency_change": 80.0
+        },
+        "bnb": {
+          "trials": 4,
+          "success_rate": 0.5,
+          "average_accuracy_change": 2.0,
+          "average_gpu_peak_change": -17.66,
+          "average_latency_change": 127.05
+        }
+      },
+      "failure_patterns": [
+        "gptq with low bits and high group_size",
+        "bnb with high latency"
+      ],
+      "success_patterns": [
+        "awq configurations generally perform well",
+        "gptq with specific bit and group_size combinations"
+      ],
+      "parameter_insights": {
+        "bits": "Higher bits generally improve accuracy but may increase latency.",
+        "group_size": "Smaller group sizes tend to reduce latency but may affect accuracy."
+      },
+      "unexplored_regions": [
+        "gptq with bits 2 and group_size 64",
+        "awq with w_bit 4 and q_group_size 128"
+      ],
+      "recommendations": [
+        "Explore awq with different q_group_size",
+        "Consider gptq with unique bit and group combinations"
+      ]
+    },
+    "decision": {
+      "thinking": {
+        "analyzer_insights": "AWQ has the highest success rate and generally meets targets.",
+        "target_gap": "All targets currently met, focus on diversity.",
+        "avoid_repeating": "Ensure new configurations are distinct from past trials.",
+        "chosen_strategy_reason": "In late stage, focus on exploitation to solidify gains."
+      },
+      "strategy": "exploitation",
+      "next_config": {
+        "method": "awq",
+        "w_bit": 4,
+        "q_group_size": 128,
+        "zero_point": true,
+        "version": "gemm",
+        "modules_to_not_convert": []
+      },
+      "rationale": "AWQ configurations have shown consistent success. Testing a new q_group_size may yield further improvements.",
+      "confidence": 0.85
+    }
+  }
+}
+----------------------------------------------------------------------
+
+[16:01:07] TRIAL END - ✓ SUCCESS
+
+Objectives achieved:
+  Accuracy change: +64.00%
+  GPU peak change: -54.39%
+  Latency change: +84.81%
+
+✓ Satisfies all targets!
+
+----------------------------------------------------------------------
+

@@ -1,0 +1,422 @@
+[
+  {
+    "iteration": 1,
+    "trial_name": "trial_001_gptq_8bit_g16_gptq",
+    "accuracy": 0.706,
+    "latency": 885.8061,
+    "vram": 4.165523046875,
+    "emissions": 0.05302401,
+    "old_score": 2.38913602972511,
+    "new_score": 2.38913602972511,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.9832869080779945,
+        "norm_lat": 1.6060030519094415,
+        "norm_vram": 1.4872528763128954,
+        "norm_emit": 1.766534632141175
+      },
+      "weight_score": 2.38913602972511,
+      "penalty": 0.0,
+      "score": 2.38913602972511
+    }
+  },
+  {
+    "iteration": 2,
+    "trial_name": "trial_002_sparse_53pct",
+    "accuracy": 0.25,
+    "latency": 401.6147,
+    "vram": 6.1956763671875,
+    "emissions": 0.01946403,
+    "old_score": -2.509155173755053,
+    "new_score": -2.509155173755053,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.34818941504178275,
+        "norm_lat": 3.5422191966578906,
+        "norm_vram": 0.999920874760729,
+        "norm_emit": 4.812402673033282
+      },
+      "weight_score": 0.6708448262449467,
+      "penalty": 3.1799999999999997,
+      "score": -2.509155173755053
+    }
+  },
+  {
+    "iteration": 3,
+    "trial_name": "trial_003_sparse_33pct",
+    "accuracy": 0.598,
+    "latency": 511.0735,
+    "vram": 6.1951861328125,
+    "emissions": 0.0247954,
+    "old_score": 2.8042032085075705,
+    "new_score": 2.8042032085075705,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.8328690807799443,
+        "norm_lat": 2.7835669429152556,
+        "norm_vram": 1.0,
+        "norm_emit": 3.777666421997629
+      },
+      "weight_score": 2.8042032085075705,
+      "penalty": 0.0,
+      "score": 2.8042032085075705
+    }
+  },
+  {
+    "iteration": 4,
+    "trial_name": "trial_004_sparse_42pct",
+    "accuracy": 0.536,
+    "latency": 464.1699,
+    "vram": 6.1951861328125,
+    "emissions": 0.02252817,
+    "old_score": 2.347987822690368,
+    "new_score": 2.347987822690368,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.7465181058495822,
+        "norm_lat": 3.0648417745312653,
+        "norm_vram": 1.0,
+        "norm_emit": 4.157849927446392
+      },
+      "weight_score": 2.6679878226903675,
+      "penalty": 0.3199999999999992,
+      "score": 2.347987822690368
+    }
+  },
+  {
+    "iteration": 5,
+    "trial_name": "trial_005_qqq_4bit_g-1",
+    "accuracy": 0.478,
+    "latency": 727.9388,
+    "vram": 5.2880935546875,
+    "emissions": 0.01856555,
+    "old_score": 1.326224786991255,
+    "new_score": 1.326224786991255,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.6657381615598886,
+        "norm_lat": 1.9542951962445192,
+        "norm_vram": 1.1715348960346834,
+        "norm_emit": 5.045298954245902
+      },
+      "weight_score": 2.2262247869912546,
+      "penalty": 0.8999999999999997,
+      "score": 1.326224786991255
+    }
+  },
+  {
+    "iteration": 6,
+    "trial_name": "trial_006_bnb_8bit",
+    "accuracy": 0.676,
+    "latency": 1590.6168,
+    "vram": 3.5941052734375,
+    "emissions": 0.03615855,
+    "old_score": 2.203868643628503,
+    "new_score": 2.203868643628503,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.9415041782729806,
+        "norm_lat": 0.8943746224734958,
+        "norm_vram": 1.7237074769619243,
+        "norm_emit": 2.5905007252779773
+      },
+      "weight_score": 2.203868643628503,
+      "penalty": 0.0,
+      "score": 2.203868643628503
+    }
+  },
+  {
+    "iteration": 7,
+    "trial_name": "trial_007_gptq_3bit_g256_gptq_v2",
+    "accuracy": 0.218,
+    "latency": 1335.7803,
+    "vram": 2.03723671875,
+    "emissions": 0.09782054,
+    "old_score": -4.944139540053838,
+    "new_score": -4.944139540053838,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.30362116991643456,
+        "norm_lat": 1.0650009586157245,
+        "norm_vram": 3.040975099159669,
+        "norm_emit": 0.9575570733917437
+      },
+      "weight_score": -1.4441395400538384,
+      "penalty": 3.5,
+      "score": -4.944139540053838
+    }
+  },
+  {
+    "iteration": 8,
+    "trial_name": "trial_008_asvd_r088_a30",
+    "accuracy": 0.066,
+    "latency": 392.2894,
+    "vram": 5.56767607421875,
+    "emissions": 0.01878614,
+    "old_score": -8.178757612255307,
+    "new_score": -8.178757612255307,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.09192200557103065,
+        "norm_lat": 3.626422992821116,
+        "norm_vram": 1.1127059207879297,
+        "norm_emit": 4.986056209524682
+      },
+      "weight_score": -3.1587576122553074,
+      "penalty": 5.02,
+      "score": -8.178757612255307
+    }
+  },
+  {
+    "iteration": 9,
+    "trial_name": "trial_009_asvd_r095_a50_bnb_4bit",
+    "accuracy": 0.35,
+    "latency": 802.3937,
+    "vram": 2.32575888671875,
+    "emissions": 0.0230061,
+    "old_score": -0.37923063192564577,
+    "new_score": -0.37923063192564577,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.4874651810584958,
+        "norm_lat": 1.7729542243414922,
+        "norm_vram": 2.663726738051017,
+        "norm_emit": 4.071474521974606
+      },
+      "weight_score": 1.800769368074354,
+      "penalty": 2.1799999999999997,
+      "score": -0.37923063192564577
+    }
+  },
+  {
+    "iteration": 10,
+    "trial_name": "trial_010_qqq_4bit_g128",
+    "accuracy": 0.002,
+    "latency": 3139.1877,
+    "vram": 5.3291091796875,
+    "emissions": 0.15530742,
+    "old_score": -23.456492256928495,
+    "new_score": -23.456492256928495,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.002785515320334262,
+        "norm_lat": 0.4531768839435756,
+        "norm_vram": 1.1625181477658872,
+        "norm_emit": 0.6031183184937332
+      },
+      "weight_score": -17.796492256928495,
+      "penalty": 5.659999999999999,
+      "score": -23.456492256928495
+    }
+  },
+  {
+    "iteration": 11,
+    "trial_name": "trial_011_bnb_4bit",
+    "accuracy": 0.666,
+    "latency": 876.8205,
+    "vram": 2.37238359375,
+    "emissions": 0.02662717,
+    "old_score": 3.476114480478716,
+    "new_score": 3.476114480478716,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.9275766016713093,
+        "norm_lat": 1.6224612677281152,
+        "norm_vram": 2.6113762332253527,
+        "norm_emit": 3.5177884093578102
+      },
+      "weight_score": 3.476114480478716,
+      "penalty": 0.0,
+      "score": 3.476114480478716
+    }
+  },
+  {
+    "iteration": 12,
+    "trial_name": "trial_012_asvd_r070_a70_bnb_8bit",
+    "accuracy": 0.016,
+    "latency": 8137.0547,
+    "vram": 2.89929814453125,
+    "emissions": 0.15015455,
+    "old_score": -17.388175970208877,
+    "new_score": -17.388175970208877,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.022284122562674095,
+        "norm_lat": 0.17483074066099125,
+        "norm_vram": 2.1367882239010365,
+        "norm_emit": 0.62381559533161
+      },
+      "weight_score": -11.868175970208878,
+      "penalty": 5.52,
+      "score": -17.388175970208877
+    }
+  },
+  {
+    "iteration": 13,
+    "trial_name": "trial_013_gptq_3bit_g128_gptq_v2",
+    "accuracy": 0.412,
+    "latency": 815.6146,
+    "vram": 2.06158974609375,
+    "emissions": 0.05950818,
+    "old_score": -0.11608800404627129,
+    "new_score": -0.11608800404627129,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.5738161559888579,
+        "norm_lat": 1.7442150986507596,
+        "norm_vram": 3.005052845529033,
+        "norm_emit": 1.5740483073083398
+      },
+      "weight_score": 1.4439119959537283,
+      "penalty": 1.5599999999999996,
+      "score": -0.11608800404627129
+    }
+  },
+  {
+    "iteration": 14,
+    "trial_name": "trial_014_sparse_4x8",
+    "accuracy": 0.178,
+    "latency": 326.8671,
+    "vram": 6.1956763671875,
+    "emissions": 0.01609329,
+    "old_score": -3.852082036186939,
+    "new_score": -3.852082036186939,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.2479108635097493,
+        "norm_lat": 4.352249889939978,
+        "norm_vram": 0.999920874760729,
+        "norm_emit": 5.820360535353554
+      },
+      "weight_score": 0.04791796381306024,
+      "penalty": 3.8999999999999995,
+      "score": -3.852082036186939
+    }
+  },
+  {
+    "iteration": 15,
+    "trial_name": "trial_015_asvd_r089_a70_bnb_4bit",
+    "accuracy": 0.078,
+    "latency": 571.3304,
+    "vram": 2.33962919921875,
+    "emissions": 0.01695227,
+    "old_score": -6.963860301463559,
+    "new_score": -6.963860301463559,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.10863509749303621,
+        "norm_lat": 2.4899905553774135,
+        "norm_vram": 2.647935038116809,
+        "norm_emit": 5.525439955828925
+      },
+      "weight_score": -2.06386030146356,
+      "penalty": 4.8999999999999995,
+      "score": -6.963860301463559
+    }
+  },
+  {
+    "iteration": 16,
+    "trial_name": "trial_016_asvd_r097_a70",
+    "accuracy": 0.474,
+    "latency": 903.1807,
+    "vram": 6.0701513671875,
+    "emissions": 0.03574313,
+    "old_score": 0.25233277223460737,
+    "new_score": 0.25233277223460737,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.6601671309192201,
+        "norm_lat": 1.5751081704912426,
+        "norm_vram": 1.0205982945171486,
+        "norm_emit": 2.6206084917577166
+      },
+      "weight_score": 1.192332772234607,
+      "penalty": 0.9399999999999997,
+      "score": 0.25233277223460737
+    }
+  },
+  {
+    "iteration": 17,
+    "trial_name": "trial_017_awq_4bit_g128",
+    "accuracy": 0.622,
+    "latency": 511.8717,
+    "vram": 2.330799609375,
+    "emissions": 0.01686304,
+    "old_score": 4.283785710743711,
+    "new_score": 4.283785710743711,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.8662952646239555,
+        "norm_lat": 2.779226317844882,
+        "norm_vram": 2.657966007843003,
+        "norm_emit": 5.554677567034177
+      },
+      "weight_score": 4.283785710743711,
+      "penalty": 0.0,
+      "score": 4.283785710743711
+    }
+  },
+  {
+    "iteration": 18,
+    "trial_name": "trial_018_bnb_4bit",
+    "accuracy": 0.674,
+    "latency": 735.1397,
+    "vram": 2.4949412109375,
+    "emissions": 0.02378863,
+    "old_score": 3.750531955599974,
+    "new_score": 3.750531955599974,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.9387186629526464,
+        "norm_lat": 1.9351523254695673,
+        "norm_vram": 2.4830990428366024,
+        "norm_emit": 3.9375428513537765
+      },
+      "weight_score": 3.750531955599974,
+      "penalty": 0.0,
+      "score": 3.750531955599974
+    }
+  },
+  {
+    "iteration": 19,
+    "trial_name": "trial_019_gptq_4bit_g32_gptq",
+    "accuracy": 0.674,
+    "latency": 468.4154,
+    "vram": 2.44794609375,
+    "emissions": 0.01614116,
+    "old_score": 4.608088021780432,
+    "new_score": 4.608088021780432,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.9387186629526464,
+        "norm_lat": 3.0370634697322076,
+        "norm_vram": 2.530769018414991,
+        "norm_emit": 5.803099033774523
+      },
+      "weight_score": 4.608088021780432,
+      "penalty": 0.0,
+      "score": 4.608088021780432
+    }
+  },
+  {
+    "iteration": 20,
+    "trial_name": "trial_020_qqq_4bit_g128",
+    "accuracy": 0.006,
+    "latency": 1740.8679,
+    "vram": 5.3291091796875,
+    "emissions": 0.04609626,
+    "old_score": -18.316401132083676,
+    "new_score": -18.316401132083676,
+    "calculation": {
+      "normalized_metrics": {
+        "norm_acc": 0.008356545961002786,
+        "norm_lat": 0.8171827971553729,
+        "norm_vram": 1.1625181477658872,
+        "norm_emit": 2.0320249408520343
+      },
+      "weight_score": -12.696401132083679,
+      "penalty": 5.619999999999999,
+      "score": -18.316401132083676
+    }
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "pass@1": 0.9817073170731707,
+  "total": 164,
+  "model_path": "quantized/Llama-3.1-8B-Instruct-bnb-4bit-20251118_115157",
+  "dataset": "openai_humaneval (test)",
+  "num_samples": "ALL",
+  "prompt_type": "instruct",
+  "temperature": 0.0,
+  "max_new_tokens": 1024,
+  "output_file": "./results/20251118_164927.txt",
+  "gpu_peak_mb": 15955.4326,
+  "total_prompt_tokens": 30574,
+  "total_output_tokens": 61832,
+  "total_generation_time_sec": 1073.0729,
+  "throughput_tokens_per_sec": 86.1134,
+  "quantization_config": {
+    "_load_in_4bit": true,
+    "_load_in_8bit": false,
+    "bnb_4bit_compute_dtype": "float16",
+    "bnb_4bit_quant_storage": "uint8",
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_use_double_quant": true,
+    "llm_int8_enable_fp32_cpu_offload": false,
+    "llm_int8_has_fp16_weight": false,
+    "llm_int8_skip_modules": [
+      "lm_head"
+    ],
+    "llm_int8_threshold": 6.0,
+    "load_in_4bit": true,
+    "load_in_8bit": false,
+    "quant_method": "bitsandbytes"
+  }
+}

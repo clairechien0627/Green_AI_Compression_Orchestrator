@@ -1,0 +1,269 @@
+[
+  {
+    "config": {
+      "method": "gptq",
+      "bits": 3,
+      "group_size": 32,
+      "calib_num": 256,
+      "desc_act": true,
+      "sym": false,
+      "damp_percent": 0.005,
+      "damp_auto_increment": 0.05,
+      "act_group_aware": false,
+      "static_groups": false,
+      "true_sequential": true,
+      "lm_head": false,
+      "mse": 0.2,
+      "rotation": null
+    },
+    "objectives": {
+      "accuracy_change": -0.19999999999999996,
+      "gpu_peak_change": -0.5441932831570911,
+      "latency_change": 2.5472972806131646
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": false,
+    "violation_score": 1.5472972806131646,
+    "status": "completed",
+    "quantized_model_path": "results/optimization/quick-mo-test_20251202_221816/models/trial00-20251202_221816-gptq-3bit",
+    "datetime_start": "2025-12-02T22:18:16.629317",
+    "datetime_complete": "2025-12-02T22:23:30.050427",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.08,
+        "gpu_peak_mb": 1128.356,
+        "num_samples": 25,
+        "correct": 2,
+        "avg_latency_ms": 659.636,
+        "throughput_tokens_per_sec": 1642.6068
+      },
+      "truthfulqa": {
+        "accuracy": 0.32,
+        "gpu_peak_mb": 1060.8804,
+        "num_samples": 25,
+        "correct": 8,
+        "avg_latency_ms": 2213.54,
+        "throughput_tokens_per_sec": 117.9106
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.2,
+      "gpu_peak_mb": 1128.356,
+      "avg_latency_ms": 1436.588,
+      "aggregation_method": "average"
+    },
+    "trial_id": 0
+  },
+  {
+    "config": {
+      "method": "gptq",
+      "bits": 2,
+      "group_size": 16,
+      "calib_num": 256,
+      "desc_act": false,
+      "sym": true,
+      "damp_percent": 0.01,
+      "damp_auto_increment": 0.005,
+      "act_group_aware": false,
+      "static_groups": false,
+      "true_sequential": true,
+      "lm_head": false,
+      "mse": 0.0,
+      "rotation": null
+    },
+    "objectives": {
+      "accuracy_change": -0.52,
+      "gpu_peak_change": -0.59168975883879,
+      "latency_change": 2.9087858442741763
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": false,
+    "violation_score": 2.3487858442741762,
+    "status": "completed",
+    "quantized_model_path": "results/optimization/quick-mo-test_20251202_221816/models/trial02-20251202_222338-gptq-2bit",
+    "datetime_start": "2025-12-02T22:23:38.554578",
+    "datetime_complete": "2025-12-02T22:26:22.922356",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.0,
+        "gpu_peak_mb": 1010.7778,
+        "num_samples": 25,
+        "correct": 0,
+        "avg_latency_ms": 2192.208,
+        "throughput_tokens_per_sec": 583.6485
+      },
+      "truthfulqa": {
+        "accuracy": 0.24,
+        "gpu_peak_mb": 933.5679,
+        "num_samples": 25,
+        "correct": 6,
+        "avg_latency_ms": 973.7600000000001,
+        "throughput_tokens_per_sec": 240.9627
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.12,
+      "gpu_peak_mb": 1010.7778,
+      "avg_latency_ms": 1582.9840000000002,
+      "aggregation_method": "average"
+    },
+    "trial_id": 2
+  },
+  {
+    "config": {
+      "method": "gptq",
+      "bits": 3,
+      "group_size": 32,
+      "calib_num": 256,
+      "desc_act": true,
+      "sym": false,
+      "damp_percent": 0.005,
+      "damp_auto_increment": 0.05,
+      "act_group_aware": false,
+      "static_groups": true,
+      "true_sequential": false,
+      "lm_head": false,
+      "mse": 0.2,
+      "rotation": null
+    },
+    "objectives": {
+      "accuracy_change": 0.6800000000000002,
+      "gpu_peak_change": -0.54544146828162,
+      "latency_change": 7.003861909571065
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": false,
+    "violation_score": 6.003861909571065,
+    "status": "completed",
+    "quantized_model_path": "results/optimization/quick-mo-test_20251202_221816/models/trial06-20251202_223142-gptq-3bit",
+    "datetime_start": "2025-12-02T22:31:42.412088",
+    "datetime_complete": "2025-12-02T22:38:04.055404",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.04,
+        "gpu_peak_mb": 1125.2661,
+        "num_samples": 25,
+        "correct": 1,
+        "avg_latency_ms": 4314.132,
+        "throughput_tokens_per_sec": 302.3088
+      },
+      "truthfulqa": {
+        "accuracy": 0.8,
+        "gpu_peak_mb": 1060.3804,
+        "num_samples": 25,
+        "correct": 20,
+        "avg_latency_ms": 2168.692,
+        "throughput_tokens_per_sec": 120.3491
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.42000000000000004,
+      "gpu_peak_mb": 1125.2661,
+      "avg_latency_ms": 3241.412,
+      "aggregation_method": "average"
+    },
+    "trial_id": 6
+  },
+  {
+    "config": {
+      "method": "bnb",
+      "bits": 4,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_use_double_quant": false,
+      "bnb_4bit_compute_dtype": "bfloat16",
+      "llm_int8_threshold": 4.0,
+      "llm_int8_skip_modules": [
+        "lm_head"
+      ],
+      "llm_int8_has_fp16_weight": false,
+      "llm_int8_enable_fp32_cpu_offload": false
+    },
+    "objectives": {
+      "accuracy_change": 0.3599999999999999,
+      "gpu_peak_change": -0.12435275063257564,
+      "latency_change": 0.8393257955311483
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": false,
+    "violation_score": 0.17564724936742435,
+    "status": "completed",
+    "quantized_model_path": "results/optimization/quick-mo-test_20251202_221816/models/trial11-20251202_224312-bnb-4bit",
+    "datetime_start": "2025-12-02T22:43:12.331716",
+    "datetime_complete": "2025-12-02T22:43:58.410151",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.32,
+        "gpu_peak_mb": 1714.2661,
+        "num_samples": 25,
+        "correct": 8,
+        "avg_latency_ms": 723.976,
+        "throughput_tokens_per_sec": 1578.0655
+      },
+      "truthfulqa": {
+        "accuracy": 0.36,
+        "gpu_peak_mb": 2167.6772,
+        "num_samples": 25,
+        "correct": 9,
+        "avg_latency_ms": 765.8079999999999,
+        "throughput_tokens_per_sec": 309.1107
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.33999999999999997,
+      "gpu_peak_mb": 2167.6772,
+      "avg_latency_ms": 744.8919999999999,
+      "aggregation_method": "average"
+    },
+    "trial_id": 11
+  },
+  {
+    "config": {
+      "method": "awq",
+      "w_bit": 4,
+      "q_group_size": 32,
+      "zero_point": true,
+      "version": "gemm",
+      "modules_to_not_convert": [
+        "lm_head",
+        "layers.*norm*"
+      ]
+    },
+    "objectives": {
+      "accuracy_change": 0.6000000000000001,
+      "gpu_peak_change": -0.5219299489374774,
+      "latency_change": 0.8699840239418639
+    },
+    "satisfies_constraints": false,
+    "satisfies_targets": true,
+    "violation_score": 0.0,
+    "status": "completed",
+    "quantized_model_path": "results/optimization/quick-mo-test_20251202_221816/models/trial13-20251202_224524-awq-4bit",
+    "datetime_start": "2025-12-02T22:45:24.565551",
+    "datetime_complete": "2025-12-02T22:47:48.427138",
+    "per_dataset": {
+      "gsm8k": {
+        "accuracy": 0.4,
+        "gpu_peak_mb": 1183.4692,
+        "num_samples": 25,
+        "correct": 10,
+        "avg_latency_ms": 742.76,
+        "throughput_tokens_per_sec": 1524.0979
+      },
+      "truthfulqa": {
+        "accuracy": 0.4,
+        "gpu_peak_mb": 1078.3882,
+        "num_samples": 25,
+        "correct": 10,
+        "avg_latency_ms": 771.856,
+        "throughput_tokens_per_sec": 287.8776
+      }
+    },
+    "aggregated": {
+      "accuracy": 0.4,
+      "gpu_peak_mb": 1183.4692,
+      "avg_latency_ms": 757.308,
+      "aggregation_method": "average"
+    },
+    "trial_id": 13
+  }
+]

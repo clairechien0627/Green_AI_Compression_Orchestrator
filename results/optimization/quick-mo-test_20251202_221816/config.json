@@ -1,0 +1,263 @@
+{
+  "experiment": {
+    "name": "quick-mo-test",
+    "output_dir": "results/optimization"
+  },
+  "baseline": {
+    "model_name": "meta-llama/Llama-3.2-1B-Instruct",
+    "model_dtype": "float16",
+    "device_map": "cuda:0",
+    "trust_remote_code": true,
+    "datasets": {
+      "gsm8k": {
+        "enabled": true,
+        "num_samples": 50
+      },
+      "truthfulqa": {
+        "enabled": true,
+        "num_samples": 50
+      },
+      "commonsenseqa": {
+        "enabled": false,
+        "num_samples": 20
+      },
+      "humaneval": {
+        "enabled": false
+      },
+      "bbh": {
+        "enabled": false
+      }
+    }
+  },
+  "quantization_eval": {
+    "use_same_datasets_as_baseline": false,
+    "custom_datasets": {
+      "gsm8k": {
+        "num_samples": 25
+      },
+      "truthfulqa": {
+        "num_samples": 25
+      }
+    }
+  },
+  "multiobjective": {
+    "objectives": [
+      {
+        "name": "accuracy_change",
+        "direction": "maximize",
+        "weight": 2.0,
+        "reference_point": -0.15,
+        "description": "\u6e96\u78ba\u7387\u8b8a\u5316\u91cf\uff08\u6b63=\u4e0a\u5347\uff0c\u8ca0=\u4e0b\u964d\uff09"
+      },
+      {
+        "name": "gpu_peak_change",
+        "direction": "minimize",
+        "weight": 1.0,
+        "reference_point": 0.1,
+        "description": "GPU \u5cf0\u503c\u5167\u5b58\u8b8a\u5316\u91cf\uff08\u8ca0=\u6e1b\u5c11\uff0c\u6b63=\u589e\u52a0\uff09"
+      },
+      {
+        "name": "latency_change",
+        "direction": "minimize",
+        "weight": 1.0,
+        "reference_point": 0.5,
+        "description": "\u63a8\u7406\u5ef6\u9072\u8b8a\u5316\u91cf\uff08\u8ca0=\u6e1b\u5c11\uff0c\u6b63=\u589e\u52a0\uff09"
+      }
+    ],
+    "aggregation": {
+      "method": "average"
+    },
+    "constraints": {
+      "enabled": false,
+      "accuracy_min": -0.5,
+      "gpu_peak_max": -0.1,
+      "latency_max": 3.0
+    },
+    "targets": {
+      "accuracy_min": -0.3,
+      "gpu_peak_max": -0.3,
+      "latency_max": 1.0
+    }
+  },
+  "optimizer": {
+    "type": "optuna_multiobjective",
+    "optuna": {
+      "n_trials": 15,
+      "n_startup_trials": 5,
+      "sampler": "TPESampler",
+      "tpe_params": {
+        "n_ei_candidates": 24,
+        "multivariate": true,
+        "constant_liar": false
+      }
+    },
+    "search_space": {
+      "methods": [
+        "gptq",
+        "awq",
+        "bnb"
+      ],
+      "gptq": {
+        "bits": [
+          2,
+          3,
+          4,
+          8
+        ],
+        "group_size": [
+          -1,
+          16,
+          32,
+          64,
+          128
+        ],
+        "calib_num": [
+          256
+        ],
+        "desc_act": [
+          true,
+          false
+        ],
+        "sym": [
+          true,
+          false
+        ],
+        "damp_percent": [
+          0.001,
+          0.005,
+          0.01,
+          0.03,
+          0.05
+        ],
+        "damp_auto_increment": [
+          0.001,
+          0.005,
+          0.01,
+          0.03,
+          0.05
+        ],
+        "act_group_aware": [
+          false
+        ],
+        "static_groups": [
+          true,
+          false
+        ],
+        "true_sequential": [
+          true,
+          false
+        ],
+        "lm_head": [
+          false
+        ],
+        "mse": [
+          0.0,
+          0.1,
+          0.2
+        ],
+        "rotation": [
+          null
+        ]
+      },
+      "awq": {
+        "w_bit": [
+          4
+        ],
+        "q_group_size": [
+          16,
+          32,
+          64,
+          128
+        ],
+        "zero_point": [
+          true,
+          false
+        ],
+        "version": [
+          "gemm"
+        ],
+        "modules_to_not_convert": [
+          [
+            "lm_head"
+          ],
+          [
+            "embed_tokens"
+          ],
+          [
+            "lm_head",
+            "embed_tokens"
+          ],
+          [
+            "lm_head",
+            "layers.*norm*"
+          ],
+          []
+        ]
+      },
+      "bnb": {
+        "bits": [
+          4,
+          8
+        ],
+        "bnb_4bit_quant_type": [
+          "nf4",
+          "fp4"
+        ],
+        "bnb_4bit_use_double_quant": [
+          true,
+          false
+        ],
+        "bnb_4bit_compute_dtype": [
+          "float16",
+          "bfloat16"
+        ],
+        "llm_int8_threshold": [
+          4.0,
+          4.5,
+          5.0,
+          6.0
+        ],
+        "llm_int8_skip_modules": [
+          [
+            "lm_head"
+          ]
+        ],
+        "llm_int8_has_fp16_weight": [
+          false
+        ],
+        "llm_int8_enable_fp32_cpu_offload": [
+          false
+        ]
+      }
+    }
+  },
+  "output": {
+    "save_all_trials": true,
+    "save_pareto_frontier": true,
+    "recommendation": {
+      "strategy": "closest_to_target"
+    },
+    "visualization": {
+      "enabled": true,
+      "plot_types": [
+        "3d_pareto",
+        "parallel_coordinates",
+        "trade_off_matrix",
+        "optimization_history",
+        "param_importances",
+        "trial_timeline",
+        "hypervolume_history"
+      ],
+      "output_format": "html"
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "save_logs": true,
+    "log_file": "optimization_quick.log"
+  },
+  "cache": {
+    "enable_baseline_cache": true,
+    "cache_dir": ".cache/optimization"
+  }
+}

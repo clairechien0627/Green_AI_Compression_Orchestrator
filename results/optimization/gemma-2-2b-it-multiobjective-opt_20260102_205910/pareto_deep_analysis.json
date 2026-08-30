@@ -1,0 +1,84 @@
+{
+  "analysis_method": "pareto_frontier_deep_analysis",
+  "pareto_statistics": {
+    "total_pareto_solutions": 8,
+    "satisfying_targets": 0,
+    "close_to_targets": 8,
+    "violating_targets": 0
+  },
+  "tradeoff_analysis": {
+    "correlations": {
+      "accuracy_vs_gpu_peak": {
+        "pearson_r": 0.743,
+        "interpretation": "強正相關"
+      },
+      "accuracy_vs_latency": {
+        "pearson_r": -0.216,
+        "interpretation": "弱負相關"
+      },
+      "gpu_peak_vs_latency": {
+        "pearson_r": -0.354,
+        "interpretation": "弱負相關：GPU 節省和延遲變化之間的關係"
+      }
+    },
+    "key_insights": [
+      "準確率和 GPU 節省可以同時優化（0.74 相關性）",
+      "最佳壓縮配置節省 63.7% GPU，但準確率下降 96.6%"
+    ]
+  },
+  "recommendations": {
+    "for_memory_critical": {
+      "recommended_trial_id": 18,
+      "config": {
+        "method": "gptq",
+        "bits": 2,
+        "group_size": 128,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.005,
+        "damp_auto_increment": 0.001,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.1,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.9661016949152542,
+        "gpu_peak_change": -0.6365101217926906,
+        "latency_change": 1.13115149451703
+      },
+      "overall_score": -2.4268,
+      "reason": "GPU 節省最多（63.7%）",
+      "warning": "不滿足所有目標"
+    },
+    "for_accuracy_critical": {
+      "recommended_trial_id": 2,
+      "config": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 16,
+        "calib_num": 256,
+        "desc_act": true,
+        "sym": false,
+        "damp_percent": 0.01,
+        "damp_auto_increment": 0.03,
+        "act_group_aware": false,
+        "static_groups": true,
+        "true_sequential": false,
+        "lm_head": false,
+        "mse": 0.0,
+        "rotation": null
+      },
+      "objectives": {
+        "accuracy_change": -0.016949152542372895,
+        "gpu_peak_change": -0.5264458120941353,
+        "latency_change": 1.8994438389606318
+      },
+      "overall_score": -1.4069,
+      "reason": "準確率下降最少（1.7%）"
+    }
+  }
+}
