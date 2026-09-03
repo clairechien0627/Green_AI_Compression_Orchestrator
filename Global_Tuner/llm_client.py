@@ -30,6 +30,45 @@ class LLMDecisionMaker:
         self.pen_a = pen_a
         self.baseline_metrics = baseline_metrics
 
+    def _log_usage(self, iteration: int, phase: str, response, dedup_attempt: int = 0,
+                    json_attempt: int = 1, tool_turn: int = None, validation_passed=None):
+        """
+        把每一次 API 呼叫的 token 用量記錄成一行 JSONL（llm_usage_log.jsonl），
+        涵蓋所有呼叫來源，包含平常看不到的隱藏重試：
+          phase:
+            "decision"          - full/window/summary 模式的主要決策呼叫
+            "summary_update"    - summary 模式額外的知識摘要呼叫（gpt-4o-mini）
+            "tool_call_turn"    - tool 模式：LLM 選擇呼叫 retrieve_trials 的那一輪
+            "tool_answer_turn"  - tool 模式：LLM 輸出最終 JSON 策略的那一輪
+            "tool_answer_retry" - tool 模式：最終 JSON 驗證失敗後的修正重試
+          dedup_attempt: 該 iteration 內，這是第幾輪「去重複重試」（0 = 第一次呼叫）
+          json_attempt:  該次呼叫內，這是第幾次「JSON 格式驗證」嘗試（1 = 第一次）
+          tool_turn:     tool 模式底下第幾輪工具對話（非 tool 模式為 None）
+          validation_passed: 這次呼叫產生的內容是否通過 Pydantic 驗證（不適用時為 None）
+        """
+        from datetime import datetime
+        usage = getattr(response, "usage", None)
+        entry = {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "iteration": iteration,
+            "phase": phase,
+            "dedup_attempt": dedup_attempt,
+            "json_attempt": json_attempt,
+            "tool_turn": tool_turn,
+            "model": getattr(response, "model", None) or self.llm_model,
+            "input_tokens": usage.prompt_tokens if usage else None,
+            "output_tokens": usage.completion_tokens if usage else None,
+            "total_tokens": usage.total_tokens if usage else None,
+            "validation_passed": validation_passed,
+        }
+        if getattr(self, "exp_dir", None):
+            log_path = self.exp_dir / "llm_usage_log.jsonl"
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        else:
+            import logging
+            logging.getLogger("LLMClient").warning("No exp_dir set for LLMDecisionMaker; skipping usage log.")
+
     def _format_history(self, history: list) -> str:
         if not history:
             return "None"
@@ -123,7 +162,7 @@ class LLMDecisionMaker:
 
         return f"--- RETRIEVAL RESULTS FOR '{query}' (Top {len(filtered)} by Score) ---\n" + self._format_history(filtered)
 
-    def _update_knowledge_summary(self, trial_history: list):
+    def _update_knowledge_summary(self, trial_history: list, iteration: int = None):
         """Updates the LLM summary every 5 trials, correcting past assumptions."""
         if len(trial_history) - self.last_summarized_idx >= 5:
             new_batch = trial_history[self.last_summarized_idx : self.last_summarized_idx + 5]
@@ -163,6 +202,8 @@ Output ONLY the newly updated summary text. Do not include conversational filler
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.3
                 )
+                self._log_usage(iteration if iteration is not None else -1, phase="summary_update", response=response)
+
                 # Overwrite the old summary with the newly evolved one
                 self.knowledge_summary = response.choices[0].message.content.strip()
                 self.last_summarized_idx += 5
@@ -194,7 +235,7 @@ Output ONLY the newly updated summary text. Do not include conversational filler
             # Keep baseline context tight; the agent will fetch what else it needs
             history_str = self._format_history(trial_history[-3:])
         elif self.memory_type == "summary":
-            self._update_knowledge_summary(trial_history)
+            self._update_knowledge_summary(trial_history, iteration)
             unsummarized = trial_history[self.last_summarized_idx:]
             history_str = f"--- LLM KNOWLEDGE SUMMARY ---\n{self.knowledge_summary}\n\n"
             history_str += f"--- RECENT UNSUMMARIZED TRIALS ---\n{self._format_history(unsummarized) if unsummarized else 'None'}"
@@ -328,11 +369,15 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
         return re.sub(r'(?<!:)//[^\n"]*', '', text)
 
     def get_suggestion(self, iteration: int, trial_history: list, pareto: list = None,
-                       weights: dict = None, rejected_configs: list = None, targets: dict = None):
+                       weights: dict = None, rejected_configs: list = None, targets: dict = None,
+                       dedup_attempt: int = 0):
         """
         Returns (suggestion: StrategySuggestion, raw_llm_output: dict)
         raw_llm_output is the raw LLM output (without pydantic defaults), used for logging.
         Routes the request based on memory type.
+
+        dedup_attempt: orchestrator 端「去重複重試」的輪數（0 = 該 iteration 的第一次呼叫，
+        1+ = LLM 建議了重複 config 被拒絕後，第幾輪重新呼叫）。只用來標記 usage log，不影響決策邏輯。
         """
         if self.memory_type == "tool":
             # Tool mode 的附加價值是「補充主 prompt 看不到的歷史」
@@ -341,10 +386,10 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
                 original = self.memory_type
                 self.memory_type = "window"
                 try:
-                    return self.get_suggestion(iteration, trial_history, pareto, weights, rejected_configs, targets)
+                    return self.get_suggestion(iteration, trial_history, pareto, weights, rejected_configs, targets, dedup_attempt)
                 finally:
                     self.memory_type = original
-            return self._get_suggestion_with_tools(iteration, trial_history, pareto, weights, rejected_configs, targets)
+            return self._get_suggestion_with_tools(iteration, trial_history, pareto, weights, rejected_configs, targets, dedup_attempt)
 
         import json
         from pydantic import ValidationError
@@ -370,11 +415,17 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
                 
                 # Attempt to validate the JSON against our strict Literal rules
                 suggestion = StrategySuggestion.model_validate_json(raw_content)
-                
+
+                self._log_usage(iteration, phase="decision", response=response,
+                                 dedup_attempt=dedup_attempt, json_attempt=attempt + 1, validation_passed=True)
+
                 # FIXED: Return the exact tuple specified in the docstring
                 return suggestion, json.loads(raw_content)
-                
+
             except ValidationError as e:
+                # response 這次呼叫已經產生（花費了 token），即使驗證失敗也要記錄成本
+                self._log_usage(iteration, phase="decision", response=response,
+                                 dedup_attempt=dedup_attempt, json_attempt=attempt + 1, validation_passed=False)
                 logger.warning(f"⚠️ LLM Validation failed on attempt {attempt + 1}/{max_retries}. Retrying...\nError: {e}")
                 
                 if attempt == max_retries - 1:
@@ -388,7 +439,7 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
                     "content": f"Your JSON failed Pydantic validation. Please fix the following errors and strictly follow the schema:\n{e}"
                 })
 
-    def _get_suggestion_with_tools(self, iteration: int, trial_history: list, pareto: list = None, weights: dict = None, rejected_configs: list = None, targets: dict = None):
+    def _get_suggestion_with_tools(self, iteration: int, trial_history: list, pareto: list = None, weights: dict = None, rejected_configs: list = None, targets: dict = None, dedup_attempt: int = 0):
         """Bounded multi-round tool-calling loop."""
         import json
         from pydantic import ValidationError
@@ -462,6 +513,8 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
             
             # If the model decided to use a tool
             if msg.tool_calls:
+                self._log_usage(iteration, phase="tool_call_turn", response=response,
+                                 dedup_attempt=dedup_attempt, tool_turn=turn + 1)
                 for tool_call in msg.tool_calls:
                     args = json.loads(tool_call.function.arguments)
                     query = args.get("query")
@@ -507,35 +560,43 @@ Output ONLY the JSON for your chosen mode. No extra fields, no prose.
             # If no tool calls, it means the model outputted the final JSON
             else:
                 raw_content = self._strip_json_comments(msg.content or "{}") # 防呆：如果 content 是 None，給一個空 JSON 讓它至少能通過 json.loads 而不是崩潰
-                
+                current_response = response  # 追蹤「這一次驗證對應到哪個 API 回應」，避免重試時 token 記錄算到上一輪的回應
+
                 # ---  Mini-retry loop to preserve tool context ---
-                for attempt in range(2): 
+                for attempt in range(2):
                     try:
                         suggestion = StrategySuggestion.model_validate_json(raw_content)
+                        self._log_usage(iteration, phase="tool_answer_turn", response=current_response,
+                                         dedup_attempt=dedup_attempt, tool_turn=turn + 1,
+                                         json_attempt=attempt + 1, validation_passed=True)
                         return suggestion, json.loads(raw_content)
                     except ValidationError as e:
+                        self._log_usage(iteration, phase="tool_answer_turn", response=current_response,
+                                         dedup_attempt=dedup_attempt, tool_turn=turn + 1,
+                                         json_attempt=attempt + 1, validation_passed=False)
                         logger.warning(f"⚠️ Tool-mode JSON validation failed (attempt {attempt+1}/2): {e}")
-                        
+
                         if attempt == 1: # Last attempt failed
                             logger.error("Agent failed to fix JSON. Falling back to window mode.")
                             original_memory = self.memory_type
                             self.memory_type = "window"
                             try:  # just use fallback memory mode to get a valid suggestion without crashing the whole system, even if it's not tool-optimized
-                                return self.get_suggestion(iteration, trial_history, pareto, weights, rejected_configs, targets)
+                                return self.get_suggestion(iteration, trial_history, pareto, weights, rejected_configs, targets, dedup_attempt=dedup_attempt)
                             finally:
                                 self.memory_type = original_memory
-                                
+
                         # Feed the error back into the SAME message array (Preserves tool context!)
                         messages.append({"role": "assistant", "content": raw_content})
                         messages.append({
-                            "role": "user", 
+                            "role": "user",
                             "content": f"Your JSON failed Pydantic validation. Please fix these errors and output valid JSON:\n{e}"
                         })
-                        
+
                         # Ask the LLM one more time to fix it
                         retry_response = self.client.chat.completions.create(
                             model=self.llm_model,
                             messages=messages,
                             response_format={"type": "json_object"}
                         )
+                        current_response = retry_response
                         raw_content = self._strip_json_comments(retry_response.choices[0].message.content)

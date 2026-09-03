@@ -1,0 +1,656 @@
+[
+  {
+    "iteration": 1,
+    "trial_name": "trial_001_bnb_8bit",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 8,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 8,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "metrics": {
+      "accuracy": 0.69,
+      "latency": 1526.2311,
+      "vram": 3.59410576171875,
+      "emissions": 0.03364243,
+      "score": 2.3787757608909352,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.69,
+          "latency": 1526.2311,
+          "vram": 3.59410576171875,
+          "emissions": 0.03364243
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 0.0,
+      "eval_mb": 3450.9
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_001_bnb_8bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_001_bnb_8bit"
+  },
+  {
+    "iteration": 4,
+    "trial_name": "trial_004_bnb_4bit",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "metrics": {
+      "accuracy": 0.672,
+      "latency": 919.6785,
+      "vram": 2.37238359375,
+      "emissions": 0.02421764,
+      "score": 3.5501035719239717,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.672,
+          "latency": 919.6785,
+          "vram": 2.37238359375,
+          "emissions": 0.02421764
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 0.0,
+      "eval_mb": 2147.0
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_004_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_004_bnb_4bit"
+  },
+  {
+    "iteration": 8,
+    "trial_name": "trial_008_gptq_3bit_g32_gptq",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "format": "gptq",
+        "damp": 0.003513350464762684,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "gptq",
+        "bits": 3,
+        "group_size": 32,
+        "format": "gptq",
+        "damp": 0.003513350464762684,
+        "mse": 0.0
+      }
+    },
+    "metrics": {
+      "accuracy": 0.334,
+      "latency": 717.176,
+      "vram": 2.19329599609375,
+      "emissions": 0.05372116,
+      "score": -1.356758870008382,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.334,
+          "latency": 717.176,
+          "vram": 2.19329599609375,
+          "emissions": 0.05372116
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 1635.3,
+      "eval_mb": 1997.4
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_008_gptq_3bit_g32_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_008_gptq_3bit_g32_gptq"
+  },
+  {
+    "iteration": 12,
+    "trial_name": "trial_012_sparse_4x8",
+    "config": {
+      "mode": "sparse_only",
+      "sparse": {
+        "structure": "4:8"
+      }
+    },
+    "suggestion": {
+      "mode": "sparse_only",
+      "sparse": {
+        "structure": "4:8"
+      }
+    },
+    "metrics": {
+      "accuracy": 0.148,
+      "latency": 318.4647,
+      "vram": 6.1956763671875,
+      "emissions": 0.016143,
+      "score": -4.682904225393955,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.148,
+          "latency": 318.4647,
+          "vram": 6.1956763671875,
+          "emissions": 0.016143
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "sparse_mb": 9894.0,
+      "eval_mb": 6137.0
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_012_sparse_4x8",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_012_sparse_4x8"
+  },
+  {
+    "iteration": 13,
+    "trial_name": "trial_013_gptq_8bit_g64_gptq",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "format": "gptq",
+        "damp": 0.003191509296260972,
+        "mse": 0.0
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "gptq",
+        "bits": 8,
+        "group_size": 64,
+        "format": "gptq",
+        "damp": 0.003191509296260972,
+        "mse": 0.0
+      }
+    },
+    "metrics": {
+      "accuracy": 0.698,
+      "latency": 453.9009,
+      "vram": 3.66226337890625,
+      "emissions": 0.01948774,
+      "score": 4.1532308072645705,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.698,
+          "latency": 453.9009,
+          "vram": 3.66226337890625,
+          "emissions": 0.01948774
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 1635.3,
+      "eval_mb": 3540.7
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_013_gptq_8bit_g64_gptq",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_013_gptq_8bit_g64_gptq"
+  },
+  {
+    "iteration": 16,
+    "trial_name": "trial_016_asvd_r077_a60_bnb_4bit",
+    "config": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.6,
+        "ratio": 0.7752646860403536,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "suggestion": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.6,
+        "ratio": 0.7752646860403536,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "metrics": {
+      "accuracy": 0.022,
+      "latency": 2908.1387,
+      "vram": 2.07631875,
+      "emissions": 0.06266741,
+      "score": -14.13622465034992,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.022,
+          "latency": 2908.1387,
+          "vram": 2.07631875,
+          "emissions": 0.06266741
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6421.4,
+      "quant_mb": 0.0,
+      "eval_mb": 1843.1
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_016_asvd_r077_a60_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_016_asvd_r077_a60_bnb_4bit"
+  },
+  {
+    "iteration": 18,
+    "trial_name": "trial_018_bnb_4bit",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "metrics": {
+      "accuracy": 0.68,
+      "latency": 676.2042,
+      "vram": 2.4949412109375,
+      "emissions": 0.02046624,
+      "score": 4.011063060766527,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.68,
+          "latency": 676.2042,
+          "vram": 2.4949412109375,
+          "emissions": 0.02046624
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 0.0,
+      "eval_mb": 2272.1
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_018_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_018_bnb_4bit"
+  },
+  {
+    "iteration": 19,
+    "trial_name": "trial_019_asvd_r091_a60_bnb_4bit",
+    "config": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.6,
+        "ratio": 0.9134537579253681,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "suggestion": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.6,
+        "ratio": 0.9134537579253681,
+        "scaling": "fisher"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "metrics": {
+      "accuracy": 0.154,
+      "latency": 742.0227,
+      "vram": 2.26414345703125,
+      "emissions": 0.01829921,
+      "score": -4.46826062332103,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.154,
+          "latency": 742.0227,
+          "vram": 2.26414345703125,
+          "emissions": 0.01829921
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6257.8,
+      "quant_mb": 0.0,
+      "eval_mb": 2037.0
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_019_asvd_r091_a60_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_019_asvd_r091_a60_bnb_4bit"
+  },
+  {
+    "iteration": 20,
+    "trial_name": "trial_020_asvd_r074_a50_bnb_4bit",
+    "config": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.7478574146556829,
+        "scaling": "abs_max"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "suggestion": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.7478574146556829,
+        "scaling": "abs_max"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": false
+      }
+    },
+    "metrics": {
+      "accuracy": 0.0,
+      "latency": 2194.4687,
+      "vram": 2.1207166015625,
+      "emissions": 0.05185611,
+      "score": -65.61995555283683,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.0,
+          "latency": 2194.4687,
+          "vram": 2.1207166015625,
+          "emissions": 0.05185611
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6415.4,
+      "quant_mb": 0.0,
+      "eval_mb": 1889.7
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_020_asvd_r074_a50_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_020_asvd_r074_a50_bnb_4bit"
+  },
+  {
+    "iteration": 22,
+    "trial_name": "trial_022_asvd_r086_a30_bnb_4bit",
+    "config": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.3,
+        "ratio": 0.8676475665691811,
+        "scaling": "abs_max"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "suggestion": {
+      "mode": "hybrid",
+      "asvd": {
+        "alpha": 0.3,
+        "ratio": 0.8676475665691811,
+        "scaling": "abs_max"
+      },
+      "quant": {
+        "method": "bnb",
+        "bits": 4,
+        "group_size": 128,
+        "type": "nf4",
+        "double_quant": true
+      }
+    },
+    "metrics": {
+      "accuracy": 0.022,
+      "latency": 1140.2112,
+      "vram": 2.2025966796875,
+      "emissions": 0.02607894,
+      "score": -12.382274301579063,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.022,
+          "latency": 1140.2112,
+          "vram": 2.2025966796875,
+          "emissions": 0.02607894
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6389.2,
+      "quant_mb": 0.0,
+      "eval_mb": 1972.6
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_022_asvd_r086_a30_bnb_4bit",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_022_asvd_r086_a30_bnb_4bit"
+  },
+  {
+    "iteration": 24,
+    "trial_name": "trial_024_awq_4bit_g64",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 64
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 64
+      }
+    },
+    "metrics": {
+      "accuracy": 0.654,
+      "latency": 487.695,
+      "vram": 2.382069140625,
+      "emissions": 0.01469501,
+      "score": 4.598456792077662,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.654,
+          "latency": 487.695,
+          "vram": 2.382069140625,
+          "emissions": 0.01469501
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 952.6,
+      "eval_mb": 2228.7
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_024_awq_4bit_g64",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_024_awq_4bit_g64"
+  },
+  {
+    "iteration": 25,
+    "trial_name": "trial_025_awq_4bit_g128",
+    "config": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 128
+      }
+    },
+    "suggestion": {
+      "mode": "quant_only",
+      "quant": {
+        "method": "awq",
+        "bits": 4,
+        "group_size": 128
+      }
+    },
+    "metrics": {
+      "accuracy": 0.626,
+      "latency": 516.6891,
+      "vram": 2.330799609375,
+      "emissions": 0.01518665,
+      "score": 4.398286251737027,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.626,
+          "latency": 516.6891,
+          "vram": 2.330799609375,
+          "emissions": 0.01518665
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "quant_mb": 935.5,
+      "eval_mb": 2176.2
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_025_awq_4bit_g128",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_025_awq_4bit_g128"
+  },
+  {
+    "iteration": 28,
+    "trial_name": "trial_028_asvd_r091_a30",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.3,
+        "ratio": 0.911671735349336,
+        "scaling": "fisher"
+      }
+    },
+    "suggestion": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.3,
+        "ratio": 0.911671735349336,
+        "scaling": "fisher"
+      }
+    },
+    "metrics": {
+      "accuracy": 0.18,
+      "latency": 417.6817,
+      "vram": 5.72183369140625,
+      "emissions": 0.02035581,
+      "score": -4.199183208354956,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.18,
+          "latency": 417.6817,
+          "vram": 5.72183369140625,
+          "emissions": 0.02035581
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6280.0,
+      "eval_mb": 5650.5
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_028_asvd_r091_a30",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_028_asvd_r091_a30"
+  },
+  {
+    "iteration": 29,
+    "trial_name": "trial_029_asvd_r080_a50",
+    "config": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.8032397550474996,
+        "scaling": "abs_mean"
+      }
+    },
+    "suggestion": {
+      "mode": "asvd_only",
+      "asvd": {
+        "alpha": 0.5,
+        "ratio": 0.8032397550474996,
+        "scaling": "abs_mean"
+      }
+    },
+    "metrics": {
+      "accuracy": 0.008,
+      "latency": 365.5629,
+      "vram": 5.1187720703125,
+      "emissions": 0.0172289,
+      "score": -14.848303595893958,
+      "details": {
+        "gsm8k": {
+          "accuracy": 0.008,
+          "latency": 365.5629,
+          "vram": 5.1187720703125,
+          "emissions": 0.0172289
+        }
+      }
+    },
+    "compression_vram_mb": {
+      "asvd_mb": 6426.7,
+      "eval_mb": 5034.2
+    },
+    "model_path": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_029_asvd_r080_a50",
+    "trial_dir": "/home/claire/Documents/Green_AI/systematic_results/benchmark_20260829_223028/random_Llama-3.2-3B-Instruct_gsm8k_20260902_011337/trial_029_asvd_r080_a50"
+  }
+]

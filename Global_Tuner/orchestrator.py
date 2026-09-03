@@ -337,7 +337,7 @@ class OptimizationOrchestrator:
 
             rejected_this_iter = []
             for _retry in range(_MAX_DUP_RETRIES):
-                _s, _raw = self.llm.get_suggestion(i, self.trial_history, pareto=pareto, weights=self.weights, rejected_configs=rejected_this_iter, targets=self.targets)
+                _s, _raw = self.llm.get_suggestion(i, self.trial_history, pareto=pareto, weights=self.weights, rejected_configs=rejected_this_iter, targets=self.targets, dedup_attempt=_retry)
                 _fp = self._config_fingerprint(_s)
                 if _fp not in self._seen_configs:
                     suggestion, llm_output = _s, _raw

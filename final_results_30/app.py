@@ -3951,8 +3951,177 @@ Tool Agent 的診斷更模糊，有時誤判失敗原因，甚至再踩一次類
 
     st.divider()
 
-    # ── 7. 結論 ─────────────────────────────────────────────────────────────────
-    st.subheader("7. 結論與建議")
+    # ── 7. LLM 呼叫成本與 Token 用量重建分析 ──────────────────────────────────
+    st.subheader("7. LLM 呼叫成本與 Token 用量重建分析")
+
+    st.markdown("""
+guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下來，因為程式碼從未讀取 API
+回傳的 `usage` 欄位。以下數據是**離線重建**的結果：對每個已儲存的 trial，重新產生它當初
+送進 API 的 prompt 文字與輸出內容，再離線計算 token 數——**不重新呼叫 API、不重跑實驗**。
+
+可信度分兩級，明確分開呈現，不假裝精確：
+- **EXACT**：內容可以逐字重建的呼叫（prompt 與輸出都是已存檔資料的確定性函數）。
+- **隱藏事件**：orchestrator 在把 trial 存檔前，其實有一個**去重複重試迴圈**——LLM 若建議
+  已經試過的 config，會被整個丟棄、重打一次全新的 API 呼叫（最多 5 次），加上 LLM 輸出
+  JSON 格式不合法時的**驗證重試**。這兩種都不會被正式記錄下來，只留下一筆事件紀錄，實際
+  送出/生成的內容遺失，因此只能用同一個 run 內 EXACT 呼叫的平均 token 數去估計成本下界，
+  不計入 EXACT 加總。
+""")
+
+    @st.cache_data
+    def load_token_usage():
+        p = BASE_DIR.parent / "llm_token_usage_reconstructed.json"
+        if not p.exists():
+            return None
+        with open(p) as f:
+            return json.load(f)
+
+    token_data = load_token_usage()
+
+    if not token_data:
+        st.info(
+            "尚未產生 token 用量重建資料。請先在 repo 根目錄執行 "
+            "`python3 reconstruct_llm_token_usage.py`，產生 "
+            "`llm_token_usage_reconstructed.json` 後重新整理本頁。"
+        )
+    else:
+        df_tok = pd.DataFrame(token_data)
+        df_tok["mode_label"] = df_tok["mode"].map(SAMPLER_LABELS)
+        df_tok["exact_total_calls"] = df_tok["exact_calls"] + df_tok["summary_extra_calls"]
+        df_tok["exact_total_in"]    = df_tok["exact_in"] + df_tok["summary_extra_in"]
+        df_tok["exact_total_out"]   = df_tok["exact_out"] + df_tok["summary_extra_out"]
+        df_tok["exact_total_tok"]   = df_tok["exact_total_in"] + df_tok["exact_total_out"]
+        df_tok["hidden_events"]     = df_tok["hidden_dedup_events"] + df_tok["hidden_jsonretry_events"]
+
+        st.markdown("### 7.1 逐 Run 明細")
+        _detail_cols = {
+            "fn": "實驗資料夾", "mode_label": "模式",
+            "exact_total_calls": "EXACT 呼叫數",
+            "exact_total_in": "EXACT Input Tok", "exact_total_out": "EXACT Output Tok",
+            "exact_total_tok": "EXACT 總 Tok",
+            "hidden_dedup_events": "隱藏去重複事件", "hidden_jsonretry_events": "隱藏JSON重試事件",
+        }
+        df_detail = df_tok[list(_detail_cols.keys())].rename(columns=_detail_cols).copy()
+        df_detail["實驗資料夾"] = df_detail["實驗資料夾"].str.replace(
+            "Llama-3.2-3B-Instruct_gsm8k_", "", regex=False
+        )
+        df_detail["_sort"] = df_tok["mode"].map(sampler_sort_key)
+        df_detail = df_detail.sort_values(["_sort", "實驗資料夾"]).drop(columns=["_sort"])
+        styled_detail = (
+            df_detail.style
+            .background_gradient(subset=["EXACT 總 Tok"], cmap="Blues")
+            .background_gradient(subset=["隱藏去重複事件"], cmap="Reds")
+            .format({
+                "EXACT 呼叫數": "{:.0f}", "EXACT Input Tok": "{:,.0f}",
+                "EXACT Output Tok": "{:,.0f}", "EXACT 總 Tok": "{:,.0f}",
+                "隱藏去重複事件": "{:.0f}", "隱藏JSON重試事件": "{:.0f}",
+            })
+            .set_table_styles(table_style)
+        )
+        st.write(styled_detail.to_html(), unsafe_allow_html=True)
+
+        st.markdown("### 7.2 依模式加總（3 run 平均）")
+        _mode_order = ["full", "summary", "window", "tool"]
+        _agg_rows = []
+        for _m in _mode_order:
+            sub = df_tok[df_tok["mode"] == _m]
+            if sub.empty:
+                continue
+            avg_calls  = sub["exact_total_calls"].mean()
+            avg_exact  = sub["exact_total_tok"].mean()
+            avg_hidden = sub["hidden_events"].mean()
+            per_call   = avg_exact / avg_calls if avg_calls else 0
+            approx_total = avg_exact + avg_hidden * per_call
+            _agg_rows.append({
+                "_mode": _m, "模式": SAMPLER_LABELS.get(_m, _m),
+                "平均呼叫數(EXACT)": round(avg_calls, 1),
+                "平均 EXACT Token": round(avg_exact, 0),
+                "平均隱藏事件數": round(avg_hidden, 1),
+                "估計總 Token(含隱藏)": round(approx_total, 0),
+            })
+        df_agg = pd.DataFrame(_agg_rows)
+
+        if not df_agg.empty:
+            _full_base = df_agg.loc[df_agg["_mode"] == "full", "估計總 Token(含隱藏)"]
+            _full_base = _full_base.iloc[0] if not _full_base.empty else df_agg["估計總 Token(含隱藏)"].min()
+            df_agg["相對 Full 倍數"] = (df_agg["估計總 Token(含隱藏)"] / _full_base).round(2)
+
+            styled_agg = (
+                df_agg.drop(columns=["_mode"]).style
+                .background_gradient(subset=["估計總 Token(含隱藏)"], cmap="RdYlGn_r")
+                .background_gradient(subset=["平均隱藏事件數"], cmap="RdYlGn_r")
+                .format({
+                    "平均呼叫數(EXACT)": "{:.1f}", "平均 EXACT Token": "{:,.0f}",
+                    "平均隱藏事件數": "{:.1f}", "估計總 Token(含隱藏)": "{:,.0f}",
+                    "相對 Full 倍數": "{:.2f}x",
+                })
+                .set_table_styles(table_style)
+            )
+            st.write(styled_agg.to_html(), unsafe_allow_html=True)
+
+            st.markdown("### 7.3 圖表")
+
+            fig_tok = go.Figure()
+            fig_tok.add_trace(go.Bar(
+                x=df_agg["模式"], y=df_agg["平均 EXACT Token"], name="EXACT（可信部分）",
+                marker_color=[SAMPLER_COLORS.get(m, "#888") for m in df_agg["_mode"]],
+                text=df_agg["平均 EXACT Token"].apply(lambda v: f"{v:,.0f}"), textposition="outside",
+            ))
+            fig_tok.add_trace(go.Bar(
+                x=df_agg["模式"],
+                y=df_agg["估計總 Token(含隱藏)"] - df_agg["平均 EXACT Token"],
+                name="隱藏重試（估計值，非精確）",
+                marker_color="rgba(231,76,60,0.55)",
+                text=(df_agg["估計總 Token(含隱藏)"] - df_agg["平均 EXACT Token"]).apply(lambda v: f"+{v:,.0f}"),
+                textposition="outside",
+            ))
+            fig_tok.update_layout(
+                barmode="stack", height=420,
+                title="各模式 Token 總用量：EXACT vs 隱藏重試估計（3 run 平均）",
+                yaxis_title="Token 數",
+                plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+                legend_title="",
+            )
+            fig_tok.update_yaxes(gridcolor="#eee")
+            st.plotly_chart(fig_tok, width="stretch")
+
+            fig_hidden = go.Figure()
+            fig_hidden.add_trace(go.Bar(
+                x=df_agg["模式"], y=df_agg["平均隱藏事件數"], name="平均隱藏事件數（去重複＋JSON重試）",
+                marker_color=[SAMPLER_COLORS.get(m, "#888") for m in df_agg["_mode"]],
+                text=df_agg["平均隱藏事件數"].apply(lambda v: f"{v:.1f}"), textposition="outside",
+            ))
+            fig_hidden.update_layout(
+                height=380,
+                title="各模式平均隱藏重試事件數（3 run 平均，30 iteration / run）",
+                yaxis_title="事件數",
+                plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+                showlegend=False,
+            )
+            fig_hidden.update_yaxes(gridcolor="#eee")
+            st.plotly_chart(fig_hidden, width="stretch")
+
+            _cheapest = df_agg.loc[df_agg["估計總 Token(含隱藏)"].idxmin(), "模式"]
+            _most_hidden = df_agg.loc[df_agg["平均隱藏事件數"].idxmax(), "模式"]
+            st.info(f"""
+**解讀重點**
+
+- 單看「乾淨呼叫」的 token 數，**Full 模式並非最省**（prompt 隨 iteration 累積歷史，單次呼叫成本最高）。
+- 但把隱藏重試算進去之後，**{_cheapest} 反而是總成本最低的**：它幾乎不會建議重複配置
+  （去重複事件數最少），不太需要觸發那個看不見的重試迴圈；
+  **{_most_hidden}** 因為記憶較有限，比較常「忘記」自己試過什麼，隱藏重試次數最多，
+  實際總成本反而被墊高。
+- 這代表「品質 vs 成本」的權衡並不是單純的直覺（記憶越少 = 越省），
+  記憶不足導致的**重複建議重試**是一筆容易被忽略、但不小的隱藏成本。
+- ⚠️ 隱藏重試的 token 數是**估計值**（用同 run 內 EXACT 呼叫的平均值推算），
+  JSON 驗證重試因為會夾帶前一次失敗的完整內容，實際成本可能比估計值更高；
+  去重複重試因為是全新獨立呼叫，估計值相對可信。
+""")
+
+    st.divider()
+
+    # ── 8. 結論 ─────────────────────────────────────────────────────────────────
+    st.subheader("8. 結論與建議")
 
     # 動態計算最佳策略推薦
     if not df_report.empty:
