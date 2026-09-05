@@ -30,7 +30,7 @@ from datetime import datetime
 
 import tiktoken
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 RESULTS_DIR = ROOT / "final_results_30"
 LOG_FILE = ROOT / "trial30_benchmark.log"
 

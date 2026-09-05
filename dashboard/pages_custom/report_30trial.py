@@ -3970,7 +3970,7 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
 
     @st.cache_data
     def load_token_usage():
-        p = BASE_DIR.parent / "llm_token_usage_reconstructed.json"
+        p = BASE_DIR.parent / "analysis" / "llm_token_usage_reconstructed.json"
         if not p.exists():
             return None
         with open(p) as f:
@@ -3981,8 +3981,8 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
     if not token_data:
         st.info(
             "尚未產生 token 用量重建資料。請先在 repo 根目錄執行 "
-            "`python3 reconstruct_llm_token_usage.py`，產生 "
-            "`llm_token_usage_reconstructed.json` 後重新整理本頁。"
+            "`python3 analysis/reconstruct_llm_token_usage.py`，產生 "
+            "`analysis/llm_token_usage_reconstructed.json` 後重新整理本頁。"
         )
     else:
         df_tok = pd.DataFrame(token_data)

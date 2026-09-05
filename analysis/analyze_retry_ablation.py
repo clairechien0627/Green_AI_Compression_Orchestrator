@@ -26,7 +26,7 @@ from pathlib import Path
 
 from scipy import stats as sstats
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 
 CONDITIONS = {
     "5-retry（有安全網）": ROOT / "final_results_30",
