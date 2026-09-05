@@ -1,10 +1,10 @@
 """
 Green AI 量化搜尋分析——多頁 Streamlit 入口。
 
-dashboard/pages_custom/report_20trial.py、report_30trial.py 是
+dashboard/pages_custom/report_20trial.py、report_30trial.py 原本是
 final_results/app.py、final_results_30/app.py 的完整複本（自訂文字說明全部保留），
-只改了 BASE_DIR 的計算方式使其指回原本的資料夾。這樣 final_results/app.py、
-final_results_30/app.py 兩個原始檔案就不再被任何東西依賴，之後確認沒問題就可以刪除。
+只改了 BASE_DIR 的計算方式使其指回原本的資料夾。原始的兩支 app.py 已確認不再被
+任何東西依賴，故已刪除；資料夾本身只保留實驗結果 json。
 
 執行方式（在 repo 根目錄下）：
   streamlit run dashboard/app.py
