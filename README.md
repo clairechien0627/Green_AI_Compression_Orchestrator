@@ -1,2 +1,1 @@
-# Green_AI
-碩論
+# Green_AI_Compression_Orchestrator
