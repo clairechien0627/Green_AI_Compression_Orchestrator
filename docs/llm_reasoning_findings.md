@@ -107,17 +107,21 @@ iter 17 完全遺忘了 iter 9 那次比較好的結果(0.376),誤以為 asvd_on
 
 ### 6.2 已確認的分析缺口
 
-**資料還在、之後可以補的**:
+**已於本文完成後動手補上的**(2 項,見 §7 的實作紀錄):
+
+- ~~`tool_debug_log.jsonl` 的 `reason` 欄位從未被任何 dashboard 頁面讀取或顯示~~——已接進三個報告頁的「🤖 LLM Suggestion 記錄」區塊,tool 模式的 trial 現在展開後會直接看到當輪的工具查詢記錄。
+- ~~Summary 模式的知識摘要演化文字從未存檔~~——`Global_Tuner/llm_client.py` 現在每次更新摘要都會多寫一份 `knowledge_summary_history.jsonl`;**注意這只對之後新跑的 run 有效,本文 §3 分析用的既有資料仍然沒有這份檔案**,§3 的結論依然只能從摘要對決策的影響反推。
+
+**還沒補、之後可以補的**:
 
 1. **dashboard 完全沒有即時統計檢定**——`dashboard/` 底下沒有任何檔案 `import scipy`,所有 Mann-Whitney U / Fisher's exact 的數字都是 `analysis/analyze_retry_ablation.py` 跑過一次後,手動貼成 markdown 裡的字面值,不是即時算出來的。
-2. **`tool_debug_log.jsonl` 的 `reason` 欄位從未被任何 dashboard 頁面讀取或顯示**——本文 §4 用到的「工具偏執查詢 asvd/hybrid」這類發現,目前只能靠手動讀原始檔案才看得到。
-3. **沒有 config diff 工具**:儘管有很多並排的 Pareto 表、最佳 trial 表,卻沒有一個「選兩個 trial/實驗,結構化比較設定差異」的小工具。
-4. **`llm_usage_log.jsonl` 存在但沒被即時解析**——`report_30trial_noretry.py` 第 6 節顯示「真實記錄,非估計」的 token 表,實際上是寫死在 Python 裡的常數,不是即時讀檔算出來的,儘管這個檔案裡的 `dedup_attempt`/`json_attempt`/`validation_passed` 等欄位其實可以拿來重新驗證這些數字。
-5. **沒有對 reasoning / tool query 文字的關鍵字搜尋或篩選功能**——目前瀏覽 reasoning 的方式只有「展開單筆 trial 的 expander」或「作者手選幾個 iteration 區間精讀」,無法直接搜尋「哪些 trial 的 reasoning 提到了 ASVD」這類問題。
+2. **沒有 config diff 工具**:儘管有很多並排的 Pareto 表、最佳 trial 表,卻沒有一個「選兩個 trial/實驗,結構化比較設定差異」的小工具。
+3. **`llm_usage_log.jsonl` 存在但沒被即時解析**——`report_30trial_noretry.py` 第 6 節顯示「真實記錄,非估計」的 token 表,實際上是寫死在 Python 裡的常數,不是即時讀檔算出來的,儘管這個檔案裡的 `dedup_attempt`/`json_attempt`/`validation_passed` 等欄位其實可以拿來重新驗證這些數字。
+4. **沒有對 reasoning / tool query 文字的關鍵字搜尋或篩選功能**——目前瀏覽 reasoning 的方式只有「展開單筆 trial 的 expander」或「作者手選幾個 iteration 區間精讀」,無法直接搜尋「哪些 trial 的 reasoning 提到了 ASVD」這類問題。
 
-**資料層級已經消失、補不回來的**:
+**資料層級已經消失、既有 run 補不回來的**:
 
-6. **Summary 模式的知識摘要演化文字已永久遺失**——`_update_knowledge_summary()`(`Global_Tuner/llm_client.py`)只把每輪更新後的摘要寫進 `logger.info(...)`,從未存進 `optimization_results.json` 或任何其他檔案;對應的 1.5GB stdout log 也已刪除。這代表「摘要本身怎麼一步步演化、資訊怎麼流失」這件事,在現有資料上已經無法重建,本文 §3 只能從摘要對後續決策的**影響**(重複踩雷、詞彙沿用)反推,看不到摘要文字本身。
+5. **既有 run 的 Summary 模式知識摘要演化文字已永久遺失**——原因同上,原始 1.5GB stdout log 也已刪除,現有三批資料(`final_results*`)都無法回頭補這份記錄,只有未來新跑的 run 才會有。
 
 ---
 
@@ -125,10 +129,10 @@ iter 17 完全遺忘了 iter 9 那次比較好的結果(0.376),誤以為 asvd_on
 
 對應上面「資料還在、可以補」的缺口,若要繼續跑新一批實驗,值得考慮:
 
-- **在 `Global_Tuner/llm_client.py` 把每輪的 `knowledge_summary` 存到磁碟**(例如寫進 `optimization_results.json` 每筆 trial 旁,或獨立的 `knowledge_summary_history.jsonl`)——這樣未來才能真正分析摘要本身怎麼演化、資訊在哪一輪開始流失,而不是只能像本文一樣事後從行為反推。
-- **把 `tool_debug_log.jsonl` 的 `reason` 欄位接進 dashboard**——§4 發現的「工具偏執查詢」這類模式,值得做成像本文 §4 那樣的固定分析區塊,而不是每次都要手動翻檔案。
-- **`report_30trial_noretry.py` 的 token 用量表改成即時解析 `llm_usage_log.jsonl`**,而非目前寫死的常數——順便可以拿真實的 `dedup_attempt`/`json_attempt` 欄位驗證舊有的估計值準不準。
-- 若要驗證 §5 的「QQQ group_size 盲點」是不是 prompt 設計問題,可以考慮在 prompt 的 few-shot 範例或參數說明裡,明確提示 `group_size=-1` 是 QQQ 的一個合法選項並說明其代價/好處,看看加了明確提示後 LLM 會不會自己發現這個因果關係。
+- ✅ **已實作:在 `Global_Tuner/llm_client.py` 把每輪的 `knowledge_summary` 存到磁碟**——`_update_knowledge_summary()` 現在每次更新都會多寫一行到 `knowledge_summary_history.jsonl`(`{timestamp, iteration, summarized_through_idx, knowledge_summary}`),`dashboard/pages_custom/_landing.py` 的擴充檔案清單也同步補上這個檔名。只對之後新跑的 run 有效,既有資料補不回來。
+- ✅ **已實作:把 `tool_debug_log.jsonl` 的 `reason` 欄位接進 dashboard**——`report_20trial.py`/`report_30trial.py`/`report_30trial_noretry.py` 的「🤖 LLM Suggestion 記錄」區塊,tool 模式的每個 trial 展開後現在會多顯示當輪的工具查詢記錄(查了什麼、為什麼查、查到什麼),不用再手動翻 `tool_debug_log.jsonl`。
+- **`report_30trial_noretry.py` 的 token 用量表改成即時解析 `llm_usage_log.jsonl`**,而非目前寫死的常數——順便可以拿真實的 `dedup_attempt`/`json_attempt` 欄位驗證舊有的估計值準不準。(尚未實作)
+- 若要驗證 §5 的「QQQ group_size 盲點」是不是 prompt 設計問題,可以考慮在 prompt 的 few-shot 範例或參數說明裡,明確提示 `group_size=-1` 是 QQQ 的一個合法選項並說明其代價/好處,看看加了明確提示後 LLM 會不會自己發現這個因果關係。這項會改變未來實驗的 prompt 設計本身,需要跑新一批實驗才能驗證有沒有用,故本次未一併實作。(尚未實作)
 
 ---
 

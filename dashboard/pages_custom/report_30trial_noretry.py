@@ -245,6 +245,27 @@ def load_baseline() -> dict:
     return {}
 
 
+@st.cache_data
+def load_tool_debug_log(dir_name: str) -> dict:
+    """讀取 tool 模式獨有的 tool_debug_log.jsonl（僅 tool 實驗有這個檔案，且只會出現在
+    BASE_DIR，因為 COMPARE_BASE_DIR 補進來的 tpe/nsga2/random 沒有這個檔案），依 iteration
+    分組，回傳 {iteration: [entry, ...]}。entry 包含 LLM 每次呼叫 retrieve_trials 工具時的
+    query（查什麼）、reason（為什麼查，LLM 自己給的理由）、results（檢索到的內容），這個
+    reason 欄位過去只存在原始檔案裡，從未在 dashboard 顯示過。"""
+    p = BASE_DIR / dir_name / "tool_debug_log.jsonl"
+    if not p.exists():
+        return {}
+    by_iter: dict = {}
+    with open(p, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            entry = json.loads(line)
+            by_iter.setdefault(entry.get("iteration"), []).append(entry)
+    return by_iter
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # DataFrame 建立與樣式
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1376,6 +1397,7 @@ with tab2:
                 st.caption("每個 iteration 中 LLM 給出的壓縮建議與推理說明。")
 
                 sugg_trials = [t for t in exp["trials"] if t.get("suggestion")]
+                tool_debug = load_tool_debug_log(exp["dir_name"]) if exp.get("sampler") == "tool" else {}
                 if not sugg_trials:
                     st.info("此實驗無 suggestion 記錄。")
                 else:
@@ -1401,6 +1423,19 @@ with tab2:
                                 cols = st.columns(min(len(params), 4))
                                 for i, (k, v) in enumerate(params.items()):
                                     cols[i % len(cols)].metric(k, v)
+
+                            # 工具查詢記錄（僅 tool 模式，來自 tool_debug_log.jsonl）——
+                            # query/reason 是 LLM 自己決定查什麼、為什麼查，過去只存在原始檔案裡
+                            debug_entries = tool_debug.get(t.get("iteration"), [])
+                            if debug_entries:
+                                st.markdown(f"**🔍 工具查詢記錄（{len(debug_entries)} 次）：**")
+                                for de in debug_entries:
+                                    st.markdown(
+                                        f"- 查詢 `{de.get('query', '?')}` "
+                                        f"— *{de.get('reason', '（無理由）')}*"
+                                    )
+                                    if de.get("results"):
+                                        st.code(de["results"], language=None)
 
                             if not is_valid:
                                 st.warning("此 trial 未產生有效結果（被 skip 或評估失敗）")

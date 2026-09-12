@@ -207,12 +207,29 @@ Output ONLY the newly updated summary text. Do not include conversational filler
                 # Overwrite the old summary with the newly evolved one
                 self.knowledge_summary = response.choices[0].message.content.strip()
                 self.last_summarized_idx += 5
-                
+
                 # Log the update so you can watch the agent "change its mind" in the terminal
                 import logging
                 logger = logging.getLogger("LLMClient")
                 logger.info(f"\n🧠 [Knowledge Base Updated]\n{self.knowledge_summary}\n")
-                
+
+                # 同時存成 knowledge_summary_history.jsonl，讓摘要的演化過程可以事後分析
+                # （過去這段文字只寫進 logger.info，stdout log 一刪就永久遺失，見
+                #  docs/llm_reasoning_findings.md §6.2）
+                if getattr(self, "exp_dir", None):
+                    from datetime import datetime
+                    entry = {
+                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "iteration": iteration,
+                        "summarized_through_idx": self.last_summarized_idx,
+                        "knowledge_summary": self.knowledge_summary,
+                    }
+                    log_path = self.exp_dir / "knowledge_summary_history.jsonl"
+                    with open(log_path, "a", encoding="utf-8") as f:
+                        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+                else:
+                    logger.warning("No exp_dir set for LLMDecisionMaker; skipping knowledge-summary log.")
+
             except Exception as e:
                 import logging
                 logger = logging.getLogger("LLMClient")

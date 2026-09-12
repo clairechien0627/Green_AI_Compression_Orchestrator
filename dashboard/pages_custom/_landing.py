@@ -29,8 +29,8 @@ st.markdown("""
 擴充建議：未來若新增第 4 組實驗配置（例如換模型、換任務、或另一種消融設計），
 只需要：
 1. 把新資料夾的必要檔案（`experiment_config.json` / `optimization_results.json` /
-   `pareto_frontier.json` / 視情況加 `tool_debug_log.jsonl`、`llm_usage_log.jsonl`）
-   整理好放進 repo 根目錄的新資料夾。
+   `pareto_frontier.json` / 視情況加 `tool_debug_log.jsonl`、`llm_usage_log.jsonl`、
+   `knowledge_summary_history.jsonl`）整理好放進 repo 根目錄的新資料夾。
 2. 在 `dashboard/app.py` 的 `st.navigation(...)` 清單裡加一行 `st.Page(...)` 指向新頁面。
 3. 若需要客製化文字報告，複製一份 `pages_custom/report_30trial_noretry.py` 當模板調整，
    並依 trial 數/實驗設計取一個看得出差異的檔名（例如 `report_50trial_noretry.py`）；

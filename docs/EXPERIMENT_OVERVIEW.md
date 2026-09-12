@@ -173,8 +173,9 @@ log-scale 讓「低基準值的相對改善」被放大權重，`score > 1.0` �
 - **跨模式共同盲點**：QQQ 搭配 `group_size=128` 幾乎必然崩潰，四種模式的 reasoning 全部
   誤判成 `damp_percent` 的問題，整個資料集只有兩筆 trial 試過 `group_size=-1`，且都是誤打
   誤撞而非因果推理——與記憶架構無關，是決策者本身的局限。
-- 文件末尾也盤點了 dashboard 現有分析手法哪些做得細緻、哪些資料存在但沒被用到
-  (例如 `tool_debug_log.jsonl` 的查詢理由欄位從未被顯示過)。
+- 文件末尾也盤點了 dashboard 現有分析手法哪些做得細緻、哪些資料存在但沒被用到，其中
+  「`tool_debug_log.jsonl` 查詢理由接進 dashboard」與「把 summary 模式的知識摘要存到磁碟」
+  兩項已直接動手補上（見該文件 §7），其餘(即時統計檢定、config diff 工具等)仍待補。
 
 ---
 
