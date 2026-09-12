@@ -8,7 +8,9 @@ JSON 驗證重試次數、tool 呼叫輪數），對照 optimization_results.jso
   2. 整個 run 的加總統計
 
 只適用於「已經套用新版 llm_client.py 之後」跑的實驗——沒有 llm_usage_log.jsonl 的舊資料
-（例如 final_results_30/）沒有這個檔案，仍要用 reconstruct_llm_token_usage.py 的離線估計法。
+（例如 final_results_30/）沒有這個檔案，只能靠當初離線重建產生的
+final_results_30/llm_token_usage_reconstructed.json（重建腳本已刪除、原始 log 已不存在，
+故該檔案無法重新產生）。
 
 用法：
   python3 analyze_llm_usage.py <exp_dir>            # 單一實驗的詳細報表
