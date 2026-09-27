@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 # Load environment variables
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 load_dotenv(ROOT_DIR / ".env")
 
-from Strategy import StrategySuggestion
+from src.Strategy import StrategySuggestion
 
 
 class LLMDecisionMaker:

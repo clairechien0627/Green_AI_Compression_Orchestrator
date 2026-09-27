@@ -23,14 +23,14 @@ if not logger.handlers:
     logger.addHandler(handler)
 logger.propagate = False
 
-# Strategy/executors.py → 往上一層到 Green_AI/
-_ROOT_DIR = Path(__file__).resolve().parent.parent
+# src/Strategy/executors.py → 往上兩層到 Green_AI/
+_ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
-from Method.asvd import ASVDConfig, run_asvd as _run_asvd
-from Method.sparse import SparseConfig, run_sparse as _run_sparse
-from Method.quantize import QuantConfig, run_quantization as _run_quantization
-from Evals import EVALUATOR_MAP
+from src.Method.asvd import ASVDConfig, run_asvd as _run_asvd
+from src.Method.sparse import SparseConfig, run_sparse as _run_sparse
+from src.Method.quantize import QuantConfig, run_quantization as _run_quantization
+from src.Evals import EVALUATOR_MAP
 
 
 # ============================================================================

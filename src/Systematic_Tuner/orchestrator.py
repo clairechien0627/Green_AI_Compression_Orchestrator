@@ -17,10 +17,10 @@ from datetime import datetime
 from pathlib import Path
 
 import sys
-_ROOT_DIR = Path(__file__).resolve().parent.parent
+_ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
-from Strategy import (
+from src.Strategy import (
     run_asvd, run_sparse, run_quantization, run_evaluation,
     run_isolated, run_isolated_oom_retry, make_trial_name,
 )

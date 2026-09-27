@@ -83,7 +83,7 @@ ASVD 參數同上 + BNB 參數同上。
 
 ```bash
 # Optuna TPE（推薦起點）
-python -m Systematic_Tuner.orchestrator \
+python -m src.Systematic_Tuner.orchestrator \
   --model_id meta-llama/Llama-3.2-1B-Instruct \
   --task gsm8k \
   --search_method optuna
@@ -167,7 +167,7 @@ TPE 在開始學習之前先做純隨機探索的次數。
 目的：了解哪個模式值得深入。
 
 ```bash
-python -m Systematic_Tuner.orchestrator \
+python -m src.Systematic_Tuner.orchestrator \
   --search_method optuna \
   --max_iterations 20 \
   --n_startup_trials 5 \
@@ -180,7 +180,7 @@ python -m Systematic_Tuner.orchestrator \
 
 ```bash
 # 只搜 GPTQ
-python -m Systematic_Tuner.orchestrator \
+python -m src.Systematic_Tuner.orchestrator \
   --search_method optuna \
   --max_iterations 60 \
   --n_startup_trials 10 \
@@ -190,7 +190,7 @@ python -m Systematic_Tuner.orchestrator \
 ### 省 VRAM 優先
 
 ```bash
-python -m Systematic_Tuner.orchestrator \
+python -m src.Systematic_Tuner.orchestrator \
   --search_method optuna \
   --acc_weight 0.4 --vram_weight 0.4 --emit_weight 0.1 --lat_weight 0.1 \
   --modes gptq awq qqq bnb
@@ -199,7 +199,7 @@ python -m Systematic_Tuner.orchestrator \
 ### 省電優先
 
 ```bash
-python -m Systematic_Tuner.orchestrator \
+python -m src.Systematic_Tuner.orchestrator \
   --search_method optuna \
   --acc_weight 0.4 --emit_weight 0.4 --vram_weight 0.1 --lat_weight 0.1
 ```

@@ -14,16 +14,16 @@ import multiprocessing as mp
 import traceback
 import statistics
 
-_ROOT_DIR = Path(__file__).resolve().parent.parent
+_ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_ROOT_DIR))
 
 from llm_client import LLMDecisionMaker
-from Strategy import (
+from src.Strategy import (
     run_asvd, run_sparse, run_quantization, run_evaluation,
     run_isolated, run_isolated_oom_retry, make_trial_name,
 )
 from utils import get_pareto_frontier
-from Evals.base_evaluator import BaseEvaluator
+from src.Evals.base_evaluator import BaseEvaluator
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("ModularOrchestrator")

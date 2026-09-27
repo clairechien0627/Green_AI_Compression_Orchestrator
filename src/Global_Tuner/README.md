@@ -18,7 +18,7 @@ An automated, LLM-driven orchestrator designed to compress large language models
 The easiest and most visual way to run the orchestrator is via the web dashboard. It provides real-time insights into what the LLM is testing and how the metrics are changing.
 
 ```bash
-streamlit run Global_Tuner/app.py
+streamlit run src/Global_Tuner/app.py
 ```
 
 ### Dashboard Features:
@@ -34,7 +34,7 @@ streamlit run Global_Tuner/app.py
 You can also run the orchestrator completely headless via the CLI. This is particularly useful for setting up automated, target-driven runs on remote servers.
 
 ```bash
-python Global_Tuner/orchestrator.py \
+python src/Global_Tuner/orchestrator.py \
   --model_id "meta-llama/Llama-3.2-1B-Instruct" \
   --task "gsm8k,math" \
   --max_iterations 20 \
@@ -80,7 +80,7 @@ You can automatically evaluate and compare all four memory modes using the built
 
 ```bash
 # Run a comparison benchmark (e.g., 3 full optimization runs per memory mode)
-python Global_Tuner/orchestrator.py --benchmark_runs 3 --max_iterations 15
+python src/Global_Tuner/orchestrator.py --benchmark_runs 3 --max_iterations 15
 ```
 
 ### Automated Reporting

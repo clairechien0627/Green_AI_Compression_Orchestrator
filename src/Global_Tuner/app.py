@@ -9,12 +9,12 @@ from pathlib import Path
 
 # --- Configuration ---
 st.set_page_config(page_title="Green AI Orchestrator", layout="wide")
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 # --- Dynamically Load Available Tasks ---
 sys.path.insert(0, str(ROOT_DIR))
 try:
-    from Evals import EVALUATOR_MAP
+    from src.Evals import EVALUATOR_MAP
     AVAILABLE_TASKS = list(EVALUATOR_MAP.keys())
 except ImportError:
     AVAILABLE_TASKS = ["gsm8k", "math", "humaneval", "mbpp", "mmlu", "hellaswag", "truthfulqa"]
@@ -130,7 +130,7 @@ if start_btn:
         st.session_state.log_file_handle = open(log_path, "w", encoding="utf-8")
         
         cmd = [
-            "python", "Global_Tuner/orchestrator.py",
+            "python", "src/Global_Tuner/orchestrator.py",
             "--model_id", model_id, "--task", task, "--memory_type", memory_type,
             "--max_iterations", str(max_iterations), "--max_time_hours", str(max_time_hours),
             "--target_vram_pct", str(target_vram), "--target_lat_pct", str(target_lat),

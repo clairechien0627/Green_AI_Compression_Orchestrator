@@ -12,12 +12,12 @@ from typing import Optional, List
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 import optuna
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-from Strategy import StrategySuggestion
+from src.Strategy import StrategySuggestion
 from .search_space import (
     ASVD_SPACE, GPTQ_SPACE, AWQ_SPACE, QQQ_SPACE, BNB_SPACE,
     SPARSE_UNSTRUCTURED_SPACE, SPARSE_STRUCTURED_SPACE, ALL_MODES,

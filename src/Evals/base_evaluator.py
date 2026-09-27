@@ -38,7 +38,7 @@ if not logger.handlers:
     logger.addHandler(handler)
 logger.propagate = False
 
-# 預設 dataset_config.yaml 位置（Global_Tuner/Evals/config/）
+# 預設 dataset_config.yaml 位置（src/Evals/config/）
 _DEFAULT_DATASET_CONFIG = str(
     Path(__file__).parent / "config" / "dataset_config.yaml"
 )

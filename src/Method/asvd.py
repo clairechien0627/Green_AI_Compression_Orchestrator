@@ -24,7 +24,7 @@ if not logger.handlers:
 logger.propagate = False
 
 # Resolve paths
-_ROOT_DIR = Path(__file__).resolve().parent.parent  # Green_AI/
+_ROOT_DIR = Path(__file__).resolve().parent.parent.parent  # Green_AI/
 _ASVD_ROOT = _ROOT_DIR / "ASVD4LLM"
 _ASVD_REPO_DIR = _ASVD_ROOT / "huggingface_repos"
 

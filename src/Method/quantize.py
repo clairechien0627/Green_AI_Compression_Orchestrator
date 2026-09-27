@@ -7,7 +7,7 @@
 - bnb              → transformers BitsAndBytesConfig（on-the-fly，不儲存）
 
 用法:
-    from Method.quantize import QuantConfig, run_quantization
+    from src.Method.quantize import QuantConfig, run_quantization
 
     config = QuantConfig(method="gptq", bits=4, group_size=128)
     output_path = run_quantization("meta-llama/Llama-3.2-1B-Instruct", config)
