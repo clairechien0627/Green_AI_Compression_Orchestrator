@@ -30,7 +30,7 @@ class DatasetConfigManager:
     負責載入和管理 dataset_config.yaml
     """
     
-    def __init__(self, config_path: str = "tmp/config/dataset_config.yaml"):
+    def __init__(self, config_path: str = "legacy/tmp_pipeline/config/dataset_config.yaml"):
         """
         初始化配置管理器
         

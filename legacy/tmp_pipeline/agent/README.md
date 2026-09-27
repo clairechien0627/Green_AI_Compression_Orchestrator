@@ -34,15 +34,15 @@ pip install plotly kaleido
 ### 1. 快速測試（15-20 分鐘）
 
 ```bash
-python tmp/test/test_optimization.py \
-  --config tmp/config/optimization_config_quick.yaml
+python legacy/tmp_pipeline/test/test_optimization.py \
+  --config legacy/tmp_pipeline/config/optimization_config_quick.yaml
 ```
 
 ### 2. 完整優化（1-2 小時）
 
 ```bash
-python tmp/test/test_optimization.py \
-  --config tmp/config/optimization_config.yaml
+python legacy/tmp_pipeline/test/test_optimization.py \
+  --config legacy/tmp_pipeline/config/optimization_config.yaml
 ```
 
 ### 3. 查看結果
@@ -58,7 +58,7 @@ open results/optimization/experiment_name_timestamp/pareto_3d.html
 ## 📁 架構
 
 ```
-tmp/agent/
+legacy/tmp_pipeline/agent/
 ├── config_loader.py              # 配置載入
 ├── baseline_evaluator.py         # 基線模型評估
 ├── evaluator_agent.py            # 量化 + 評估
@@ -73,7 +73,7 @@ tmp/agent/
 
 ## ⚙️ 配置
 
-編輯 `tmp/config/optimization_config.yaml`：
+編輯 `legacy/tmp_pipeline/config/optimization_config.yaml`：
 
 ### 關鍵參數
 

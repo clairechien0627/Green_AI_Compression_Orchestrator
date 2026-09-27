@@ -165,7 +165,7 @@ class BaselineEvaluator:
             'dataset': {
                 'name': dataset_name,
                 'num_samples': num_samples,
-                'config_file': 'tmp/config/dataset_config.yaml',  # 現有評估器需要此欄位
+                'config_file': 'legacy/tmp_pipeline/config/dataset_config.yaml',  # 現有評估器需要此欄位
                 'override': {
                     'num_samples': num_samples  # 從 dataset_config 覆蓋 num_samples
                 }

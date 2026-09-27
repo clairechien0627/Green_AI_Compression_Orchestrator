@@ -86,7 +86,7 @@ optimizer:
 
     # Prompt 配置
     prompt:
-      config_file: "tmp/config/prompt_config.yaml"  # Prompt 配置檔路徑
+      config_file: "legacy/tmp_pipeline/config/prompt_config.yaml"  # Prompt 配置檔路徑
       type: "zh"  # Prompt 類型（參見 prompt_config.yaml 中的 supported_types）
                   # 可選: "en" (English), "zh" (繁體中文), 或自定義類型
 

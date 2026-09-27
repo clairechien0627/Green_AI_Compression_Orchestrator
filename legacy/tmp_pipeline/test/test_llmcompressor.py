@@ -6,19 +6,19 @@ llm-compressor 量化測試腳本
 
 使用方式:
     # 使用預設配置
-    python tmp/test/test_llmcompressor.py
+    python legacy/tmp_pipeline/test/test_llmcompressor.py
 
     # 指定配置檔案
-    python tmp/test/test_llmcompressor.py --config tmp/config/llmcompressor_config.yaml
+    python legacy/tmp_pipeline/test/test_llmcompressor.py --config legacy/tmp_pipeline/config/llmcompressor_config.yaml
 
     # 覆寫量化方法
-    python tmp/test/test_llmcompressor.py --method autoround
+    python legacy/tmp_pipeline/test/test_llmcompressor.py --method autoround
 
     # 覆寫量化方案
-    python tmp/test/test_llmcompressor.py --scheme W8A16
+    python legacy/tmp_pipeline/test/test_llmcompressor.py --scheme W8A16
 
     # 啟用 SmoothQuant 前處理
-    python tmp/test/test_llmcompressor.py --smoothquant
+    python legacy/tmp_pipeline/test/test_llmcompressor.py --smoothquant
 """
 
 import argparse
@@ -353,8 +353,8 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default="tmp/config/llmcompressor_config.yaml",
-        help="配置檔案路徑 (預設: tmp/config/llmcompressor_config.yaml)"
+        default="legacy/tmp_pipeline/config/llmcompressor_config.yaml",
+        help="配置檔案路徑 (預設: legacy/tmp_pipeline/config/llmcompressor_config.yaml)"
     )
 
     parser.add_argument(
@@ -411,9 +411,9 @@ def main():
             print(f"模型已保存至: {output_path}")
             print("\n下一步:")
             print(f"  1. 使用 test_eval.py 評估量化後的模型:")
-            print(f"     # 編輯 tmp/config/model_config.yaml")
+            print(f"     # 編輯 legacy/tmp_pipeline/config/model_config.yaml")
             print(f"     # 將 model.name 設為: {output_path}")
-            print(f"     python tmp/test/test_eval.py")
+            print(f"     python legacy/tmp_pipeline/test/test_eval.py")
 
     except Exception as e:
         logger.error(f"測試失敗: {e}")

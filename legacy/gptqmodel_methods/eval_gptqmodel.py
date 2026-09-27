@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 # 確保能從專案根目錄 import
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from tmp.evals import (
+from legacy.tmp_pipeline.evals import (
     GSM8KEvaluator,
     TruthfulQAEvaluator,
     CommonsenseQAEvaluator,
@@ -81,7 +81,7 @@ def build_eval_config(model_path: str, output_dir: str, num_samples=None):
             "name": model_path,
         },
         "dataset": {
-            "config_file": "tmp/config/dataset_config.yaml",
+            "config_file": "legacy/tmp_pipeline/config/dataset_config.yaml",
             "override": {},
         },
     }

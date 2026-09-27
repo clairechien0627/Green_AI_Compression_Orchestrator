@@ -50,7 +50,7 @@ dataset:
   # 選擇要評估的資料集（可以是列表）
   selected: ["gsm8k"]  # 或 ["gsm8k", "truthfulqa", "commonsenseqa", "humaneval", "bbh"]
   # 資料集詳細配置從 dataset_config.yaml 讀取
-  config_file: "tmp/config/dataset_config.yaml"
+  config_file: "legacy/tmp_pipeline/config/dataset_config.yaml"
   
   # 可以覆寫 dataset_config.yaml 中的參數
   override:

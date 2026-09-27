@@ -12,9 +12,9 @@ import argparse
 from pathlib import Path
 
 # 添加專案根目錄到路徑
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
-from tmp.agent.scoring import LayeredScorer, ParetoAnalyzer
+from legacy.tmp_pipeline.agent.scoring import LayeredScorer, ParetoAnalyzer
 
 
 def compute_pareto_frontier(trials: list) -> list:
@@ -416,25 +416,25 @@ def main():
         epilog="""
 示例用法：
   # 處理所有實驗（預設）
-  python tmp/test/backfill_analysis.py
+  python legacy/tmp_pipeline/test/backfill_analysis.py
 
   # 指定特定目錄
-  python tmp/test/backfill_analysis.py --dirs results/optimization
+  python legacy/tmp_pipeline/test/backfill_analysis.py --dirs results/optimization
 
   # 處理單個實驗目錄
-  python tmp/test/backfill_analysis.py --single results/optimization/quick-mo-test_20251127_165523
+  python legacy/tmp_pipeline/test/backfill_analysis.py --single results/optimization/quick-mo-test_20251127_165523
 
   # 強制重新生成（覆蓋已有檔案）
-  python tmp/test/backfill_analysis.py --force
+  python legacy/tmp_pipeline/test/backfill_analysis.py --force
 
   # 重新生成 pareto_frontier.json（添加 trial_id）
-  python tmp/test/backfill_analysis.py --regen-pareto --force
+  python legacy/tmp_pipeline/test/backfill_analysis.py --regen-pareto --force
 
   # 只修復 summary.json（添加三類解統計）
-  python tmp/test/backfill_analysis.py --fix-summary
+  python legacy/tmp_pipeline/test/backfill_analysis.py --fix-summary
 
   # 處理 LLM 優化實驗
-  python tmp/test/backfill_analysis.py --dirs results/llm_optimization
+  python legacy/tmp_pipeline/test/backfill_analysis.py --dirs results/llm_optimization
         """
     )
 

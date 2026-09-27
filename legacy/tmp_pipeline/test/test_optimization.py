@@ -5,10 +5,10 @@
 
 用法：
     # 完整優化
-    python tmp/test/test_optimization.py --config tmp/config/optimization_config.yaml
+    python legacy/tmp_pipeline/test/test_optimization.py --config legacy/tmp_pipeline/config/optimization_config.yaml
 
     # 快速測試
-    python tmp/test/test_optimization.py --config tmp/config/optimization_config_quick.yaml
+    python legacy/tmp_pipeline/test/test_optimization.py --config legacy/tmp_pipeline/config/optimization_config_quick.yaml
 """
 
 import sys
@@ -42,20 +42,20 @@ def main():
         epilog="""
 Examples:
   # Run full optimization
-  python tmp/test/test_optimization.py --config tmp/config/optimization_config.yaml
+  python legacy/tmp_pipeline/test/test_optimization.py --config legacy/tmp_pipeline/config/optimization_config.yaml
 
   # Run quick test (15-20 min)
-  python tmp/test/test_optimization.py --config tmp/config/optimization_config_quick.yaml
+  python legacy/tmp_pipeline/test/test_optimization.py --config legacy/tmp_pipeline/config/optimization_config_quick.yaml
 
   # Use default config
-  python tmp/test/test_optimization.py
+  python legacy/tmp_pipeline/test/test_optimization.py
         """
     )
 
     parser.add_argument(
         '--config',
         type=str,
-        default='tmp/config/optimization_config.yaml',
+        default='legacy/tmp_pipeline/config/optimization_config.yaml',
         help='Path to optimization configuration file (default: optimization_config.yaml)'
     )
 

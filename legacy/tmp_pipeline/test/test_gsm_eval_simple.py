@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 
 # 添加父目錄到路徑
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
-from tmp.evals.gsm8k_eval import GSM8KEvaluator
+from legacy.tmp_pipeline.evals.gsm8k_eval import GSM8KEvaluator
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     print("=" * 80)
     
     # 從 YAML 配置文件創建評估器
-    config_path = "tmp/config/model_config.yaml"
+    config_path = "legacy/tmp_pipeline/config/model_config.yaml"
     print(f"\n📋 從 YAML 載入配置: {config_path}\n")
     
     # 創建評估器（會自動處理 model_config 和 dataset_config 的整合）

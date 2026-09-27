@@ -32,7 +32,7 @@ class PromptConfigLoader:
         載入 prompt 配置
 
         Args:
-            config_path: YAML 配置檔路徑，預設為 tmp/config/prompt_config.yaml
+            config_path: YAML 配置檔路徑，預設為 legacy/tmp_pipeline/config/prompt_config.yaml
             prompt_type: 使用的 prompt 類型（如 'en', 'zh'），None 則使用預設
 
         Returns:
@@ -43,7 +43,7 @@ class PromptConfigLoader:
         # 決定配置檔路徑
         if config_path is None:
             # 尋找預設路徑
-            base_dir = Path(__file__).parent.parent.parent.parent  # tmp/
+            base_dir = Path(__file__).parent.parent.parent.parent  # legacy/tmp_pipeline/
             config_path = base_dir / "config" / "prompt_config.yaml"
         else:
             config_path = Path(config_path)

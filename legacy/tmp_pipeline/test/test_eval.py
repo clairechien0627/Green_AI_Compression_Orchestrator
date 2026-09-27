@@ -120,7 +120,7 @@ def detect_quantization(model_path: str) -> str:
 def main():
     """主程式"""
     # 載入配置
-    config = load_model_config("tmp/config/model_config.yaml")
+    config = load_model_config("legacy/tmp_pipeline/config/model_config.yaml")
     
     datasets = get_selected_datasets(config)
     
