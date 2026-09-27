@@ -3,11 +3,11 @@
 比較「去重複重試安全網開啟 vs 關閉」對四種 LLM 記憶策略（full/summary/window/tool）的影響。
 
 背景：
-  final_results_30/          orchestrator.py 的 _MAX_DUP_RETRIES = 5（有安全網）
+  results/runs/30trial/          orchestrator.py 的 _MAX_DUP_RETRIES = 5（有安全網）
                               LLM 建議重複配置時會重打 API 最多 5 次，直到給出新配置為止，
                               所以呈現出來的 30 個 trial 幾乎都是「有效」的。
 
-  final_results_30_noretry/  _MAX_DUP_RETRIES = 1（無安全網，range(1) 只跑一次）
+  results/runs/30trial_noretry/  _MAX_DUP_RETRIES = 1（無安全網，range(1) 只跑一次）
                               LLM 建議重複配置時直接把該 iteration 記成
                               "重複 config，已跳過"，不重打 API，30 個 trial 裡有一部分
                               是浪費掉的空 trial。
@@ -29,8 +29,8 @@ from scipy import stats as sstats
 ROOT = Path(__file__).resolve().parent.parent
 
 CONDITIONS = {
-    "5-retry（有安全網）": ROOT / "final_results_30",
-    "0-retry（無安全網）": ROOT / "final_results_30_noretry",
+    "5-retry（有安全網）": ROOT / "results" / "runs" / "30trial",
+    "0-retry（無安全網）": ROOT / "results" / "runs" / "30trial_noretry",
 }
 
 MODES = ["full", "summary", "window", "tool"]

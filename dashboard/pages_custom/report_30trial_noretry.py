@@ -14,12 +14,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent / "final_results_30_noretry"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent / "results" / "runs" / "30trial_noretry"
 # final_results_30_noretry 只有 4 種 LLM 記憶策略的 no-retry 對照組，沒有自己的
 # tpe/nsga2/random 基準（統計優化器本來就不會建議完全相同的浮點數配置，
 # 「去重複重試」這個消融實驗只對 LLM 有意義）。這些基準改用同樣是 30-trial 的
 # final_results_30（有 retry 安全網）資料，因為它們的實驗設計本來就跟 retry 機制無關。
-COMPARE_BASE_DIR = Path(__file__).resolve().parent.parent.parent / "final_results_30"
+COMPARE_BASE_DIR = Path(__file__).resolve().parent.parent.parent / "results" / "runs" / "30trial"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 資料載入

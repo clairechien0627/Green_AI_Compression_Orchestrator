@@ -26,9 +26,9 @@ from common.styling import (  # noqa: E402
 REPO_ROOT = DASHBOARD_ROOT.parent
 
 CONFIGS = {
-    "final_results":            REPO_ROOT / "final_results",
-    "final_results_30":         REPO_ROOT / "final_results_30",
-    "final_results_30_noretry": REPO_ROOT / "final_results_30_noretry",
+    "final_results":            REPO_ROOT / "results" / "runs" / "20trial",
+    "final_results_30":         REPO_ROOT / "results" / "runs" / "30trial",
+    "final_results_30_noretry": REPO_ROOT / "results" / "runs" / "30trial_noretry",
 }
 CONFIG_ORDER = list(CONFIGS.keys())
 
@@ -39,7 +39,7 @@ st.caption(
 )
 
 _desc_rows = [
-    {"配置": CONFIG_LABELS[k], "資料夾": k, "說明": v}
+    {"配置": CONFIG_LABELS[k], "配置代號": k, "說明": v}
     for k, v in {
         "final_results": "20 trial/run，_MAX_DUP_RETRIES=5（LLM 建議重複配置時最多重打 5 次）",
         "final_results_30": "30 trial/run，_MAX_DUP_RETRIES=5",

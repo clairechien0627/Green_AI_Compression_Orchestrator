@@ -14,7 +14,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent / "final_results_30"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent / "results" / "runs" / "30trial"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 資料載入
@@ -4014,7 +4014,7 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
 
     if not token_data:
         st.info(
-            "找不到 `final_results_30/llm_token_usage_reconstructed.json`。"
+            "找不到 `results/runs/30trial/llm_token_usage_reconstructed.json`。"
             "這份資料是從已刪除的原始重建腳本一次性離線計算出來的（其輸入的 1.5GB "
             "stdout log 已不存在，無法重新產生），若這個檔案遺失，本節內容將無法復原。"
         )

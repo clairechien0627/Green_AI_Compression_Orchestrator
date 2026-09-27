@@ -14,7 +14,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent / "final_results"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent / "results" / "runs" / "20trial"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 資料載入
@@ -3552,7 +3552,7 @@ LLM 在前 8 個 trial 中，對每一種壓縮類型各試一次，且每次都
         ])
         st.write(styled_expl.to_html(), unsafe_allow_html=True)
     else:
-        st.warning("找不到 LLM-Summary Run1 資料，請確認 final_results/ 目錄。")
+        st.warning("找不到 LLM-Summary Run1 資料，請確認 results/runs/20trial/ 目錄。")
 
     st.markdown("### 5.2 學習失敗、建立機制性解釋（全部 12 個 LLM 實驗）")
     st.markdown("""
