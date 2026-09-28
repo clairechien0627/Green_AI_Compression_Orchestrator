@@ -706,7 +706,7 @@ with tab1:
                 legend_title="Tuner",
             )
             fig_box.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_box, width="stretch")
+            st.plotly_chart(fig_box, use_container_width=True)
 
     # ── ⑥ Variance 分解：Between-run vs Within-run ─────────────────────────
     st.markdown("#### 📐 Variance 分解：Between-run vs Within-run")
@@ -842,7 +842,7 @@ with tab1:
             title="各 Sampler：平均 Final Score vs. AUC（品質 vs. 搜尋效率）",
         )
         fig_eff.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_eff, width="stretch")
+        st.plotly_chart(fig_eff, use_container_width=True)
 
     st.markdown("---")
 
@@ -908,7 +908,7 @@ with tab1:
                 title_font=dict(size=18),
             )
             fig_vln.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_vln, width="stretch")
+            st.plotly_chart(fig_vln, use_container_width=True)
 
         with _vln_tab_en:
             st.caption(
@@ -942,7 +942,7 @@ with tab1:
                 title_font=dict(size=30),
             )
             fig_vln_en.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_vln_en, width="stretch")
+            st.plotly_chart(fig_vln_en, use_container_width=True)
 
     st.markdown("---")
 
@@ -976,7 +976,7 @@ with tab1:
                 title_font=dict(size=18),
             )
             fig_score.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_score, width="stretch")
+            st.plotly_chart(fig_score, use_container_width=True)
 
         with _score_tab_en:
             st.caption(
@@ -1004,7 +1004,7 @@ with tab1:
                 title_font=dict(size=30),
             )
             fig_score_en.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_score_en, width="stretch")
+            st.plotly_chart(fig_score_en, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### 📊 Score 品質層級分布（各 Sampler 的 Trial 組成）")
@@ -1053,7 +1053,7 @@ with tab1:
             legend_title="層級",
         )
         fig_tier.update_xaxes(tickangle=0)
-        st.plotly_chart(fig_tier, width="stretch")
+        st.plotly_chart(fig_tier, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### ⚡ 首次達到 Score > 4 所需 Trial 數")
@@ -1112,7 +1112,7 @@ with tab1:
             barmode="overlay",
         )
         fig_f4.update_yaxes(gridcolor="#eee", rangemode="tozero")
-        st.plotly_chart(fig_f4, width="stretch")
+        st.plotly_chart(fig_f4, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### 🎯 Score 門檻命中率（Hit Rate）")
@@ -1154,7 +1154,7 @@ with tab1:
             legend_title="Sampler", yaxis_range=[0, 115],
         )
         fig_hr.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_hr, width="stretch")
+        st.plotly_chart(fig_hr, use_container_width=True)
 
     st.markdown("---")
 
@@ -1246,7 +1246,7 @@ with tab1:
                     showlegend=True,
                 )
                 fig_skip.update_yaxes(gridcolor="#eee", dtick=1)
-                st.plotly_chart(fig_skip, width="stretch")
+                st.plotly_chart(fig_skip, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Tab 2：Trial 彩色分析
@@ -1296,7 +1296,7 @@ with tab2:
                 fig_hist.update_layout(
                     plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", height=320
                 )
-                st.plotly_chart(fig_hist, width="stretch")
+                st.plotly_chart(fig_hist, use_container_width=True)
             with c2:
                 mode_counts = df["Mode"].value_counts().reset_index()
                 mode_counts.columns = ["Mode", "Count"]
@@ -1306,7 +1306,7 @@ with tab2:
                     color_discrete_sequence=px.colors.qualitative.Set2,
                 )
                 fig_pie.update_layout(height=320)
-                st.plotly_chart(fig_pie, width="stretch")
+                st.plotly_chart(fig_pie, use_container_width=True)
 
             st.subheader(f"全部 {len(df)} 個 Trial 結果")
             st.write(style_df(df).to_html(), unsafe_allow_html=True)
@@ -1527,9 +1527,9 @@ with tab3:
                 fig_s.update_xaxes(gridcolor="#eee")
                 fig_s.update_yaxes(gridcolor="#eee")
                 if ax == "VRAM (GB)":
-                    c1.plotly_chart(fig_s, width="stretch")
+                    c1.plotly_chart(fig_s, use_container_width=True)
                 else:
-                    c2.plotly_chart(fig_s, width="stretch")
+                    c2.plotly_chart(fig_s, use_container_width=True)
 
             # ── Parallel Coordinates ──────────────────────────────────────────
             st.markdown("### 🔀 多目標權衡平行座標圖")
@@ -1555,7 +1555,7 @@ with tab3:
                 ],
             ))
             fig_para.update_layout(height=420, paper_bgcolor="rgba(0,0,0,0)")
-            st.plotly_chart(fig_para, width="stretch")
+            st.plotly_chart(fig_para, use_container_width=True)
 
             # ── Radar Chart：Top 5 ────────────────────────────────────────────
             st.markdown("### 🕸️ Top-5 Pareto 解雷達圖")
@@ -1600,7 +1600,7 @@ with tab3:
                 legend_title="配置（Score 排序）",
                 paper_bgcolor="rgba(0,0,0,0)",
             )
-            st.plotly_chart(fig_radar, width="stretch")
+            st.plotly_chart(fig_radar, use_container_width=True)
 
             # ── 自動分析文字 ──────────────────────────────────────────────────
             st.markdown("### 📝 自動分析摘要")
@@ -1694,7 +1694,7 @@ with tab3:
                 )
                 fig_ga.update_yaxes(gridcolor="#eee")
                 fig_ga.update_xaxes(gridcolor="#eee")
-                st.plotly_chart(fig_ga, width="stretch")
+                st.plotly_chart(fig_ga, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Tab Cross：跨實驗比較
@@ -1970,7 +1970,7 @@ with tab_cross:
             )
             fig_qual.update_xaxes(gridcolor="#eee")
             fig_qual.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_qual, width="stretch")
+            st.plotly_chart(fig_qual, use_container_width=True)
 
         if _qual_view_mode in ["相對基線四象限", "全部"]:
             base_candidates = df_qual[df_qual["Sampler"] == "random"]
@@ -2024,7 +2024,7 @@ with tab_cross:
             )
             fig_quad.update_xaxes(gridcolor="#eee")
             fig_quad.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_quad, width="stretch")
+            st.plotly_chart(fig_quad, use_container_width=True)
             if base_note:
                 st.caption(base_note)
 
@@ -2087,7 +2087,7 @@ with tab_cross:
                 showlegend=False,
             )
             fig_pn.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_pn, width="stretch")
+            st.plotly_chart(fig_pn, use_container_width=True)
         with c2:
             # 依 sampler 聚合平均 Pareto 佔比
             grp_par = (
@@ -2111,7 +2111,7 @@ with tab_cross:
                 coloraxis_showscale=False,
             )
             fig_ratio.update_xaxes(gridcolor="#eee", title="平均 Pareto 佔比 %")
-            st.plotly_chart(fig_ratio, width="stretch")
+            st.plotly_chart(fig_ratio, use_container_width=True)
 
     # ── 門檻版 Pareto：僅計算 score > 4 的解 ─────────────────────────────────
     st.markdown("#### 📌 門檻版（僅計算 Score > 4 的 Pareto 解）")
@@ -2163,7 +2163,7 @@ with tab_cross:
                 showlegend=False,
             )
             fig_thr_n.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_thr_n, width="stretch")
+            st.plotly_chart(fig_thr_n, use_container_width=True)
         with c2t:
             grp_thr = (
                 df_thr.assign(_sort=df_thr["Sampler"].map(sampler_sort_key))
@@ -2184,7 +2184,7 @@ with tab_cross:
                 coloraxis_showscale=False,
             )
             fig_thr_ratio.update_xaxes(gridcolor="#eee", title="平均佔比 %")
-            st.plotly_chart(fig_thr_ratio, width="stretch")
+            st.plotly_chart(fig_thr_ratio, use_container_width=True)
 
     st.markdown("---")
 
@@ -2268,7 +2268,7 @@ with tab_cross:
                 legend_title="壓縮方法",
             )
             fig_m.update_yaxes(gridcolor="#eee")
-            container.plotly_chart(fig_m, width="stretch")
+            container.plotly_chart(fig_m, use_container_width=True)
 
     st.markdown("---")
 
@@ -2348,7 +2348,7 @@ with tab_cross:
     )
     fig_conv.update_xaxes(gridcolor="#eee", dtick=2)
     fig_conv.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_conv, width="stretch")
+    st.plotly_chart(fig_conv, use_container_width=True)
 
     # ── ④-b 聚焦圖：Score > 4 區段 ───────────────────────────────────────────
     st.markdown("#### 📌 聚焦：Score > 4 區段")
@@ -2409,7 +2409,7 @@ with tab_cross:
         annotation_text="Score = 4",
         annotation_position="right",
     )
-    st.plotly_chart(fig_conv_zoom, width="stretch")
+    st.plotly_chart(fig_conv_zoom, use_container_width=True)
 
     # ── ① Cumulative Regret（5️⃣） ────────────────────────────────────────────
     st.markdown("### 5️⃣ Cumulative Regret 分析")
@@ -2455,7 +2455,7 @@ with tab_cross:
     )
     fig_regret.update_yaxes(gridcolor="#eee")
     fig_regret.update_xaxes(gridcolor="#eee")
-    st.plotly_chart(fig_regret, width="stretch")
+    st.plotly_chart(fig_regret, use_container_width=True)
 
     st.markdown("---")
     st.markdown("### 💥 災難性失敗 Timeline（Score < −10）")
@@ -2507,7 +2507,7 @@ with tab_cross:
                               layer="below", line_width=0,
                               annotation_text="廣探期(1-10)", annotation_position="top left",
                               annotation_font=dict(size=11))
-        st.plotly_chart(fig_cat_tl, width="stretch")
+        st.plotly_chart(fig_cat_tl, use_container_width=True)
     else:
         st.caption("（目前資料中無 score < −10 的 trial）")
 
@@ -2564,7 +2564,7 @@ with tab_cross:
             yaxis=dict(range=[0, 115], ticksuffix="%", gridcolor="#eee"),
             title="各 Sampler 在災難失敗後的即時恢復率（下一 trial score > 0）",
         )
-        st.plotly_chart(fig_rec, width="stretch")
+        st.plotly_chart(fig_rec, use_container_width=True)
         if not _df_rec_agg.empty:
             _best_rec = _df_rec_agg.loc[_df_rec_agg["恢復率 %"].idxmax()]
             st.caption(
@@ -2638,7 +2638,7 @@ with tab_cross:
     )
     fig_cdf.update_yaxes(gridcolor="#eee", range=[0, 105])
     fig_cdf.update_xaxes(gridcolor="#eee")
-    st.plotly_chart(fig_cdf, width="stretch")
+    st.plotly_chart(fig_cdf, use_container_width=True)
 
     # ── ⑨ Late-stage 改善分析（🔟）（30 trial 限定） ────────────────────────
     st.markdown("### 🔟 Late-stage 改善分析（Trial 21–30）")
@@ -2681,7 +2681,7 @@ with tab_cross:
             yaxis_title="Late Improvement（score）", legend_title="Sampler",
         )
         fig_late.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_late, width="stretch")
+        st.plotly_chart(fig_late, use_container_width=True)
     else:
         st.info("目前沒有擁有 ≥ 21 個有效 trial 的實驗，無法進行 Late-stage 分析。")
 
@@ -2757,7 +2757,7 @@ Final Score = score − penalty
             {"Mode Key":          "sparse_structured",   "類型": "稀疏化",     "說明": "2:4 / 4:8 半結構，支援 NVIDIA 硬體加速"},
             {"Mode Key":          "hybrid_asvd_bnb",     "類型": "混合",       "說明": "ASVD 低秩分解 + BNB 量化疊加"},
         ])
-        st.dataframe(modes_df, width="stretch", hide_index=True)
+        st.dataframe(modes_df, use_container_width=True, hide_index=True)
 
         st.markdown("---")
 
@@ -3176,7 +3176,7 @@ Rules:
 with tab_report:
     st.header("📋 LLM 記憶策略搜尋優勢分析報告")
     st.caption(
-        "基於 final_results_30/ 中 12 組實驗（4 種 LLM 記憶策略 × 3 次執行，各 30 個 trial）的完整數據分析。"
+        "基於 12 組實驗（4 種 LLM 記憶策略 × 3 次執行，各 30 個 trial）的完整數據分析。"
         "模型：Llama-3.2-3B-Instruct，任務：GSM8K 數學推理，評估目標：準確率 × VRAM × Latency × Emissions。"
     )
 
@@ -3380,7 +3380,7 @@ with tab_report:
         font=dict(color="white"),
         height=350,
     )
-    st.plotly_chart(fig_catastrophic, width="stretch")
+    st.plotly_chart(fig_catastrophic, use_container_width=True)
 
     st.markdown("""
 ### 哪些配置最危險？LLM 如何應對？
@@ -3423,7 +3423,7 @@ Tool Agent（6.7%）最差，因其不維護完整歷史，依賴每次的 conte
         font=dict(color="white"),
         height=350,
     )
-    st.plotly_chart(fig_pos, width="stretch")
+    st.plotly_chart(fig_pos, use_container_width=True)
 
     # 動態計算正向 trial 率並生成說明
     if not df_report.empty:
@@ -3521,7 +3521,7 @@ Tool Agent（6.7%）最差，因其不維護完整歷史，依賴每次的 conte
         legend=dict(bgcolor="rgba(0,0,0,0)"),
         height=420,
     )
-    st.plotly_chart(fig_conv, width="stretch")
+    st.plotly_chart(fig_conv, use_container_width=True)
 
     first_best_rows = []
     for name, d in conv_data.items():
@@ -3530,7 +3530,7 @@ Tool Agent（6.7%）最差，因其不維護完整歷史，依賴每次的 conte
             "平均首次達到最佳的 Iteration": round(d["avg_first_best"], 1),
             "各次執行": str(d["first_bests"]),
         })
-    st.dataframe(pd.DataFrame(first_best_rows), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(first_best_rows), use_container_width=True, hide_index=True)
 
     # 動態生成收斂分析
     if conv_data:
@@ -3846,7 +3846,7 @@ Tool Agent 的診斷更模糊，有時誤判失敗原因，甚至再踩一次類
             "嘗試一次後多數放棄", "偶爾重試，但不穩定", "普遍快速放棄", "普遍快速放棄",
         ],
     }
-    st.dataframe(pd.DataFrame(method_quality_data), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(method_quality_data), use_container_width=True, hide_index=True)
 
     st.divider()
 
@@ -3981,7 +3981,7 @@ Tool Agent 的診斷更模糊，有時誤判失敗原因，甚至再踩一次類
             "✅ 有推理，但一致性較差",
         ],
     }
-    st.dataframe(pd.DataFrame(comparison_data), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(comparison_data), use_container_width=True, hide_index=True)
 
     st.divider()
 
@@ -4117,7 +4117,7 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
                 legend_title="",
             )
             fig_tok.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_tok, width="stretch")
+            st.plotly_chart(fig_tok, use_container_width=True)
 
             fig_hidden = go.Figure()
             fig_hidden.add_trace(go.Bar(
@@ -4133,7 +4133,7 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
                 showlegend=False,
             )
             fig_hidden.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_hidden, width="stretch")
+            st.plotly_chart(fig_hidden, use_container_width=True)
 
             _cheapest = df_agg.loc[df_agg["估計總 Token(含隱藏)"].idxmin(), "模式"]
             _most_hidden = df_agg.loc[df_agg["平均隱藏事件數"].idxmax(), "模式"]
@@ -4155,7 +4155,7 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
     st.divider()
 
     # ── 8. 結論 ─────────────────────────────────────────────────────────────────
-    st.subheader("8. 結論與建議")
+    st.subheader("8. 結論")
 
     # 動態計算最佳策略推薦
     if not df_report.empty:
@@ -4193,16 +4193,3 @@ guiding LLM（gpt-4o）每次呼叫實際花費的 token 數從未被記錄下�
   顯示摘要式歷史偶爾會遺失關鍵細節，導致後期決策質量下滑。
 """)
 
-    st.info(f"""
-**最推薦配置與策略**
-
-- **搜尋策略推薦**：若只能選一種，選 **LLM-Summary**（收斂最快）；
-  若預算允許 15+ trials 且重視穩定性，選 **LLM-Window**（最低失敗率）。
-
-- **壓縮配置推薦**：**GPTQ 4-bit g128（damp_percent ≈ 0.006～0.02，format=gptq）**
-  是 Llama-3.2-3B-Instruct 在 GSM8K 任務上的最優 Green AI 壓縮配置：
-  - 準確率保留：**{best_acc / b_acc * 100:.1f}%**（{best_acc:.3f} vs baseline {b_acc}）
-  - VRAM：{best_vram:.2f} GB（節省 {(b_vram - best_vram) / b_vram * 100:.1f}%）
-  - Latency：{best_lat:.1f}s（降低 {(b_lat - best_lat) / b_lat * 100:.1f}%）
-  - Emissions：{best_emit:.5f}（降低 {(b_emit - best_emit) / b_emit * 100:.1f}%）
-""")

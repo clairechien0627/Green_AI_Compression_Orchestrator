@@ -39,14 +39,14 @@ st.caption(
 )
 
 _desc_rows = [
-    {"配置": CONFIG_LABELS[k], "配置代號": k, "說明": v}
+    {"配置": CONFIG_LABELS[k], "說明": v}
     for k, v in {
         "final_results": "20 trial/run，_MAX_DUP_RETRIES=5（LLM 建議重複配置時最多重打 5 次）",
         "final_results_30": "30 trial/run，_MAX_DUP_RETRIES=5",
         "final_results_30_noretry": "30 trial/run，_MAX_DUP_RETRIES=1（無安全網，重複即記為浪費 trial）",
     }.items()
 ]
-st.dataframe(pd.DataFrame(_desc_rows), width="stretch", hide_index=True)
+st.dataframe(pd.DataFrame(_desc_rows), use_container_width=True, hide_index=True)
 
 st.divider()
 
@@ -167,7 +167,7 @@ if not df_best.empty:
         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", legend_title="",
     )
     fig1.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig1, width="stretch")
+    st.plotly_chart(fig1, use_container_width=True)
 
 st.divider()
 
@@ -206,7 +206,7 @@ if not df_m.empty:
         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", legend_title="",
     )
     fig2.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig2, width="stretch")
+    st.plotly_chart(fig2, use_container_width=True)
 
 st.divider()
 
@@ -247,7 +247,7 @@ if not df_sk.empty:
         yaxis_title="跳過率 (%)", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", legend_title="",
     )
     fig3.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig3, width="stretch")
+    st.plotly_chart(fig3, use_container_width=True)
     st.caption("詳細對照與統計檢定請見左側「🧪 No-Retry 消融 (30 Trial)」頁。")
 else:
     st.info("找不到可比較的資料。")
@@ -259,9 +259,8 @@ st.divider()
 # ══════════════════════════════════════════════════════════════════════════
 st.header("5. Token 成本比較：No-Retry（真實）vs 5-Retry（估計）")
 st.caption(
-    "**final_results_30_noretry 是真實記錄**（跑在 `llm_client.py` 加上 `_log_usage()` 之後，"
-    "每次 API 呼叫的 token 數都被即時存下來）。"
-    "**final_results_30 是離線估計值**（跑在加上 token 記錄之前，只能事後用同樣的 prompt 樣板"
+    "**No-Retry 是真實記錄**（每次 API 呼叫的 token 數都被即時存下來）。"
+    "**5-Retry 是離線估計值**（跑在加上 token 記錄之前，只能事後用同樣的 prompt 樣板"
     "重建 prompt 文字＋離線計算 token 數；隱藏的去重複重試/JSON 驗證重試次數是真實觀測到的，"
     "但那些重試呼叫本身的 token 量是用同一個 run 內其他呼叫的平均值去估算，不是精確值）。"
     "兩者是不同性質的數字，放在一起比較時這個差異要保留在心裡，但仍然可以看出量級與排序上的參考價值。"
@@ -319,7 +318,7 @@ if _token_path_est.exists() and _token_path_real.exists():
         yaxis_title="Token 數", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", legend_title="",
     )
     fig_tok.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_tok, width="stretch")
+    st.plotly_chart(fig_tok, use_container_width=True)
 
     _tbl_cols = {"說明": "模式", "資料性質": "資料性質", "avg_calls": "平均呼叫數",
                  "avg_total_tokens": "平均總 Token", "avg_hidden_events": "平均隱藏事件數"}
@@ -341,7 +340,7 @@ if _token_path_est.exists() and _token_path_real.exists():
 **Tool 模式是唯一的例外**——不管有沒有安全網，它的多輪工具檢索設計本身就很貴，
 是四者中 token 成本最高的。
 
-`final_results`（20-trial）目前還沒有真實或估計的 token 數據
+20-trial 版本目前還沒有真實或估計的 token 數據
 （它橫跨兩個不同的舊 log 檔案，需要另外處理才能重建），暫不列入本比較。
 """)
 else:
@@ -350,22 +349,3 @@ else:
         "無法顯示這個比較。"
     )
 
-st.divider()
-
-# ══════════════════════════════════════════════════════════════════════════
-# 6. 下一步
-# ══════════════════════════════════════════════════════════════════════════
-st.header("6. 下一步該加哪些實驗？")
-st.markdown("""
-根據三組配置的比較，目前還沒有被驗證、值得優先考慮的擴充方向：
-
-1. **換模型 / 換任務**：三組資料全部只測過 Llama-3.2-3B-Instruct + GSM8K，
-   目前所有結論（例如「Full 記憶最可靠」）都可能是這個模型/任務的特例。
-2. **更多 run 數**：目前 LLM 記憶策略之間的「最終分數」比較，因為 run 數少（3-6 run）
-   而效果量太小，難以達到統計顯著；若想再驗證最終分數上的差異，需要大幅增加 run 數，
-   但這個投入報酬可能不如追加下面兩項。
-3. **guiding LLM 消融**：四種記憶策略目前都固定用同一顆 LLM（gpt-4o）做決策，
-   還沒驗證換一顆較弱的模型（如 gpt-4o-mini）是否會讓記憶設計的差異更明顯或消失。
-4. **長 trial 數驗證**：no-retry 消融只跑了 30 trial，若要驗證「summary/window 的記憶
-   缺陷在更長的搜尋中會不會更嚴重」，值得挑 1-2 個模式跑 50-80 trial 觀察跳過率的成長曲線。
-""")

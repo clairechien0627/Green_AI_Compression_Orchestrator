@@ -606,9 +606,8 @@ baseline    = load_baseline()
 with st.sidebar:
     st.title("🧪 Green AI Tuner（No-Retry）")
     st.caption(
-        "LLM 記憶策略（full/summary/window/tool）讀自 `final_results_30_noretry`"
-        "（去重複重試安全網關閉）；TPE/NSGA-II/Random 沒有 no-retry 版本，"
-        "沿用同樣 30-trial 的 `final_results_30` 基準。"
+        "LLM 記憶策略（full/summary/window/tool）已關閉去重複重試安全網。"
+        "TPE / NSGA-II / Random 沒有對應的 no-retry 版本，因此沿用同樣 30 trial 的基準資料。"
     )
     st.markdown("---")
 
@@ -740,7 +739,7 @@ with tab1:
                 legend_title="Tuner",
             )
             fig_box.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_box, width="stretch")
+            st.plotly_chart(fig_box, use_container_width=True)
 
     # ── ⑥ Variance 分解：Between-run vs Within-run ─────────────────────────
     st.markdown("#### 📐 Variance 分解：Between-run vs Within-run")
@@ -876,7 +875,7 @@ with tab1:
             title="各 Sampler：平均 Final Score vs. AUC（品質 vs. 搜尋效率）",
         )
         fig_eff.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_eff, width="stretch")
+        st.plotly_chart(fig_eff, use_container_width=True)
 
     st.markdown("---")
 
@@ -942,7 +941,7 @@ with tab1:
                 title_font=dict(size=18),
             )
             fig_vln.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_vln, width="stretch")
+            st.plotly_chart(fig_vln, use_container_width=True)
 
         with _vln_tab_en:
             st.caption(
@@ -976,7 +975,7 @@ with tab1:
                 title_font=dict(size=30),
             )
             fig_vln_en.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_vln_en, width="stretch")
+            st.plotly_chart(fig_vln_en, use_container_width=True)
 
     st.markdown("---")
 
@@ -1010,7 +1009,7 @@ with tab1:
                 title_font=dict(size=18),
             )
             fig_score.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_score, width="stretch")
+            st.plotly_chart(fig_score, use_container_width=True)
 
         with _score_tab_en:
             st.caption(
@@ -1038,7 +1037,7 @@ with tab1:
                 title_font=dict(size=30),
             )
             fig_score_en.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_score_en, width="stretch")
+            st.plotly_chart(fig_score_en, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### 📊 Score 品質層級分布（各 Sampler 的 Trial 組成）")
@@ -1087,7 +1086,7 @@ with tab1:
             legend_title="層級",
         )
         fig_tier.update_xaxes(tickangle=0)
-        st.plotly_chart(fig_tier, width="stretch")
+        st.plotly_chart(fig_tier, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### ⚡ 首次達到 Score > 4 所需 Trial 數")
@@ -1146,7 +1145,7 @@ with tab1:
             barmode="overlay",
         )
         fig_f4.update_yaxes(gridcolor="#eee", rangemode="tozero")
-        st.plotly_chart(fig_f4, width="stretch")
+        st.plotly_chart(fig_f4, use_container_width=True)
 
     st.markdown("---")
     st.markdown("#### 🎯 Score 門檻命中率（Hit Rate）")
@@ -1188,7 +1187,7 @@ with tab1:
             legend_title="Sampler", yaxis_range=[0, 115],
         )
         fig_hr.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_hr, width="stretch")
+        st.plotly_chart(fig_hr, use_container_width=True)
 
     st.markdown("---")
 
@@ -1280,7 +1279,7 @@ with tab1:
                     showlegend=True,
                 )
                 fig_skip.update_yaxes(gridcolor="#eee", dtick=1)
-                st.plotly_chart(fig_skip, width="stretch")
+                st.plotly_chart(fig_skip, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Tab 2：Trial 彩色分析
@@ -1330,7 +1329,7 @@ with tab2:
                 fig_hist.update_layout(
                     plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", height=320
                 )
-                st.plotly_chart(fig_hist, width="stretch")
+                st.plotly_chart(fig_hist, use_container_width=True)
             with c2:
                 mode_counts = df["Mode"].value_counts().reset_index()
                 mode_counts.columns = ["Mode", "Count"]
@@ -1340,7 +1339,7 @@ with tab2:
                     color_discrete_sequence=px.colors.qualitative.Set2,
                 )
                 fig_pie.update_layout(height=320)
-                st.plotly_chart(fig_pie, width="stretch")
+                st.plotly_chart(fig_pie, use_container_width=True)
 
             st.subheader(f"全部 {len(df)} 個 Trial 結果")
             st.write(style_df(df).to_html(), unsafe_allow_html=True)
@@ -1561,9 +1560,9 @@ with tab3:
                 fig_s.update_xaxes(gridcolor="#eee")
                 fig_s.update_yaxes(gridcolor="#eee")
                 if ax == "VRAM (GB)":
-                    c1.plotly_chart(fig_s, width="stretch")
+                    c1.plotly_chart(fig_s, use_container_width=True)
                 else:
-                    c2.plotly_chart(fig_s, width="stretch")
+                    c2.plotly_chart(fig_s, use_container_width=True)
 
             # ── Parallel Coordinates ──────────────────────────────────────────
             st.markdown("### 🔀 多目標權衡平行座標圖")
@@ -1589,7 +1588,7 @@ with tab3:
                 ],
             ))
             fig_para.update_layout(height=420, paper_bgcolor="rgba(0,0,0,0)")
-            st.plotly_chart(fig_para, width="stretch")
+            st.plotly_chart(fig_para, use_container_width=True)
 
             # ── Radar Chart：Top 5 ────────────────────────────────────────────
             st.markdown("### 🕸️ Top-5 Pareto 解雷達圖")
@@ -1634,7 +1633,7 @@ with tab3:
                 legend_title="配置（Score 排序）",
                 paper_bgcolor="rgba(0,0,0,0)",
             )
-            st.plotly_chart(fig_radar, width="stretch")
+            st.plotly_chart(fig_radar, use_container_width=True)
 
             # ── 自動分析文字 ──────────────────────────────────────────────────
             st.markdown("### 📝 自動分析摘要")
@@ -1728,7 +1727,7 @@ with tab3:
                 )
                 fig_ga.update_yaxes(gridcolor="#eee")
                 fig_ga.update_xaxes(gridcolor="#eee")
-                st.plotly_chart(fig_ga, width="stretch")
+                st.plotly_chart(fig_ga, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Tab Cross：跨實驗比較
@@ -2004,7 +2003,7 @@ with tab_cross:
             )
             fig_qual.update_xaxes(gridcolor="#eee")
             fig_qual.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_qual, width="stretch")
+            st.plotly_chart(fig_qual, use_container_width=True)
 
         if _qual_view_mode in ["相對基線四象限", "全部"]:
             base_candidates = df_qual[df_qual["Sampler"] == "random"]
@@ -2058,7 +2057,7 @@ with tab_cross:
             )
             fig_quad.update_xaxes(gridcolor="#eee")
             fig_quad.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_quad, width="stretch")
+            st.plotly_chart(fig_quad, use_container_width=True)
             if base_note:
                 st.caption(base_note)
 
@@ -2121,7 +2120,7 @@ with tab_cross:
                 showlegend=False,
             )
             fig_pn.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_pn, width="stretch")
+            st.plotly_chart(fig_pn, use_container_width=True)
         with c2:
             # 依 sampler 聚合平均 Pareto 佔比
             grp_par = (
@@ -2145,7 +2144,7 @@ with tab_cross:
                 coloraxis_showscale=False,
             )
             fig_ratio.update_xaxes(gridcolor="#eee", title="平均 Pareto 佔比 %")
-            st.plotly_chart(fig_ratio, width="stretch")
+            st.plotly_chart(fig_ratio, use_container_width=True)
 
     # ── 門檻版 Pareto：僅計算 score > 4 的解 ─────────────────────────────────
     st.markdown("#### 📌 門檻版（僅計算 Score > 4 的 Pareto 解）")
@@ -2197,7 +2196,7 @@ with tab_cross:
                 showlegend=False,
             )
             fig_thr_n.update_yaxes(gridcolor="#eee")
-            st.plotly_chart(fig_thr_n, width="stretch")
+            st.plotly_chart(fig_thr_n, use_container_width=True)
         with c2t:
             grp_thr = (
                 df_thr.assign(_sort=df_thr["Sampler"].map(sampler_sort_key))
@@ -2218,7 +2217,7 @@ with tab_cross:
                 coloraxis_showscale=False,
             )
             fig_thr_ratio.update_xaxes(gridcolor="#eee", title="平均佔比 %")
-            st.plotly_chart(fig_thr_ratio, width="stretch")
+            st.plotly_chart(fig_thr_ratio, use_container_width=True)
 
     st.markdown("---")
 
@@ -2302,7 +2301,7 @@ with tab_cross:
                 legend_title="壓縮方法",
             )
             fig_m.update_yaxes(gridcolor="#eee")
-            container.plotly_chart(fig_m, width="stretch")
+            container.plotly_chart(fig_m, use_container_width=True)
 
     st.markdown("---")
 
@@ -2382,7 +2381,7 @@ with tab_cross:
     )
     fig_conv.update_xaxes(gridcolor="#eee", dtick=2)
     fig_conv.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_conv, width="stretch")
+    st.plotly_chart(fig_conv, use_container_width=True)
 
     # ── ④-b 聚焦圖：Score > 4 區段 ───────────────────────────────────────────
     st.markdown("#### 📌 聚焦：Score > 4 區段")
@@ -2443,7 +2442,7 @@ with tab_cross:
         annotation_text="Score = 4",
         annotation_position="right",
     )
-    st.plotly_chart(fig_conv_zoom, width="stretch")
+    st.plotly_chart(fig_conv_zoom, use_container_width=True)
 
     # ── ① Cumulative Regret（5️⃣） ────────────────────────────────────────────
     st.markdown("### 5️⃣ Cumulative Regret 分析")
@@ -2489,7 +2488,7 @@ with tab_cross:
     )
     fig_regret.update_yaxes(gridcolor="#eee")
     fig_regret.update_xaxes(gridcolor="#eee")
-    st.plotly_chart(fig_regret, width="stretch")
+    st.plotly_chart(fig_regret, use_container_width=True)
 
     st.markdown("---")
     st.markdown("### 💥 災難性失敗 Timeline（Score < −10）")
@@ -2541,7 +2540,7 @@ with tab_cross:
                               layer="below", line_width=0,
                               annotation_text="廣探期(1-10)", annotation_position="top left",
                               annotation_font=dict(size=11))
-        st.plotly_chart(fig_cat_tl, width="stretch")
+        st.plotly_chart(fig_cat_tl, use_container_width=True)
     else:
         st.caption("（目前資料中無 score < −10 的 trial）")
 
@@ -2598,7 +2597,7 @@ with tab_cross:
             yaxis=dict(range=[0, 115], ticksuffix="%", gridcolor="#eee"),
             title="各 Sampler 在災難失敗後的即時恢復率（下一 trial score > 0）",
         )
-        st.plotly_chart(fig_rec, width="stretch")
+        st.plotly_chart(fig_rec, use_container_width=True)
         if not _df_rec_agg.empty:
             _best_rec = _df_rec_agg.loc[_df_rec_agg["恢復率 %"].idxmax()]
             st.caption(
@@ -2672,7 +2671,7 @@ with tab_cross:
     )
     fig_cdf.update_yaxes(gridcolor="#eee", range=[0, 105])
     fig_cdf.update_xaxes(gridcolor="#eee")
-    st.plotly_chart(fig_cdf, width="stretch")
+    st.plotly_chart(fig_cdf, use_container_width=True)
 
     # ── ⑨ Late-stage 改善分析（🔟）（30 trial 限定） ────────────────────────
     st.markdown("### 🔟 Late-stage 改善分析（Trial 21–30）")
@@ -2715,7 +2714,7 @@ with tab_cross:
             yaxis_title="Late Improvement（score）", legend_title="Sampler",
         )
         fig_late.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_late, width="stretch")
+        st.plotly_chart(fig_late, use_container_width=True)
     else:
         st.info("目前沒有擁有 ≥ 21 個有效 trial 的實驗，無法進行 Late-stage 分析。")
 
@@ -2791,7 +2790,7 @@ Final Score = score − penalty
             {"Mode Key":          "sparse_structured",   "類型": "稀疏化",     "說明": "2:4 / 4:8 半結構，支援 NVIDIA 硬體加速"},
             {"Mode Key":          "hybrid_asvd_bnb",     "類型": "混合",       "說明": "ASVD 低秩分解 + BNB 量化疊加"},
         ])
-        st.dataframe(modes_df, width="stretch", hide_index=True)
+        st.dataframe(modes_df, use_container_width=True, hide_index=True)
 
         st.markdown("---")
 
@@ -3210,8 +3209,8 @@ Rules:
 with tab_report:
     st.header("📋 去重複重試消融分析報告（No-Retry）")
     st.caption(
-        "資料來源：`final_results_30_noretry`（4 種 LLM 記憶策略，30 trial，去重複重試安全網關閉）"
-        "＋ `final_results_30`（TPE / NSGA-II / Random 基準，同樣 30 trial）。"
+        "4 種 LLM 記憶策略（30 trial，去重複重試安全網關閉）"
+        "＋ TPE / NSGA-II / Random 基準（同樣 30 trial，有安全網）。"
         "模型：Llama-3.2-3B-Instruct，任務：GSM8K 數學推理。"
     )
 
@@ -3235,8 +3234,8 @@ API、最多重試 5 次要一個新建議，這個過程完全不會出現在�
 各記憶策略原始的記憶可靠度」，不再被隱藏的重試機制掩蓋。
 
 TPE / NSGA-II / Random 這三個統計方法本來就不會建議完全相同的浮點數配置，這個消融實驗
-對它們沒有意義，所以下面所有跟它們有關的比較，都是直接沿用 `final_results_30`（同樣
-30-trial、有安全網）的資料作為基準，本頁不會重複跑這三個方法。
+對它們沒有意義，所以下面所有跟它們有關的比較，都是直接沿用同樣 30-trial、有安全網版本
+的資料作為基準，本頁不會重複跑這三個方法。
 """)
 
     st.divider()
@@ -3295,7 +3294,7 @@ TPE / NSGA-II / Random 這三個統計方法本來就不會建議完全相同的
             yaxis_title="跳過率 (%)", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
         )
         fig_skip.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_skip, width="stretch")
+        st.plotly_chart(fig_skip, use_container_width=True)
 
     st.markdown("""
 **Fisher's exact test（跳過率兩兩比較）**：Full vs Summary p=0.014（顯著），Full vs Window
@@ -3343,7 +3342,7 @@ p=0.064（邊緣），其餘組合不顯著。**Full 模式的記憶可靠度顯
             yaxis_title="跳過率 (%)", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
         )
         fig_abl.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_abl, width="stretch")
+        st.plotly_chart(fig_abl, use_container_width=True)
 
         st.markdown("""
 **同一模式底下，有效 trial 的分數分布在有/無安全網兩種條件下沒有顯著差異**
@@ -3385,25 +3384,25 @@ Full 平均只需要 7.7 次隱藏重試，Summary 卻要 47.7 次——現在�
         )
         fig_v.update_layout(height=480, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", showlegend=False)
         fig_v.update_yaxes(gridcolor="#eee")
-        st.plotly_chart(fig_v, width="stretch")
+        st.plotly_chart(fig_v, use_container_width=True)
 
     st.divider()
 
     # ── 4. 即使拿掉安全網，LLM 有效 Trial 仍全面優於統計方法 ───────────────────
     st.subheader("4. 即使拿掉安全網，LLM 有效 Trial 仍全面優於統計方法")
     st.markdown(
-        "把 4 種 LLM 模式（no-retry，只計有效 trial）跟 `final_results_30` 的 "
+        "把 4 種 LLM 模式（no-retry，只計有效 trial）跟 "
         "TPE / NSGA-II / Random（同樣 30 trial，有安全網）做 trial-level 池化比較："
     )
 
     c1, c2, c3 = st.columns(3)
     c1.metric("LLM (no-retry, 有效trial)", "213 trial", "平均分 −0.19 / 中位數 4.00")
-    c2.metric("統計方法 (final_results_30)", "270 trial", "平均分 −5.60 / 中位數 −1.94")
+    c2.metric("統計方法（30-trial 基準）", "270 trial", "平均分 −5.60 / 中位數 −1.94")
     c3.metric("Mann-Whitney", "p < 0.000001", "高度顯著")
 
     _cmp_rows = [
         {"方法群": "LLM（no-retry，有效 trial）", "正向率": 0.601, "災難率": 0.085},
-        {"方法群": "統計方法（final_results_30）", "正向率": 0.441, "災難率": 0.330},
+        {"方法群": "統計方法（30-trial 基準）", "正向率": 0.441, "災難率": 0.330},
     ]
     df_cmp = pd.DataFrame(_cmp_rows)
     fig_cmp = go.Figure()
@@ -3416,7 +3415,7 @@ Full 平均只需要 7.7 次隱藏重試，Summary 卻要 47.7 次——現在�
         yaxis_title="比例 (%)", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
     )
     fig_cmp.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_cmp, width="stretch")
+    st.plotly_chart(fig_cmp, use_container_width=True)
 
     st.markdown("""
 即使 LLM 模式因為記憶不足而浪費掉 30%~49% 的 trial 名額，**剩下真正產出新資訊的 trial**，
@@ -3438,9 +3437,9 @@ trial-level 分數分布的差異達到 p < 0.000001。
         {"方法": "LLM-Summary (no-retry)", "Best Score 平均": 4.598, "Std": 0.120},
         {"方法": "LLM-Window (no-retry)", "Best Score 平均": 4.643, "Std": 0.118},
         {"方法": "LLM-Tool (no-retry)", "Best Score 平均": 4.612, "Std": 0.092},
-        {"方法": "TPE (final_results_30)", "Best Score 平均": 4.603, "Std": 0.005},
-        {"方法": "NSGA-II (final_results_30)", "Best Score 平均": 4.578, "Std": 0.023},
-        {"方法": "Random (final_results_30)", "Best Score 平均": 4.645, "Std": 0.034},
+        {"方法": "TPE (30-trial 基準)", "Best Score 平均": 4.603, "Std": 0.005},
+        {"方法": "NSGA-II (30-trial 基準)", "Best Score 平均": 4.578, "Std": 0.023},
+        {"方法": "Random (30-trial 基準)", "Best Score 平均": 4.645, "Std": 0.034},
     ]
     df_best = pd.DataFrame(_best_rows)
     fig_best = go.Figure(go.Bar(
@@ -3455,7 +3454,7 @@ trial-level 分數分布的差異達到 p < 0.000001。
     )
     fig_best.update_xaxes(tickangle=15)
     fig_best.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_best, width="stretch")
+    st.plotly_chart(fig_best, use_container_width=True)
 
     st.markdown("""
 Run-level 最終最佳分數（Mann-Whitney U=77, p=0.11）在「no-retry 的 LLM」跟「有安全網的統計
@@ -3511,7 +3510,7 @@ Run-level 最終最佳分數（Mann-Whitney U=77, p=0.11）在「no-retry 的 LL
         yaxis_title="Token 數", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
     )
     fig_tok.update_yaxes(gridcolor="#eee")
-    st.plotly_chart(fig_tok, width="stretch")
+    st.plotly_chart(fig_tok, use_container_width=True)
 
     st.markdown("""
 **Tool 模式的成本明顯最高**（平均每個 run 要燒 53 次 API 呼叫、16 萬 token，是 Full 的 1.45 倍）
@@ -3521,7 +3520,7 @@ Run-level 最終最佳分數（Mann-Whitney U=77, p=0.11）在「no-retry 的 LL
 值得注意的是：在**無安全網**設計下，重複建議不會產生「隱藏重試」的額外 token 成本
 （因為 `_MAX_DUP_RETRIES=1` 根本不會重打 API，直接記成浪費 trial），
 所以這裡的 token 數純粹反映「決策 + 工具呼叫 + 摘要更新」本身的成本，
-不含任何重試開銷——這跟先前對 `final_results_30`（5-retry）資料的**離線估計**
+不含任何重試開銷——這跟先前對 5-retry 資料的**離線估計**
 （因為那批資料跑在加上 token 記錄之前，只能事後重建 prompt 去估算）形成有趣的對照：
 5-retry 設計會把「記憶不足」的代價轉嫁成看不見的額外 API 呼叫，
 0-retry 設計則是把代價轉嫁成看得見的浪費 trial 名額——兩種設計付出代價的方式不同，
@@ -3530,8 +3529,8 @@ Run-level 最終最佳分數（Mann-Whitney U=77, p=0.11）在「no-retry 的 LL
 
     st.divider()
 
-    # ── 7. 結論與建議 ────────────────────────────────────────────────────────
-    st.subheader("7. 結論與建議")
+    # ── 7. 結論 ────────────────────────────────────────────────────────
+    st.subheader("7. 結論")
 
     st.success("""
 **核心結論**
@@ -3547,20 +3546,3 @@ Run-level 最終最佳分數（Mann-Whitney U=77, p=0.11）在「no-retry 的 LL
    全部打平（p ≥ 0.11），下一步不該再拿這個指標當主要比較依據。
 """)
 
-    st.info("""
-**下一步該加哪些實驗**
-
-- **把 `final_results` / `final_results_30`（5-retry 版本）也補上真實 token 記錄**：
-  `_log_usage()` 只在這批 no-retry 資料開始跑之後才生效，5-retry 的兩組舊資料
-  目前仍只能靠離線重建 prompt 去估計 token 成本（見「Final Results」「Final Results 30」
-  頁的 LLM 優勢分析報告）。若要精確比較「有安全網」跟「無安全網」的真實 token 成本差異
-  （而不是本頁第 6 節那種只能單獨看 no-retry 的真實數字），需要重新跑一次 5-retry 版本
-  才能拿到對等的真實記錄。
-- **guiding LLM 消融**：四種記憶策略目前都固定用同一顆 gpt-4o 做決策，換一顆較弱的模型
-  （如 gpt-4o-mini）能檢驗「LLM 的核心優勢」是否隨模型能力遞減。
-- **換模型 / 換任務**：目前所有結論都只驗證過 Llama-3.2-3B-Instruct + GSM8K，
-  是最大的效度威脅，優先度高於再多跑幾次同一組設定。
-- **長 trial 數驗證**：no-retry 消融只跑了 30 trial，若想驗證「summary/window 的記憶
-  缺陷會不會隨 trial 數增加而更嚴重」，值得挑 1-2 個模式跑 50-80 trial，
-  觀察跳過率的成長曲線是否持續惡化。
-""")
