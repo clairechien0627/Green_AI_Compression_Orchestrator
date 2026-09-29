@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "full",
+    "config": "final_results_30",
+    "avg_calls": 30.0,
+    "avg_exact_tokens": 125541.0,
+    "avg_total_tokens": 157623.0,
+    "avg_hidden_events": 7.7,
+    "data_type": "estimated"
+  },
+  {
+    "mode": "summary",
+    "config": "final_results_30",
+    "avg_calls": 35.0,
+    "avg_exact_tokens": 85488.0,
+    "avg_total_tokens": 201915.0,
+    "avg_hidden_events": 47.7,
+    "data_type": "estimated"
+  },
+  {
+    "mode": "window",
+    "config": "final_results_30",
+    "avg_calls": 30.0,
+    "avg_exact_tokens": 83919.0,
+    "avg_total_tokens": 185553.0,
+    "avg_hidden_events": 36.3,
+    "data_type": "estimated"
+  },
+  {
+    "mode": "tool",
+    "config": "final_results_30",
+    "avg_calls": 125.0,
+    "avg_exact_tokens": 131256.0,
+    "avg_total_tokens": 165908.0,
+    "avg_hidden_events": 33.0,
+    "data_type": "estimated"
+  }
+]

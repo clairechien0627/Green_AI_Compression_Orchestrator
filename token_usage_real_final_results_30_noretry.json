@@ -1,0 +1,34 @@
+[
+  {
+    "mode": "full",
+    "avg_calls": 30.0,
+    "avg_total_tokens": 110268,
+    "config": "final_results_30_noretry",
+    "avg_hidden_events": 0.0,
+    "data_type": "real"
+  },
+  {
+    "mode": "window",
+    "avg_calls": 30.0,
+    "avg_total_tokens": 71051,
+    "config": "final_results_30_noretry",
+    "avg_hidden_events": 0.0,
+    "data_type": "real"
+  },
+  {
+    "mode": "summary",
+    "avg_calls": 35.0,
+    "avg_total_tokens": 77074,
+    "config": "final_results_30_noretry",
+    "avg_hidden_events": 0.0,
+    "data_type": "real"
+  },
+  {
+    "mode": "tool",
+    "avg_calls": 53.0,
+    "avg_total_tokens": 160194,
+    "config": "final_results_30_noretry",
+    "avg_hidden_events": 0.0,
+    "data_type": "real"
+  }
+]

@@ -117,7 +117,7 @@ def main():
         print(f"  {rank}. {r['mode']:10s} 跳過率 {r['skip_rate']:.1%}"
               f"（{r['skipped']}/{r['total_trials']} trial 浪費在重複建議上）")
 
-    out_path = ROOT / "retry_ablation_summary.json"
+    out_path = ROOT / "results" / "runs" / "retry_ablation_summary.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(summary_rows, f, ensure_ascii=False, indent=2)
     print(f"\n完整結果已存到 {out_path}")
